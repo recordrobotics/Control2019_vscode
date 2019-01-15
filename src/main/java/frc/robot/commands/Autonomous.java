@@ -10,23 +10,29 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ExampleCommand extends Command {
-  public ExampleCommand() {
+public class Autonomous extends Command {
+  public Autonomous() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_subsystem);
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    double base_speed = 0.2;
+    double turn_factor = 0.2;
+    double line_error = 0;
+    Robot.drivetrain.curvatureDrive(base_speed, line_error*turn_factor);
   }
 
   // Make this return true when this Command no longer needs to run execute()
