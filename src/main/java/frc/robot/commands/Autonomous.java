@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.Robot;
 
 
@@ -30,9 +31,13 @@ public class Autonomous extends Command {
   @Override
   protected void execute() {
     double base_speed = 0.2;
-    double turn_factor = 0.2;
-    double line_error = 0;
-    Robot.drivetrain.curvatureDrive(base_speed, line_error*turn_factor);
+    double turn_factor = -0.4;
+    double line_error = SmartDashboard.getNumber("tapes", -2.0);
+    double turn_clamp = 0.1;
+    if(line_error > -1.5)
+    {
+      Robot.drivetrain.curvatureDrive(base_speed, Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

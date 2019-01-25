@@ -28,12 +28,12 @@ public class Wheels extends Subsystem {
 	SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
 	
 	public void curvatureDrive(double forward, double rotation) {
-		double forw = (Math.abs(forward/2) >= 0.3 ? 1 : 0)*(forward / 2);
-		double rot = (Math.abs(rotation/2) >= 0.3 ? 1 : 0)*(rotation / 2);
-		double turnsens = 0.5;
-		double sens = 0.4;
+		double forw = forward;
+		double rot = rotation;
+		double turnsens = 1;
+		double sens = 1;
 		left.set(sens * (forw - turnsens * rot));
-		right.set(sens * (forw + turnsens * rot));
+		right.set(-sens * (forw + turnsens * rot));
 	}
 	
 	public void stop() {
