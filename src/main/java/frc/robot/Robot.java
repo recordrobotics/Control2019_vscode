@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static Wheels drivetrain = new Wheels();
   public static Climber climb = new Climber();
-  public static Network move_net = new Network(new File("./data.txt"));
+  public static Network move_net = new Network(new File("./data.text"));
   public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
   public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
