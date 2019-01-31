@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ClimberCommand;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 
