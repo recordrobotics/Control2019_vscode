@@ -46,5 +46,5 @@ public class Climber extends Subsystem {
 		// setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new ClimberCommand());
 	}
-
+	
 }
