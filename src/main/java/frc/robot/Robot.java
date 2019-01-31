@@ -13,8 +13,17 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.NetworkCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Wheels;
+import frc.robot.subsystems.Climber;
+import frc.robot.Network;
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.Encoder;
+import java.io.*;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.SPI;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +36,12 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static Wheels drivetrain = new Wheels();
+  public static Climber climb = new Climber();
+  public static Network move_net = new Network(new File("./data.txt"));
+  public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
+  public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
+  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -38,7 +53,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new Autonomous());
+    m_chooser.setDefaultOption("Default Auto", new NetworkCommand(10.0, 10.0, 0.0));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -122,6 +137,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    SmartDashboard.putNumber("Left Encoder", left_encoder.getDistance());
+    SmartDashboard.putNumber("Right Encoder", right_encoder.getDistance());
+
   }
 
   /**

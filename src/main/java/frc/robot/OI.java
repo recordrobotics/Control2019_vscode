@@ -7,6 +7,7 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.RobotMap;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -20,19 +21,36 @@ public class OI {
   // number it is.
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
-	private static Joystick stick1 = new Joystick(1);
-	private static Joystick stick2 = new Joystick(0);
+	private static Joystick rightstick = new Joystick(RobotMap.rightjoystickPort);
+	private static Joystick leftstick = new Joystick(RobotMap.leftjoystickPort);
 	private static double forward;
-	private static double rotation;
+  private static double rotation;
+  
 	
 	public static double getForward() {
-		forward = stick1.getZ() + stick2.getZ();
+		forward = rightstick.getZ() + leftstick.getZ();
 		return forward;
 	}
 	
 	public static double getRotation() {
-		rotation = stick1.getY() + stick2.getY();
-		return rotation;
+		rotation = leftstick.getY() + rightstick.getY();
+    return rotation;
+  }
+  
+  public Joystick getRightStick() {
+    return rightstick;
+  }
+
+  public Joystick getLeftStick() {
+    return leftstick;
+  }
+
+  public static boolean getRightClimbButton() {
+		return rightstick.getRawButton(RobotMap.climberbuttonPort);
+	}
+
+	public static boolean getLeftClimbButton() {
+		return leftstick.getRawButton(RobotMap.climberbuttonPort);
 	}
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to

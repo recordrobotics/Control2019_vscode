@@ -8,36 +8,68 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.Robot;
+import frc.robot.Network;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.lang.Math;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class Autonomous extends Command {
-  public Autonomous() {
+public class NetworkCommand extends Command {
+  private double[] input;
+  private double last_l, last_r, x_i, y_i, theta_i, v_f;
+
+  public NetworkCommand(double x, double y, double v_final) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
+    input = new double[4];
+    last_l = 0.0;
+    last_r = 0.0;
+    x_i = x;
+    y_i = y;
+    theta_i = 0;
+    v_f = v_final;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    last_l = Robot.left_encoder.getDistance();
+    last_r = -Robot.right_encoder.getDistance();
+    theta_i = Robot.gyro.getAngle();
+
+    input[0] = -x_i;
+    input[1] = -y_i;
+    input[2] = theta_i;
+    input[3] = v_f;
     
+    Robot.drivetrain.stop();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double base_speed = 0.2;                                                                                                  
-    double turn_factor = -0.4;
-    double line_error = SmartDashboard.getNumber("tapes", -2.0);
-    double turn_clamp = 0.1;
-    if(line_error > -1.5)
-    {
-      Robot.drivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
+    double l = Robot.left_encoder.getDistance();
+    double r = -Robot.right_encoder.getDistance();
+    double dl = l - last_l;
+    double dr = r - last_r;
+    last_l = l;
+    last_r = r;
+
+    double theta = Robot.gyro.getAngle() - theta_i;
+
+    input[0] += 0.5 * (dl + dr) * Math.sin(theta);
+    input[1] += 0.5 * (dl + dr) * Math.cos(theta);
+    input[2] = theta;
+
+    double[] vel = Robot.move_net.feed(input);
+    SmartDashboard.putNumber("move", vel[0]);
+    for (int i = 0; i < 2; i++) {
+      vel[i] = 0.25 * (vel[i] + 1.0);
     }
+    Robot.drivetrain.drive(vel[0], vel[1]);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -49,11 +81,13 @@ public class Autonomous extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drivetrain.stop();
   }
 }

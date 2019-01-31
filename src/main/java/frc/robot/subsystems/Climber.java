@@ -8,48 +8,43 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.ManualDrive;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
 
-public class Wheels extends Subsystem {
+public class Climber extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	Spark frontRight = new Spark(RobotMap.driveFrontRightPort);
-	Spark backRight = new Spark(RobotMap.driveBackRightPort);
-	SpeedControllerGroup right = new SpeedControllerGroup(frontRight, backRight);
+	private DigitalInput bottom_switch = new DigitalInput(RobotMap.bottomswitchPort);
+	private DigitalInput top_switch = new DigitalInput(RobotMap.topswitchPort);
+	private Spark motor = new Spark(RobotMap.climbmotorPort);
 
-	Spark frontLeft = new Spark(RobotMap.driveFrontLeftPort);
-	Spark backLeft = new Spark(RobotMap.driveBackLeftPort);
-	SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
-
-	public void curvatureDrive(double forward, double rotation) {
-		double forw = forward;
-		double rot = rotation;
-		double turnsens = 1;
-		double sens = 0.5;
-		right.set(sens * (forw - turnsens * rot));
-		left.set(-sens * (forw + turnsens * rot));
+	public void setMotor(double x) {
+		motor.set(x);
 	}
 
-	public void drive(double l, double r) {
-		left.set(l);
-		right.set(-r);
+	public void stopMotor() {
+		motor.set(0);
 	}
-	
-	public void stop() {
-		left.set(0);
-		right.set(0);
+
+	public boolean getBottomSwitch() {
+		return bottom_switch.get();
+	}
+
+	public boolean getTopSwitch() {
+		return top_switch.get();
 	}
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new ManualDrive());
+		setDefaultCommand(new ClimberCommand());
 	}
+
 }
