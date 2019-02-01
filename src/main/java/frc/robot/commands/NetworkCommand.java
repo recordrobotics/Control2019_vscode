@@ -36,8 +36,8 @@ public class NetworkCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    last_l = Robot.left_encoder.getDistance();
-    last_r = -Robot.right_encoder.getDistance();
+    last_l = Robot.getleftdistance();
+		last_r = Robot.getrightdistance();
     theta_i = Robot.gyro.getAngle();
 
     input[0] = -x_i;
@@ -51,25 +51,35 @@ public class NetworkCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double l = Robot.left_encoder.getDistance();
-    double r = -Robot.right_encoder.getDistance();
+    double l = Robot.getleftdistance();
+		double r = Robot.getrightdistance();
+  
+    SmartDashboard.putNumber("input0", input[0]);
+    SmartDashboard.putNumber("input1", input[1]);
+    
+  
     double dl = l - last_l;
     double dr = r - last_r;
+    SmartDashboard.putNumber("dl", dl);
+    SmartDashboard.putNumber("dr", dr);
     last_l = l;
     last_r = r;
 
     double theta = Robot.gyro.getAngle() - theta_i;
+    SmartDashboard.putNumber("theta", theta);
 
     input[0] += 0.5 * (dl + dr) * Math.sin(theta);
     input[1] += 0.5 * (dl + dr) * Math.cos(theta);
     input[2] = theta;
 
     double[] vel = Robot.move_net.feed(input);
-    SmartDashboard.putNumber("move", vel[0]);
+    // SmartDashboard.putNumber("move", vel[0]);
     for (int i = 0; i < 2; i++) {
-      vel[i] = 0.25 * (vel[i] + 1.0);
+      vel[i] = 0.2 * (vel[i] + 1.0);
     }
     Robot.drivetrain.drive(vel[0], vel[1]);
+    SmartDashboard.putNumber("velocity0", vel[0]);
+    SmartDashboard.putNumber("velocity1", vel[1]);
   }
 
   // Make this return true when this Command no longer needs to run execute()

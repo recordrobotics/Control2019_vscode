@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -32,7 +32,10 @@ public class ManualDrive extends Command {
 	protected void execute() {
 	//	Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation());	
 		Robot.drivetrain.curvatureDrive(OI.getRotation(), OI.getForward());	
-
+		double l = Robot.getleftdistance();
+		double r = Robot.getrightdistance();
+		SmartDashboard.putNumber("left_encoder", l);
+		SmartDashboard.putNumber("right_encoder", r);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

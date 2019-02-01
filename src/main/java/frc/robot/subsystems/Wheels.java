@@ -31,15 +31,15 @@ public class Wheels extends Subsystem {
 	public void curvatureDrive(double forward, double rotation) {
 		double forw = forward;
 		double rot = rotation;
-		double turnsens = 1;
+		double turnsens = 0;
 		double sens = 0.5;
-		right.set(sens * (forw - turnsens * rot));
-		left.set(-sens * (forw + turnsens * rot));
+		right.set(sens * (forw + turnsens * rot));
+		left.set(-sens * (forw - turnsens * rot));
 	}
 
 	public void drive(double l, double r) {
-		left.set(-l);
-		right.set(r);
+		left.set(l);
+		right.set(-r);
 	}
 	
 	public void stop() {

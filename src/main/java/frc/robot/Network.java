@@ -108,11 +108,19 @@ public class Network {
 		//System.out.println("Returning Layer " + layerNumber);
 		return layers.get(layerNumber);
 	}
-	public double[] feed(double[] inputs) {
-		double[] prevOutputs = inputs;
+	public double[] feed(double[] inputs){
+		double[] prevOutputs = inputs.clone();
 		for (int y = 0; y < numLayers-1; y++) {
 			prevOutputs = layers.get(y).feed(prevOutputs);
 		}
 		return prevOutputs;
+	}
+	public static void main (String[] args) {
+		Network n = new Network(new File("./data.text"));
+		double[] inputs = {0.0, -2.0, 0.0, 0.0};
+		double outputs[] = n.feed(inputs);
+		for (int i = 0; i < outputs.length; i++) {
+			System.out.println(i + ": " + outputs[i]);
+		}
 	}
 }
