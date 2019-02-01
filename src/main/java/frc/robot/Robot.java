@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   final static double encoder_conv = 1.0/745.0;
   public static Wheels drivetrain = new Wheels();
   public static Climber climb = new Climber();
-  public static Network move_net = new Network(new File("./data.text"));
+  public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
   private static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
   private static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
@@ -60,10 +60,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new NetworkCommand(0.0, 2.0, 0.0));
+    m_chooser.setDefaultOption("Default Auto", new NetworkCommand(1.0, 8.0, 0.1));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -2, 0, 0})[1]);
+    SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
   }
 
   /**

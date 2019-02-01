@@ -75,7 +75,7 @@ public class NetworkCommand extends Command {
     double[] vel = Robot.move_net.feed(input);
     // SmartDashboard.putNumber("move", vel[0]);
     for (int i = 0; i < 2; i++) {
-      vel[i] = 0.2 * (vel[i] + 1.0);
+      vel[i] = 0.3 * (vel[i] + 1.0);
     }
     Robot.drivetrain.drive(vel[0], vel[1]);
     SmartDashboard.putNumber("velocity0", vel[0]);

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.lang.Math;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Network {
 	int numLayers;
@@ -101,7 +102,7 @@ public class Network {
 			}
 			s.close();
 		} catch (Exception e){
-			System.out.println("Network Construction Error: " + e);
+			SmartDashboard.putString("Network Construction Error", e.getMessage());
 		}
 	}
 	public Layer getLayer(int layerNumber){
@@ -113,6 +114,7 @@ public class Network {
 		for (int y = 0; y < numLayers-1; y++) {
 			prevOutputs = layers.get(y).feed(prevOutputs);
 		}
+		SmartDashboard.putNumber("numlayers", numLayers);
 		return prevOutputs;
 	}
 	public static void main (String[] args) {
