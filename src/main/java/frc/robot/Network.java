@@ -55,7 +55,7 @@ public class Network {
 					outputs[y] = Math.tanh(sum);
 				}
 			} else {
-				System.out.println("Can we get an F in the chat");
+				//System.out.println("Can we get an F in the chat");
 			}
 			return outputs;
 		}

@@ -20,7 +20,12 @@ public class ManualDrive extends Command {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drivetrain);
 	}
-
+	double v = 0;
+	double last_v = 0;
+	double last_r = 0;
+	double last_l = 0;
+	double accel = 0;
+	double num = 0;
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
@@ -30,12 +35,19 @@ public class ManualDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-	//	Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation());	
-		Robot.drivetrain.curvatureDrive(OI.getRotation(), OI.getForward());	
 		double l = Robot.getleftdistance();
 		double r = Robot.getrightdistance();
+		v = (l-last_l + r-last_r)/2;
+		accel = Math.abs(v - last_v);
 		SmartDashboard.putNumber("left_encoder", l);
 		SmartDashboard.putNumber("right_encoder", r);
+		//(if(10000.0*accel > 1)
+			System.out.println(accel);
+		Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation(), accel);
+		num++;
+		last_l = l;
+		last_r = r;
+		last_v = v;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

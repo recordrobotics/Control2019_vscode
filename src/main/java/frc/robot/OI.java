@@ -27,14 +27,14 @@ public class OI {
   private static double rotation;
   
 	
-	public static double getForward() {
-		forward = rightstick.getZ() + leftstick.getZ();
-		return forward;
+	public static double getRotation() {
+		rotation = rightstick.getZ() + leftstick.getZ();
+		return rotation;
 	}
 	
-	public static double getRotation() {
-		rotation = leftstick.getY() + rightstick.getY();
-    return rotation;
+	public static double getForward() {
+		forward = leftstick.getY() + rightstick.getY();
+    return forward;
   }
   
   public Joystick getRightStick() {

@@ -28,13 +28,23 @@ public class Wheels extends Subsystem {
 	Spark backLeft = new Spark(RobotMap.driveBackLeftPort);
 	SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
 
-	public void curvatureDrive(double forward, double rotation) {
-		double forw = forward;
-		double rot = rotation;
-		double turnsens = 0;
-		double sens = 0.5;
-		right.set(sens * (forw + turnsens * rot));
-		left.set(-sens * (forw - turnsens * rot));
+	double last_r;
+	double last_l;
+	private final double turnsens = 0.75;
+	private final double sens = 0.25;
+	private final double maxAccel = 50;
+
+	public void curvatureDrive(double forw, double rot, double accel) {
+		if(1000*accel > maxAccel) {
+			right.set(last_r);
+			left.set(last_l);
+		}
+		else {
+			right.set(sens * (forw + turnsens * rot));
+			last_r = sens * (forw + turnsens * rot);
+			left.set(-sens * (forw - turnsens * rot));
+			last_l = sens * (forw - turnsens * rot);
+		}
 	}
 
 	public void drive(double l, double r) {
