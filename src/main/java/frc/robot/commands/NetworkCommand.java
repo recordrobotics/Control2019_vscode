@@ -71,7 +71,7 @@ public class NetworkCommand extends Command {
 
     input[0] += 0.5 * (dl + dr) * Math.sin(input[2]);
     input[1] += 0.5 * (dl + dr) * Math.cos(input[2]);
-    if (input[1] > 2) 
+    if (input[1] > 0.1) 
       trigger = true;
     //input[2] = theta;
 

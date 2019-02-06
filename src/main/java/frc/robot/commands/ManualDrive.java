@@ -25,7 +25,6 @@ public class ManualDrive extends Command {
 	double last_r = 0;
 	double last_l = 0;
 	double accel = 0;
-	double num = 0;
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
@@ -38,13 +37,10 @@ public class ManualDrive extends Command {
 		double l = Robot.getleftdistance();
 		double r = Robot.getrightdistance();
 		v = (l-last_l + r-last_r)/2;
-		accel = Math.abs(v - last_v);
+		accel = v - last_v;
 		SmartDashboard.putNumber("left_encoder", l);
 		SmartDashboard.putNumber("right_encoder", r);
-		//(if(10000.0*accel > 1)
-			System.out.println(accel);
 		Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation(), accel);
-		num++;
 		last_l = l;
 		last_r = r;
 		last_v = v;

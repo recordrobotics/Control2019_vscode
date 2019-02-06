@@ -40,7 +40,6 @@ public class ClimberCommand extends Command {
     if(power < 0 && !Robot.climb.getBottomSwitch() || power > 0 && !Robot.climb.getTopSwitch())
       power = 0;
     Robot.climb.setMotor(power);
-
   }
 
   // Make this return true when this Command no longer needs to run execute()
