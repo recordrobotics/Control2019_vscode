@@ -28,12 +28,16 @@ public class OI {
   
 	
 	public static double getRotation() {
-		rotation = rightstick.getZ() + leftstick.getZ();
+    rotation = (rightstick.getZ() + leftstick.getZ())/2;
+    if(Math.abs(rightstick.getZ()) < 0.3 || Math.abs(leftstick.getZ()) < 0.3)
+      rotation = 0;
 		return rotation;
 	}
 	
 	public static double getForward() {
-		forward = leftstick.getY() + rightstick.getY();
+    forward = (leftstick.getY() + rightstick.getY())/2;
+    if(Math.abs(rightstick.getY()) < 0.3 || Math.abs(leftstick.getY()) < 0.3)
+      forward = 0;
     return forward;
   }
   

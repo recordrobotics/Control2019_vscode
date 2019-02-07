@@ -36,7 +36,7 @@ public class Autonomous extends Command {
     double turn_clamp = 0.1;
     if(line_error > -1.5)
     {
-      Robot.drivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)), 0);
+      Robot.drivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
     }
   }
 
