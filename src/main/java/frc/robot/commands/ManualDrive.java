@@ -21,6 +21,7 @@ public class ManualDrive extends Command {
 	public ManualDrive() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drivetrain);
+		requires(Robot.newdrivetrain);
 	}
 	// Called just before this Command runs the first time
 	@Override
@@ -67,6 +68,7 @@ public class ManualDrive extends Command {
 			rotation = joyrot;
 			*/
 		Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
+		Robot.newdrivetrain.curvatureDrive(OI.getForward(), OI.getRotation());
 		nextforward = forward;
 		//nextrotation = rotation;
 		

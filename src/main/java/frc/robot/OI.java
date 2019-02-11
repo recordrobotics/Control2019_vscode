@@ -54,8 +54,21 @@ public class OI {
 	}
 
 	public static boolean getLeftClimbButton() {
-		return leftstick.getRawButton(RobotMap.climberbuttonPort);
-	}
+    return leftstick.getRawButton(RobotMap.climberbuttonPort);
+  }
+  
+  public static boolean getRollButton() {
+    return leftstick.getRawButton(RobotMap.rollbuttonPort) || rightstick.getRawButton(RobotMap.rollbuttonPort);
+  }
+
+  public static boolean getRaiseButton() {
+    return leftstick.getRawButton(RobotMap.raisebuttonPort);
+  }
+
+  public static boolean getLowerButton() {
+    return rightstick.getRawButton(RobotMap.lowerbuttonPort);
+  }
+
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.
