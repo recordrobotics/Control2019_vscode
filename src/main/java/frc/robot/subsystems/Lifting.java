@@ -8,15 +8,22 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Counter;
+import frc.robot.RobotMap;
+import frc.robot.commands.LiftingCommand;
+
+
 
 /**
  * An not-example subsystem.  You can replace me with your own Subsystem.
  * but it is!
  */
 public class Lifting extends Subsystem {
-  private Digital inner_switch = new DigitalInput(RobotMap.innerswitchPort);
+  private DigitalInput inner_switch = new DigitalInput(RobotMap.innerswitchPort);
   private DigitalInput outer_switch = new DigitalInput(RobotMap.outerswitchPort);
-  private Encoder encoder = new Encoder(TEMP, TEMP, TEMP, Encoder.EncodingType.k4x);
+  // private Encoder encoder = new Encoder(TEMP, TEMP, TEMP, Encoder.EncodingType.k4x);
   private Spark motor = new Spark(RobotMap.liftmotorPort);
 
   private Counter inner_counter = new Counter(inner_switch);
@@ -28,7 +35,9 @@ public class Lifting extends Subsystem {
 
 	public void stopMotor() {
 		motor.set(0);
-	}
+  }
+  
+  // Add getter method for encoder
 
 	public boolean getInnerSwitch() {
 		return inner_switch.get();
@@ -38,24 +47,21 @@ public class Lifting extends Subsystem {
 		return outer_switch.get();
   }
   
-  public void initalizeCounter(){
+  public void initializeCounter(){
     inner_counter.reset();
     outer_counter.reset();
   }
 
-  public void initalizeEncoder(){
-    encoder.reset();
-  }
-
-  @Override
-  public void setup(){
-
-  }
+  // public void initalizeEncoder(){
+  //   encoder.reset();
+  // }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new LiftingCommand());
+
   }
 
 

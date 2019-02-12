@@ -49,6 +49,9 @@ public class RobotMap {
  public static  int leftgrabberPort = 5;
  public static  int rightgrabberPort = 6;
 
+ public static int liftmotorPort = 4;
+
+
  // Other actuators
  public static  int grabsolenoidmodulePort = 0;
  public static  int grabsolenoidforwardPort = 2;
@@ -62,6 +65,9 @@ public class RobotMap {
  public static  int bottomswitchPort = 2;
  public static  int topswitchPort = 1;
  public static  int rangefinderPort = 0;
+
+ public static  int innerswitchPort = 2;
+ public static  int outerswitchPort = 1;
  //public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);
 
  // Encoders

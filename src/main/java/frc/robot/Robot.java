@@ -17,6 +17,7 @@ import frc.robot.commands.NetworkCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Lifting;
 import frc.robot.Network;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Encoder;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
   final static double encoder_conv = 1.0/745.0;
   public static Wheels drivetrain = new Wheels();
   public static Climber climb = new Climber();
+  public static Lifting lift = new Lifting();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
   public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
   public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
