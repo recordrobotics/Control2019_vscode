@@ -39,13 +39,14 @@ public class Robot extends TimedRobot {
   final static double angle_cov = 1;
   public static Wheels drivetrain = new Wheels();
   public static NewWheels newdrivetrain = new NewWheels();
-  public static Climber climb = new Climber();
   public static Acquisition acquisition = new Acquisition();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
   public static Encoder acquisitionSensor = new Encoder(RobotMap.magneticPort1, RobotMap.magneticPort2, false, Encoder.EncodingType.k1X);
   public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
   public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+
+  public static Climber climb = new Climber(left_encoder, 1);
   
   public static double getleftdistance() {
     return -left_encoder.getDistance() * encoder_conv;

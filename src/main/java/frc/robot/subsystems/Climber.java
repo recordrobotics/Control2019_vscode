@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.RobotMap;
 
@@ -23,6 +24,32 @@ public class Climber extends Subsystem {
 	private DigitalInput bottom_switch = new DigitalInput(RobotMap.bottomswitchPort);
 	private DigitalInput top_switch = new DigitalInput(RobotMap.topswitchPort);
 	private Spark motor = new Spark(RobotMap.climbmotorPort);
+	private Encoder encoder;
+
+	private int P, I, D = 1;
+	private double integral, previous_error, setpoint = 0;
+	private double rcw = 0;
+
+	public Climber(Encoder encoder, double targetSpeed){
+		this.encoder = encoder;
+		this.setpoint = targetSpeed;
+	}
+
+	public void PID(){
+        double error = this.setpoint - encoder.getRate(); // Error = Target - Actual
+        this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+        double derivative = (error - this.previous_error) / .02;
+        this.rcw = P*error + I*this.integral + D*derivative;
+    }
+
+	public void setMotorToPID(){
+		PID();
+		setMotor(this.rcw);
+	}
+
+
+
+
 
 	public void setMotor(double x) {
 		motor.set(x);
