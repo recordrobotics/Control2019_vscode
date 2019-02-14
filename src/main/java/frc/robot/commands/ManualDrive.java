@@ -20,13 +20,13 @@ import frc.robot.Robot;
 public class ManualDrive extends Command {
 	public ManualDrive() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		//requires(Robot.drivetrain);
 		requires(Robot.newdrivetrain);
 	}
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.drivetrain.stop();
+		Robot.newdrivetrain.stop();
 	}
 
 	double forward;
@@ -67,7 +67,7 @@ public class ManualDrive extends Command {
 		else
 			rotation = joyrot;
 			*/
-		Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
+		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
 		Robot.newdrivetrain.curvatureDrive(OI.getForward(), OI.getRotation());
 		nextforward = forward;
 		//nextrotation = rotation;
@@ -84,13 +84,13 @@ public class ManualDrive extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.drivetrain.stop();
+		Robot.newdrivetrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.drivetrain.stop();
+		Robot.newdrivetrain.stop();
 	}
 }

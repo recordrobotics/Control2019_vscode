@@ -13,16 +13,16 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.NetworkCommand;
-import frc.robot.subsystems.Wheels;
+//import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
-import frc.robot.subsystems.Climber;
 import frc.robot.Network;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Encoder;
 import java.io.*;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 
 
@@ -35,29 +35,12 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  final static double encoder_conv = 1.0/745.0;
-  final static double angle_cov = 1;
-  public static Wheels drivetrain = new Wheels();
+ // public static Wheels drivetrain = new Wheels();
   public static NewWheels newdrivetrain = new NewWheels();
-  public static Climber climb = new Climber();
   public static Acquisition acquisition = new Acquisition();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
-  public static Encoder acquisitionSensor = new Encoder(RobotMap.magneticPort1, RobotMap.magneticPort2, false, Encoder.EncodingType.k1X);
-  public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
-  public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
-  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  
-  public static double getleftdistance() {
-    return -left_encoder.getDistance() * encoder_conv;
-  }
-
-  public static double getrightdistance() {
-    return right_encoder.getDistance() * encoder_conv;
-  }
-
-  public static double getacquisitionpos() {
-    return acquisitionSensor.getDistance() * angle_cov;
-  }
+  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+ 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 

@@ -57,16 +57,16 @@ public class OI {
     return leftstick.getRawButton(RobotMap.climberbuttonPort);
   }
   
-  public static boolean getRollButton() {
-    return leftstick.getRawButton(RobotMap.rollbuttonPort) || rightstick.getRawButton(RobotMap.rollbuttonPort);
+  public static int getRollButton() {
+    return (leftstick.getRawButton(RobotMap.rollbuttonPort) ? 1 : 0) - (rightstick.getRawButton(RobotMap.rollbuttonPort) ? 1 : 0);
   }
 
   public static boolean getRaiseButton() {
-    return leftstick.getRawButton(RobotMap.raisebuttonPort);
+    return rightstick.getRawButton(RobotMap.raisebuttonPort);
   }
 
   public static boolean getLowerButton() {
-    return rightstick.getRawButton(RobotMap.lowerbuttonPort);
+    return leftstick.getRawButton(RobotMap.lowerbuttonPort);
   }
 
   // There are a few additional built in buttons you can use. Additionally,

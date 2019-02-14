@@ -23,10 +23,10 @@ public class AcquisitionCommand extends Command {
 	protected void initialize() {
 		Robot.acquisition.stop();
 	}
-	boolean rollbutton = OI.getRollButton();
+	int rollbutton = OI.getRollButton();
 	int raisebutton = OI.getRaiseButton() ? 1 : 0;
 	int lowerbutton = -1 * (OI.getLowerButton() ? 1 : 0);
-	boolean magnetswitch = Robot.acquisition.getMagneticSwitch(); 
+	boolean magnetswitch = Robot.acquisition.getSwitch(); 
 	double state = 0;
 	final static double rollerSpeed = 0.5;
 	final static double acquisitionSpeed = 0.5;
@@ -38,16 +38,23 @@ public class AcquisitionCommand extends Command {
 	@Override
 	protected void execute() {
 		movement = 0;
-		acquisitionpos = Robot.getacquisitionpos();
-		if (acquisitionpos % 1 < stateSmooth)
-			acquisitionpos -= acquisitionpos % 1;
-		state = Math.abs(acquisitionpos);
-		if(rollbutton)
-			Robot.acquisition.roll(rollerSpeed);
-		else if(magnetswitch && Math.abs(state) > 0)
-			movement = 0;
-		else if(raisebutton*lowerbutton != -1 && raisebutton + lowerbutton != 0) {
-			//if(acquisitionpos )
+		
+		acquisitionpos = Robot.acquisition.getacquisitionpos();
+		if (acquisitionpos - Math.floor(acquisitionpos) < stateSmooth) {
+			acquisitionpos = Math.floor(acquisitionpos);
+		}
+			Robot.acquisition.roll(rollerSpeed*rollbutton);
+		if(raisebutton*lowerbutton != -1) // Raisebutton and lower button are not both pushed
+		{ 
+			if(magnetswitch) {
+				if(acquisitionpos < 0.2) {
+					raisebutton = 0;
+				}
+				if(acquisitionpos > 1.8) {
+					lowerbutton = 0;
+				}
+			}
+			movement = (raisebutton + lowerbutton)*acquisitionSpeed;
 		}
 		Robot.acquisition.rotate(movement);
 	}

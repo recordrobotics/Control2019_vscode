@@ -26,52 +26,40 @@ public class RobotMap {
   
   
   // Joysticks and buttons
- public static  int leftjoystickPort = 0;
- public static  int rightjoystickPort = 1;
- public static  int climberbuttonPort = 1;
- public static  int togglegrabberbuttonPort = 2;
- public static  int toggleextendbuttonPort = 7;
+ public static int leftjoystickPort = 0;
+ public static int rightjoystickPort = 1;
+ public static int climberbuttonPort = 1;
+ public static int togglegrabberbuttonPort = 2;
+ public static int toggleextendbuttonPort = 7;
  public static int rollbuttonPort = 4;
- public static int raisebuttonPort = 3;
- public static int lowerbuttonPort = 3;
- public static  int forward_axis = 1;
- public static  int grabber_axis = 0;
+ public static int liftMotorPort = 5;
+ public static int raisebuttonPort = 1;
+ public static int lowerbuttonPort = 1;
+ public static int forward_axis = 1;
+ public static int grabber_axis = 0;
   
-  // Drive Sparks
- public static int driveFrontRightPort = 2;
- public static int driveFrontLeftPort = 0;
- public static int driveBackRightPort = 3;
+  // CAN Drive
+ public static int driveFrontRightPort = 7;
+ public static int driveFrontLeftPort = 5;
+ public static int driveBackRightPort = 2;
  public static int driveBackLeftPort = 1;
+ public static int testMotorPort = 8;
 
- // Motors 
- public static int leftmotor1Port = 0;
+ // Spark Motors 
+/* public static int leftmotor1Port = 0;
  public static int leftmotor2Port = 1;
- public static  int rightmotor1Port = 2;
- public static  int rightmotor2Port = 3;
- public static  int climbmotorPort = 4;
- public static  int leftgrabberPort = 5;
- public static  int rightgrabberPort = 6;
-
+ public static int rightmotor1Port = 2;
+ public static int rightmotor2Port = 3;
+ public static int climbmotorPort = 4;
+ public static int leftgrabberPort = 5;
+ public static int rightgrabberPort = 6;
+*/
  // Acquistion
- public static int acquisitionPort = 0;
- public static int rollerPort = 1; 
-
- // Switches 
- public static int switchPort1 = 0;
- public static  int bottomswitchPort = 2;
- public static  int topswitchPort = 1;
-
- // Other actuators
- public static  int grabsolenoidmodulePort = 0;
- public static  int grabsolenoidforwardPort = 2;
- public static  int grabsolenoidbackwardPort = 3;
- public static  int extendsolenoidmodulePort = 0;
- public static  int extendsolenoidforwardPort = 0;
- public static  int extendsolenoidbackwardPort = 1;
- public static  int lightsPort = 0;
+ public static int acquisitionPort = 8;
+ public static int rollerPort = 0; 
 
  // Sensors
- public static  int rangefinderPort = 0;
+ public static int rangefinderPort = 7;
  //public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);
 
  // Encoders
@@ -79,8 +67,10 @@ public class RobotMap {
  public static int leftEncoderPort2 = 3;
  public static int rightEncoderPort1 = 5;
  public static int rightEncoderPort2 = 6;
- public static int magneticPort1 = 0;
- public static int magneticPort2 = 1;
-
+ public static int aquisition_magneticPort = 0;
+ public static int acquisition_encoderPort1 = 1; 
+ public static int acquisition_encoderPort2 = 2; 
+ public static int lifter_encoderPort1 = 7;
+ public static int lifter_encoderPort2 = 8; 
 
 }

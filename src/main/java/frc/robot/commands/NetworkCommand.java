@@ -23,7 +23,7 @@ public class NetworkCommand extends Command {
   private boolean trigger;
   public NetworkCommand(double x, double y, double theta) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    requires(Robot.newdrivetrain);
     input = new double[3];
     last_l = 0.0;
     last_r = 0.0;
@@ -35,23 +35,23 @@ public class NetworkCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    last_l = Robot.getleftdistance();
-		last_r = Robot.getrightdistance();
+    last_l = Robot.newdrivetrain.getleftdistance();
+		last_r = Robot.newdrivetrain.getrightdistance();
     theta_i = 0;
 
     input[0] = -x_i;
     input[1] = -y_i;
     input[2] = -theta_i;
     
-    Robot.drivetrain.stop();
+    Robot.newdrivetrain.stop();
     trigger = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double l = Robot.getleftdistance();
-		double r = Robot.getrightdistance();
+    double l = Robot.newdrivetrain.getleftdistance();
+		double r = Robot.newdrivetrain.getrightdistance();
   
     SmartDashboard.putNumber("input0", input[0]);
     SmartDashboard.putNumber("input1", input[1]);
@@ -80,7 +80,7 @@ public class NetworkCommand extends Command {
     for (int i = 0; i < 2; i++) {
       vel[i] = 0.3 * 0.5 * (vel[i] + 1.0) + 0.25;
     }
-    Robot.drivetrain.drive(vel[0], vel[1]);
+    Robot.newdrivetrain.drive(vel[0], vel[1]);
     SmartDashboard.putNumber("velocity0", vel[0]);
     SmartDashboard.putNumber("velocity1", vel[1]);
     System.out.println(vel[0] + " " + vel[1]);
@@ -96,13 +96,13 @@ public class NetworkCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.stop();
+    Robot.newdrivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drivetrain.stop();
+    Robot.newdrivetrain.stop();
   }
 }

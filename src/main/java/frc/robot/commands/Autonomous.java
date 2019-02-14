@@ -18,7 +18,7 @@ import frc.robot.Robot;
 public class Autonomous extends Command {
   public Autonomous() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    requires(Robot.newdrivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -36,7 +36,7 @@ public class Autonomous extends Command {
     double turn_clamp = 0.1;
     if(line_error > -1.5)
     {
-      Robot.drivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
+      Robot.newdrivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
     }
   }
 
