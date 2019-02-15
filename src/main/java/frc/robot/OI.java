@@ -22,9 +22,11 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
 	private static Joystick rightstick = new Joystick(RobotMap.rightjoystickPort);
-	private static Joystick leftstick = new Joystick(RobotMap.leftjoystickPort);
+  private static Joystick leftstick = new Joystick(RobotMap.leftjoystickPort);
+  
 	private static double forward;
   private static double rotation;
+  private static int toggler = 0;
   
 	
 	public static double getRotation() {
@@ -77,8 +79,15 @@ public class OI {
     return leftstick.getRawButton(RobotMap.liftlowerbuttonPort);
   }
 
-  public static int getswitchLiftControl() {
-    return (leftstick.getRawButton(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort)) ? 1 :0;
+  public static boolean getswitchLiftControl() {
+    boolean liftControl = leftstick.getRawButton(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort);
+    if(liftControl) {
+      if(toggler == 1)
+        toggler = 0;
+      else if(toggler == 0)
+        toggler = 1; 
+      }
+    return toggler == 1;
   }
 
   // There are a few additional built in buttons you can use. Additionally,

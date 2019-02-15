@@ -13,13 +13,14 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotorPort);
 	public static Encoder liftEncoder = new Encoder(RobotMap.lifter_encoderPort1, 
 		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
-	public static DigitalInput magnetsensor = new DigitalInput(RobotMap.lifter_magneticPort);
+	public static DigitalInput liftswitch = new DigitalInput(RobotMap.lifter_magneticPort);
 	private final static double liftsens = 0.5;
 	private final static double Rp = 0.01;
 	private final static double Ri = 0;
 	private final static double Rd = 0;
 	private final static double tolerance = 0.01;
 	private final static double encoder_conv = 0.001;
+	private static int state;
 
 	public Lifter() {
 		super("Lifter", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -27,13 +28,22 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
 		getPIDController().setEnabled(false);
+		state = 0;
 	}
 	
     public void initDefaultCommand() {
 	}
 	
 	public void setLift(double x) {
-		liftMotor.set(ControlMode.PercentOutput, x);
+		liftMotor.set(ControlMode.PercentOutput, liftsens*x);
+	}
+
+	public boolean getSwitch() {
+		return liftswitch.get();
+	  }
+
+	  public double getlifterpos () {
+		return liftEncoder.getDistance() * encoder_conv;
 	}
 
     protected double returnPIDInput() {
@@ -41,7 +51,8 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	}
 	
 	public void setSetPoint(double setpoint) {
-		getPIDController().setSetpoint(setpoint);
+		if(!(state == 2 && state < setpoint*encoder_conv || state == 0 && state > setpoint*encoder_conv))
+			getPIDController().setSetpoint(setpoint);
 	}
 
     protected void usePIDOutput(double output) {

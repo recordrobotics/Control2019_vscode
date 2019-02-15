@@ -16,8 +16,11 @@ import frc.robot.Robot;
 public class LifterCommand extends Command {
     boolean raisebutton = OI.getLiftRaiseButton();
     boolean lowerbutton = OI.getLiftLowerButton();
-	int liftstate = OI.getswitchLiftControl();
+	boolean manualLift = OI.getswitchLiftControl();
+	boolean liftswitch = Robot.lifter.getSwitch(); 
+	double lifterpos = Robot.lifter.getlifterpos();
 	int toggler = 0;
+	double movement = 0;
 	public LifterCommand() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.lifter); 
@@ -26,16 +29,41 @@ public class LifterCommand extends Command {
 	@Override
 	protected void initialize() {
 		Robot.lifter.getPIDController().setEnabled(false);
-		Robot.lifter.setLift(0.0);
+		Robot.lifter.setLift(0);
 	}
 	
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-        if(liftstate == 0 && toggler == 0) {
-			
+		movement = 0;
+		int raisebutton = OI.getLiftRaiseButton() ? 1 : 0;
+    	int lowerbutton = OI.getLiftLowerButton() ? 1 : 0;
+		manualLift = OI.getswitchLiftControl();
+        if((toggler == 0 || toggler == 1) && manualLift) {
+			Robot.lifter.getPIDController().setEnabled(false);
+			toggler = 2;
 		}
+		if((toggler == 0 || toggler == 2) && !manualLift) {
+			Robot.lifter.getPIDController().setEnabled(true);
+			toggler = 1;
+		}
+		if(manualLift) {
+			if(raisebutton*lowerbutton != -1) // Raisebutton and lower button are not both pushed
+			{ 
+			if(liftswitch) {
+				if(lifterpos < 0.2) {
+					raisebutton = 0;
+				}
+				if(lifterpos > 1.8) {
+					lowerbutton = 0;
+				}
+			}
+			Robot.lifter.setLift(raisebutton + lowerbutton);
+			}
+
+		}
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

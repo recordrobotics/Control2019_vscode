@@ -38,7 +38,6 @@ public class AcquisitionCommand extends Command {
 	@Override
 	protected void execute() {
 		movement = 0;
-		
 		acquisitionpos = Robot.acquisition.getacquisitionpos();
 		if (acquisitionpos - Math.floor(acquisitionpos) < stateSmooth) {
 			acquisitionpos = Math.floor(acquisitionpos);

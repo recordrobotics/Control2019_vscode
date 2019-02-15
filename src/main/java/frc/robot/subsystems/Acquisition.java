@@ -29,12 +29,12 @@ public class Acquisition extends Subsystem {
 	WPI_VictorSPX rollerMotor = new WPI_VictorSPX(RobotMap.rollerPort);
 	public static Encoder acquisition_encoder = new Encoder(RobotMap.acquisition_encoderPort1, 
 		RobotMap.acquisition_encoderPort2, false, Encoder.EncodingType.k1X);
-	public static DigitalInput lswitch = new DigitalInput(RobotMap.acquisition_magneticPort);
+	public static DigitalInput acqswitch = new DigitalInput(RobotMap.acquisition_magneticPort);
 	final static double encoder_conv = 1;
 	final static double acquisitionsens = 0.5;
 	final static double motorsens = 0.5;
 	public boolean getSwitch() {
-	  return lswitch.get();
+	  return acqswitch.get();
 	}
 
 	public double getacquisitionpos () {
