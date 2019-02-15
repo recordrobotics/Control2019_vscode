@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.*;
@@ -10,7 +11,10 @@ import frc.robot.RobotMap;
 public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 
 	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotorPort);
-	Encoder deezNutz = new Encoder(RobotMap.lifter_encoderPort1, RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
+	public static Encoder liftEncoder = new Encoder(RobotMap.lifter_encoderPort1, 
+		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
+	public static DigitalInput magnetsensor = new DigitalInput(RobotMap.lifter_magneticPort);
+	private final static double liftsens = 0.5;
 	private final static double Rp = 0.01;
 	private final static double Ri = 0;
 	private final static double Rd = 0;
@@ -22,13 +26,18 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		setAbsoluteTolerance(tolerance);
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
+		getPIDController().setEnabled(false);
 	}
 	
     public void initDefaultCommand() {
-    }
+	}
+	
+	public void setLift(double x) {
+		liftMotor.set(ControlMode.PercentOutput, x);
+	}
 
     protected double returnPIDInput() {
-    	return deezNutz.getDistance() * encoder_conv; // returns the sensor value that is providing the feedback for the system
+    	return liftEncoder.getDistance() * encoder_conv; // returns the sensor value that is providing the feedback for the system
 	}
 	
 	public void setSetPoint(double setpoint) {

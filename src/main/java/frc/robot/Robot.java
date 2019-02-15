@@ -16,6 +16,7 @@ import frc.robot.commands.NetworkCommand;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
+import frc.robot.subsystems.Lifter;
 import frc.robot.Network;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Encoder;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
  // public static Wheels drivetrain = new Wheels();
   public static NewWheels newdrivetrain = new NewWheels();
   public static Acquisition acquisition = new Acquisition();
+  public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
   //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
  

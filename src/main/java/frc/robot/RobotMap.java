@@ -28,13 +28,17 @@ public class RobotMap {
   // Joysticks and buttons
  public static int leftjoystickPort = 0;
  public static int rightjoystickPort = 1;
+
  public static int climberbuttonPort = 1;
- public static int togglegrabberbuttonPort = 2;
- public static int toggleextendbuttonPort = 7;
- public static int rollbuttonPort = 4;
- public static int liftMotorPort = 5;
- public static int raisebuttonPort = 1;
- public static int lowerbuttonPort = 1;
+ //public static int togglegrabberbuttonPort = 2;
+ //public static int toggleextendbuttonPort = 7;
+ public static int rollbuttonPort = 1;
+ public static int raisebuttonPort = 0;
+ public static int lowerbuttonPort = 0;
+ public static int liftraisebuttonPort = 3;
+ public static int liftlowerbuttonPort = 2;
+ public static int switchliftstatePort = 7;
+ 
  public static int forward_axis = 1;
  public static int grabber_axis = 0;
   
@@ -58,6 +62,8 @@ public class RobotMap {
  public static int acquisitionPort = 8;
  public static int rollerPort = 0; 
 
+ // Lift
+ public static int liftMotorPort = 5;
  // Sensors
  public static int rangefinderPort = 7;
  //public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);
@@ -67,7 +73,8 @@ public class RobotMap {
  public static int leftEncoderPort2 = 3;
  public static int rightEncoderPort1 = 5;
  public static int rightEncoderPort2 = 6;
- public static int aquisition_magneticPort = 0;
+ public static int acquisition_magneticPort = 0;
+ public static int lifter_magneticPort = 9;
  public static int acquisition_encoderPort1 = 1; 
  public static int acquisition_encoderPort2 = 2; 
  public static int lifter_encoderPort1 = 7;

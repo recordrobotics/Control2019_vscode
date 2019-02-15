@@ -69,6 +69,18 @@ public class OI {
     return leftstick.getRawButton(RobotMap.lowerbuttonPort);
   }
 
+  public static boolean getLiftRaiseButton() {
+    return rightstick.getRawButton(RobotMap.liftraisebuttonPort);
+  }
+
+  public static boolean getLiftLowerButton() {
+    return leftstick.getRawButton(RobotMap.liftlowerbuttonPort);
+  }
+
+  public static int getswitchLiftControl() {
+    return (leftstick.getRawButton(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort)) ? 1 :0;
+  }
+
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.
