@@ -13,7 +13,7 @@ public class Test extends Command {
 	}
 	@Override
 	protected void execute() {
-		Robot.lifter.setLift(1.0);
+		Robot.lifter.setLift(OI.getForward());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

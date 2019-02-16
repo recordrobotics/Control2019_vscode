@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import frc.robot.commands.Test;
+//import frc.robot.commands.Test;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotMap;
@@ -10,7 +10,7 @@ import frc.robot.RobotMap;
 
 public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 
-	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotorPort);
+	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftPort);
 	public static Encoder liftEncoder = new Encoder(RobotMap.lifter_encoderPort1, 
 		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
 	public static DigitalInput switch0_1 = new DigitalInput(RobotMap.lifter1Port);
@@ -35,11 +35,12 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		state = 0;
 	}
 	
-    public void initDefaultCommand() {
-		setDefaultCommand(new Test());
+  public void initDefaultCommand() {
+		//setDefaultCommand(new Test());
 	}
 	
 	public void setLift(double x) {
+		System.out.println(liftsens*x);
 		liftMotor.set(ControlMode.PercentOutput, liftsens*x);
 	}
 

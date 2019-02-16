@@ -30,6 +30,7 @@ public class ManualDrive extends Command {
 	// On old robot, showed some effect, but could not prevent backheavy robot from nearly tipping when quickly stopping in reverse.
 	// When the robot was driven with some caution and at reasonable sensitivities, the code appeared unnecessary, so it is not currently implemented.
 	protected void execute() {
+
 		joyforw = OI.getForward();
 		joyrot = OI.getRotation();
 		if (counter == 0 || Math.abs(joyforw) < Math.abs(nextforward)) {
@@ -53,8 +54,9 @@ public class ManualDrive extends Command {
 			rotation = nextrotation + updaterate;
 		else
 			rotation = joyrot;
-			*/
+		
 		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
+		*/
 		Robot.newdrivetrain.curvatureDrive(OI.getForward(), OI.getRotation());
 		nextforward = forward;
 		//nextrotation = rotation;

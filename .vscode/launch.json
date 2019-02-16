@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Main",
+      "request": "launch",
+      "mainClass": "frc.robot.Main",
+      "projectName": "Control2019_vscode"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Network",
       "request": "launch",
       "mainClass": "frc.robot.Network",

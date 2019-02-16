@@ -56,7 +56,6 @@ public class LifterCommand extends Command {
 					Robot.lifter.encoderReset();
 					lifterpos = Robot.lifter.getlifterpos();
 				}
-
 			}			
 		}
 

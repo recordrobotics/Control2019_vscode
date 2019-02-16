@@ -14,39 +14,40 @@ public class OI {
   // number it is.
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
-	private static Joystick rightstick = new Joystick(RobotMap.rightjoystickPort);
-  private static Joystick leftstick = new Joystick(RobotMap.leftjoystickPort);
+	private static Joystick right = new Joystick(RobotMap.rightjoyPort);
+  private static Joystick left = new Joystick(RobotMap.leftjoyPort);
   
 	private static double forward;
   private static double rotation;
+  /*
   private static int controltoggler = 0;
   private static boolean manualraisetoggler = false;
   private static boolean manuallowertoggler = false;
   private static boolean autoraisetoggler = false;
   private static boolean autolowertoggler = false;
-	
-	public static double getRotation() {
-    rotation = (rightstick.getZ() + leftstick.getZ())/2;
-    if(Math.abs(rightstick.getZ()) < 0.3 || Math.abs(leftstick.getZ()) < 0.3)
-      rotation = 0;
-		return rotation;
-	}
-	
-	public static double getForward() {
-    forward = (leftstick.getY() + rightstick.getY())/2;
-    if(Math.abs(rightstick.getY()) < 0.3 || Math.abs(leftstick.getY()) < 0.3)
+  */
+  public static double getForward() {
+    forward = 0.5*(left.getY() + right.getY());
+    if(Math.abs(right.getY()) < 0.3 || Math.abs(left.getY()) < 0.3)
       forward = 0;
     return forward;
   }
+
+	public static double getRotation() {
+    rotation = 0.5*(right.getZ() + left.getZ());
+    if(Math.abs(right.getZ()) < 0.3 || Math.abs(left.getZ()) < 0.3)
+      rotation = 0;
+		return rotation;
+  }
   
   public Joystick getRightStick() {
-    return rightstick;
+    return right;
   }
 
   public Joystick getLeftStick() {
-    return leftstick;
+    return left;
   }
-
+/*
   public static boolean getRightClimbButton() {
 		return rightstick.getRawButton(RobotMap.climberbuttonPort);
 	}
@@ -54,21 +55,21 @@ public class OI {
 	public static boolean getLeftClimbButton() {
     return leftstick.getRawButton(RobotMap.climberbuttonPort);
   }
-  
+*/
   public static int getRollButton() {
-    return (leftstick.getRawButton(RobotMap.rollbuttonPort) ? 1 : 0) - (rightstick.getRawButton(RobotMap.rollbuttonPort) ? 1 : 0);
+    return (left.getRawButton(RobotMap.rollPort) ? 1 : 0) - (right.getRawButton(RobotMap.rollPort) ? 1 : 0);
   }
 
   public static boolean getRaiseButton() {
-    return rightstick.getRawButton(RobotMap.raisebuttonPort);
+    return right.getRawButton(RobotMap.raisePort);
   }
 
   public static boolean getLowerButton() {
-    return leftstick.getRawButton(RobotMap.lowerbuttonPort);
+    return left.getRawButton(RobotMap.lowerPort);
   }
 
   public static boolean getManualRaiseButton() {
-    boolean manualraise = rightstick.getRawButton(RobotMap.manualraisebuttonPort);
+    boolean manualraise = right.getRawButton(RobotMap.manualraisePort);
     if(manualraise) {
       /*
       if(manualraisetoggler)
@@ -81,7 +82,7 @@ public class OI {
   }
 
   public static boolean getManualLowerButton() {
-    boolean manuallower = rightstick.getRawButton(RobotMap.manuallowerbuttonPort);
+    boolean manuallower = right.getRawButton(RobotMap.manuallowerPort);
     /*
     if(manuallower){
       if(manuallowertoggler)
@@ -94,7 +95,7 @@ public class OI {
   }
 
   public static boolean getAutoRaiseButton() {
-    boolean autoraise = leftstick.getRawButtonPressed(RobotMap.autoraisebuttonPort);
+    boolean autoraise = left.getRawButtonPressed(RobotMap.autoraisePort);
     /*
     if(autoraise){
       if(autoraisetoggler)
@@ -107,7 +108,7 @@ public class OI {
   }
 
   public static boolean getAutoLowerButton() {
-    boolean autolower = leftstick.getRawButtonPressed(RobotMap.autolowerbuttonPort);
+    boolean autolower = left.getRawButtonPressed(RobotMap.autolowerPort);
     /*
     if(autolower){
       if(autolowertoggler)
@@ -119,8 +120,9 @@ public class OI {
     return autolower;
   }
 
+  /*
   public static boolean getswitchLiftControl() {
-    boolean liftControl = leftstick.getRawButtonPressed(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort);
+    boolean liftControl = left.getRawButtonPressed(RobotMap.switchliftstatePort) || right.getRawButton(RobotMap.switchliftstatePort);
     if(liftControl) {
       if(controltoggler == 1)
         controltoggler = 0;
@@ -129,7 +131,7 @@ public class OI {
       }
     return controltoggler == 1;
   }
-
+ */
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.

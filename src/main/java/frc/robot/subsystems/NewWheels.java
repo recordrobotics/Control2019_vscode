@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.ManualDrive;
+//import frc.robot.commands.ManualDrive;
 import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Encoder;
 public class NewWheels extends Subsystem {
 	WPI_VictorSPX frontRight = new WPI_VictorSPX(RobotMap.driveFrontRightPort);
 	WPI_VictorSPX backRight = new WPI_VictorSPX(RobotMap.driveBackRightPort);
-	
 	WPI_VictorSPX frontLeft = new WPI_VictorSPX(RobotMap.driveFrontLeftPort);
 	WPI_VictorSPX backLeft = new WPI_VictorSPX(RobotMap.driveBackLeftPort);
 
@@ -19,8 +18,10 @@ public class NewWheels extends Subsystem {
 
 	private double turnsens = 0.8;
 	private double maxsens = 0.5;
+	/*
 	private final double dec = 0.1;
 	private final double maxAccel = 0.0015;
+	*/
 	private double sens = maxsens;
 	final static double encoder_conv = 1.0/745.0;
 
@@ -58,6 +59,6 @@ public class NewWheels extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		setDefaultCommand(new ManualDrive());
+		//setDefaultCommand(new ManualDrive());
 	}
 }

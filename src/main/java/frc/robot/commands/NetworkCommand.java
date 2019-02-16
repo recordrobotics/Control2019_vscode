@@ -1,7 +1,6 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.Network;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class NetworkCommand extends Command {
@@ -69,7 +68,6 @@ public class NetworkCommand extends Command {
     SmartDashboard.putNumber("velocity1", vel[1]);
     System.out.println(vel[0] + " " + vel[1]);
   }
-
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

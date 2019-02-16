@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,19 +6,17 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.NetworkCommand;
+import frc.robot.commands.Test;
+import frc.robot.commands.AcquisitionCommand;
+import frc.robot.commands.LifterCommand;
+import frc.robot.commands.ManualDrive;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
 import frc.robot.subsystems.Lifter;
 import frc.robot.Network;
-import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.Encoder;
 import java.io.*;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.DigitalInput;
-
-
+// import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,12 +27,20 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
- // public static Wheels drivetrain = new Wheels();
+  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  // public static Wheels drivetrain = new Wheels();
+  // Subsystems
   public static NewWheels newdrivetrain = new NewWheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
-  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+
+  // Commands
+  Command acquisitioncommand = new AcquisitionCommand();
+  Command test = new Test();
+  Command liftercommand = new LifterCommand();
+  Command drivecommand = new ManualDrive();
+  
  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -56,6 +55,9 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new NetworkCommand(4.0, 8.0, 0));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Drivetrain", newdrivetrain);
+    SmartDashboard.putData("Acquisition", acquisition);
+    SmartDashboard.putData("Lifter", lifter);
     SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
   }
 
@@ -130,7 +132,10 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
+    drivecommand.start();
+    //test.start();
+    liftercommand.start();
+    acquisitioncommand.start();
   }
 
   /**
@@ -146,5 +151,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-  }
+    }
 }
