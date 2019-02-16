@@ -75,8 +75,12 @@ public class RobotMap {
  public static int leftEncoderPort2 = 3;
  public static int rightEncoderPort1 = 5;
  public static int rightEncoderPort2 = 6;
- public static int acquisition_magneticPort = 0;
- public static int lifter_magneticPort = 9;
+
+ public static int acquisition0Port = 0;
+ public static int acquisition1Port = 12;
+ public static int lifter1Port = 10;
+ public static int lifter2Port = 11;
+ public static int lifter0Port = 9;
  public static int acquisition_encoderPort1 = 1; 
  public static int acquisition_encoderPort2 = 2; 
  public static int lifter_encoderPort1 = 7;

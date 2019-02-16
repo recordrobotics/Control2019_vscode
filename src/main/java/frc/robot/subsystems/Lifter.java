@@ -13,7 +13,9 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotorPort);
 	public static Encoder liftEncoder = new Encoder(RobotMap.lifter_encoderPort1, 
 		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
-	public static DigitalInput liftswitch = new DigitalInput(RobotMap.lifter_magneticPort);
+	public static DigitalInput switch0_1 = new DigitalInput(RobotMap.lifter1Port);
+	public static DigitalInput switch1_2 = new DigitalInput(RobotMap.lifter2Port);
+	public static DigitalInput resetswitch = new DigitalInput(RobotMap.lifter0Port);
 	private final static double liftsens = 0.5;
 	// Proportional, Integral and Derivative R values for PID Loop
 	private final static double Rp = 0.01;
@@ -41,12 +43,21 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		liftMotor.set(ControlMode.PercentOutput, liftsens*x);
 	}
 
-	public boolean getSwitch() {
-		return liftswitch.get();
-	  }
-
+	public boolean get0switch() {
+		return resetswitch.get();
+		}
+	public boolean get1switch() {
+			return switch0_1.get();
+	}
+	public boolean get2switch() {
+		return switch1_2.get();
+}
 	  public double getlifterpos () {
 		return liftEncoder.getDistance() * encoder_conv;
+	}
+
+	public void encoderReset() {
+		liftEncoder.reset();
 	}
 	public void stop() {
 		liftMotor.set(ControlMode.PercentOutput, 0);
