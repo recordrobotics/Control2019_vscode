@@ -1,7 +1,6 @@
 package frc.robot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

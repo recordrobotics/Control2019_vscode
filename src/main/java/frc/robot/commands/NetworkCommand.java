@@ -1,28 +1,14 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.Network;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.lang.Math;
-
-/**
- * An example command.  You can replace me with your own command.
- */
 public class NetworkCommand extends Command {
   private double[] input;
   private double last_l, last_r, x_i, y_i, theta_i;
   private boolean trigger;
   public NetworkCommand(double x, double y, double theta) {
-    // Use requires() here to declare subsystem dependencies
     requires(Robot.newdrivetrain);
     input = new double[3];
     last_l = 0.0;
@@ -32,7 +18,6 @@ public class NetworkCommand extends Command {
     theta_i = theta;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     last_l = Robot.newdrivetrain.getleftdistance();
@@ -47,7 +32,6 @@ public class NetworkCommand extends Command {
     trigger = false;
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     double l = Robot.newdrivetrain.getleftdistance();

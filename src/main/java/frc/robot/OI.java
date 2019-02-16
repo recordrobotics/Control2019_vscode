@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotMap;
@@ -26,8 +19,11 @@ public class OI {
   
 	private static double forward;
   private static double rotation;
-  private static int toggler = 0;
-  
+  private static int controltoggler = 0;
+  private static boolean manualraisetoggler = false;
+  private static boolean manuallowertoggler = false;
+  private static boolean autoraisetoggler = false;
+  private static boolean autolowertoggler = false;
 	
 	public static double getRotation() {
     rotation = (rightstick.getZ() + leftstick.getZ())/2;
@@ -71,23 +67,67 @@ public class OI {
     return leftstick.getRawButton(RobotMap.lowerbuttonPort);
   }
 
-  public static boolean getLiftRaiseButton() {
-    return rightstick.getRawButton(RobotMap.liftraisebuttonPort);
+  public static boolean getManualRaiseButton() {
+    boolean manualraise = rightstick.getRawButton(RobotMap.manualraisebuttonPort);
+    if(manualraise) {
+      /*
+      if(manualraisetoggler)
+        manualraise = false;
+      else 
+        manualraise = true;
+        */
+    }
+    return manualraise;
   }
 
-  public static boolean getLiftLowerButton() {
-    return leftstick.getRawButton(RobotMap.liftlowerbuttonPort);
+  public static boolean getManualLowerButton() {
+    boolean manuallower = rightstick.getRawButton(RobotMap.manuallowerbuttonPort);
+    /*
+    if(manuallower){
+      if(manuallowertoggler)
+        manuallower = false;
+      else 
+        manuallower = true;
+    }
+    */
+    return manuallower;
+  }
+
+  public static boolean getAutoRaiseButton() {
+    boolean autoraise = leftstick.getRawButtonPressed(RobotMap.autoraisebuttonPort);
+    /*
+    if(autoraise){
+      if(autoraisetoggler)
+        autoraise = false;
+      else 
+        autoraise = true;
+    }
+    */
+    return autoraise;
+  }
+
+  public static boolean getAutoLowerButton() {
+    boolean autolower = leftstick.getRawButtonPressed(RobotMap.autolowerbuttonPort);
+    /*
+    if(autolower){
+      if(autolowertoggler)
+        autolower = false;
+      else 
+        autolower = true;
+    }
+    */
+    return autolower;
   }
 
   public static boolean getswitchLiftControl() {
-    boolean liftControl = leftstick.getRawButton(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort);
+    boolean liftControl = leftstick.getRawButtonPressed(RobotMap.switchliftstatePort) || rightstick.getRawButton(RobotMap.switchliftstatePort);
     if(liftControl) {
-      if(toggler == 1)
-        toggler = 0;
-      else if(toggler == 0)
-        toggler = 1; 
+      if(controltoggler == 1)
+        controltoggler = 0;
+      else if(controltoggler == 0)
+        controltoggler = 1; 
       }
-    return toggler == 1;
+    return controltoggler == 1;
   }
 
   // There are a few additional built in buttons you can use. Additionally,

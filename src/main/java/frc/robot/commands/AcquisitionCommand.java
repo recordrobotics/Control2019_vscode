@@ -1,24 +1,12 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-/**
- * An example command.  You can replace me with your own command.
- */
 public class AcquisitionCommand extends Command {
 	public AcquisitionCommand() {
-		// Use requires() here to declare subsystem dependencies
 		requires(Robot.acquisition);
 	}
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 		Robot.acquisition.stop();
@@ -27,14 +15,15 @@ public class AcquisitionCommand extends Command {
 	int raisebutton = OI.getRaiseButton() ? 1 : 0;
 	int lowerbutton = -1 * (OI.getLowerButton() ? 1 : 0);
 	boolean magnetswitch = Robot.acquisition.getSwitch(); 
+	// Double representing the position of the acquisition, of 3. Not currently used
 	double state = 0;
 	final static double rollerSpeed = 0.5;
 	final static double acquisitionSpeed = 0.5;
+	// Used to smooth encoder values so that the acquisition doesn't have to be at an exact value. Not really used to effect.
 	final static double stateSmooth = 0.2;
 	double acquisitionpos = 0;
 	double movement = 0;
 
-	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		movement = 0;
@@ -42,10 +31,11 @@ public class AcquisitionCommand extends Command {
 		if (acquisitionpos - Math.floor(acquisitionpos) < stateSmooth) {
 			acquisitionpos = Math.floor(acquisitionpos);
 		}
-			Robot.acquisition.roll(rollerSpeed*rollbutton);
-		if(raisebutton*lowerbutton != -1) // Raisebutton and lower button are not both pushed
+		// Can roll in two directions based on which roll button is pressed
+		Robot.acquisition.roll(rollerSpeed*rollbutton);
+		if(raisebutton*lowerbutton != -1) // Raise button and lower button are not pushed at the same time
 		{ 
-			if(magnetswitch) {
+			if(magnetswitch) { // If we encounter a magnet switch. Currently has the issue of being active at our starting position.
 				if(acquisitionpos < 0.2) {
 					raisebutton = 0;
 				}
@@ -53,7 +43,7 @@ public class AcquisitionCommand extends Command {
 					lowerbutton = 0;
 				}
 			}
-			movement = (raisebutton + lowerbutton)*acquisitionSpeed;
+			movement = (raisebutton + lowerbutton)*acquisitionSpeed; // Either 1, -1 or 0
 		}
 		Robot.acquisition.rotate(movement);
 	}

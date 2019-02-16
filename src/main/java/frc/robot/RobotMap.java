@@ -35,8 +35,10 @@ public class RobotMap {
  public static int rollbuttonPort = 1;
  public static int raisebuttonPort = 0;
  public static int lowerbuttonPort = 0;
- public static int liftraisebuttonPort = 3;
- public static int liftlowerbuttonPort = 2;
+ public static int manualraisebuttonPort = 3;
+ public static int manuallowerbuttonPort = 2;
+ public static int autoraisebuttonPort = 3;
+ public static int autolowerbuttonPort = 2;
  public static int switchliftstatePort = 7;
  
  public static int forward_axis = 1;
@@ -60,10 +62,10 @@ public class RobotMap {
 */
  // Acquistion
  public static int acquisitionPort = 8;
- public static int rollerPort = 0; 
+ public static int rollerPort = 4; 
 
  // Lift
- public static int liftMotorPort = 5;
+ public static int liftMotorPort = 0;
  // Sensors
  public static int rangefinderPort = 7;
  //public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);

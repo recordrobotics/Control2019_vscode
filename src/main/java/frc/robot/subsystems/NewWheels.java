@@ -1,13 +1,5 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.ManualDrive;
 import frc.robot.RobotMap;
@@ -15,13 +7,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.Encoder;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
-
 public class NewWheels extends Subsystem {
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 	WPI_VictorSPX frontRight = new WPI_VictorSPX(RobotMap.driveFrontRightPort);
 	WPI_VictorSPX backRight = new WPI_VictorSPX(RobotMap.driveBackRightPort);
 	
@@ -51,6 +37,7 @@ public class NewWheels extends Subsystem {
 		backLeft.follow(frontLeft);
 	}
 	public void curvatureDrive(double forw, double rot) {
+		// Adjust rotation sensitivty if the robot is moving or not
 		if (forw < 0.3)
 			turnsens = 0.5;
 		else

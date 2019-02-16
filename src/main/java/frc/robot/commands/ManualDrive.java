@@ -1,48 +1,35 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
-
-import javax.lang.model.util.ElementScanner6;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-/**
- * An example command.  You can replace me with your own command.
- */
 public class ManualDrive extends Command {
 	public ManualDrive() {
-		// Use requires() here to declare subsystem dependencies
 		//requires(Robot.drivetrain);
 		requires(Robot.newdrivetrain);
 	}
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
 	}
-
-	double forward;
-	double rotation;
+	
+	// Forward and rotation values from joystick
 	double joyforw;
 	double joyrot;
+	// Used in gradual acceleration attempt
+	double forward;
+	double rotation;
 	double nextrotation;
 	double nextforward;
 	double counter = 0;
-	double counter1 = 0;
+	//double counter1 = 0;
 	final double updaterate = 0.05;
 
-	// Called repeatedly when this Command is scheduled to run
 	@Override
+	// Attempt to slowly increment and decrement forward and rotation inputs to motors to prevent robot from tipping when accelerating quickly
+	// On old robot, showed some effect, but could not prevent backheavy robot from nearly tipping when quickly stopping in reverse.
+	// When the robot was driven with some caution and at reasonable sensitivities, the code appeared unnecessary, so it is not currently implemented.
 	protected void execute() {
-		
 		joyforw = OI.getForward();
 		joyrot = OI.getRotation();
 		if (counter == 0 || Math.abs(joyforw) < Math.abs(nextforward)) {
