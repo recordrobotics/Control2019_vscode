@@ -34,6 +34,10 @@ public class Robot extends TimedRobot {
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
+  public static boolean manual_enable = true;
+  public static boolean lifter_enable = true;
+  public static boolean test_enable = false;
+  public static boolean acquisition_enable = true;
 
   // Commands
   Command acquisitioncommand = new AcquisitionCommand();
@@ -132,10 +136,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    drivecommand.start();
-    //test.start();
-    liftercommand.start();
-    acquisitioncommand.start();
   }
 
   /**

@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-//import frc.robot.commands.AcquisitionCommand;
+import frc.robot.commands.AcquisitionCommand;
 import frc.robot.RobotMap;
+import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -41,7 +42,8 @@ public class Acquisition extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		//setDefaultCommand(new AcquisitionCommand());
+		if(Robot.acquisition_enable)
+			setDefaultCommand(new AcquisitionCommand());
 	}
 
 	public void rotate(double x) {

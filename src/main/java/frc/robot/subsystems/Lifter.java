@@ -2,10 +2,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-//import frc.robot.commands.Test;
+import frc.robot.commands.Test;
+import frc.robot.commands.LifterCommand;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotMap;
+import frc.robot.Robot;
 
 
 public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
@@ -36,7 +38,10 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	}
 	
   public void initDefaultCommand() {
-		//setDefaultCommand(new Test());
+		if(Robot.lifter_enable)
+			setDefaultCommand(new LifterCommand());
+		else if(Robot.test_enable)
+		setDefaultCommand(new Test());
 	}
 	
 	public void setLift(double x) {

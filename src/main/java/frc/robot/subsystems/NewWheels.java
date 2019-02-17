@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-//import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualDrive;
 import frc.robot.RobotMap;
+import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.Encoder;
@@ -59,6 +60,7 @@ public class NewWheels extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		//setDefaultCommand(new ManualDrive());
+		if(Robot.manual_enable)
+			setDefaultCommand(new ManualDrive());
 	}
 }
