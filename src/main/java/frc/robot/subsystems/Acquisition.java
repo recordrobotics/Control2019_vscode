@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.AcquisitionCommand;
+import frc.robot.commands.Test;
 import frc.robot.RobotMap;
 import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -44,9 +45,13 @@ public class Acquisition extends Subsystem {
 		// setDefaultCommand(new MySpecialCommand());
 		if(Robot.acquisition_enable)
 			setDefaultCommand(new AcquisitionCommand());
+		else if(Robot.test_enable)
+			setDefaultCommand(new Test());
 	}
 
 	public void rotate(double x) {
+		if(x < 0 && getswitch0() || x > 0 && getswitch1())
+			x = 0;
 		acquisitionMotor.set(ControlMode.PercentOutput, x);
 	} 
 

@@ -5,14 +5,15 @@ public class RobotMap {
 // Joysticks and buttons
  public static int leftjoyPort = 0;
  public static int rightjoyPort = 1;
- public static int rollPort = 1;
- public static int raisePort = 0;
- public static int lowerPort = 0;
- public static int manualraisePort = 3;
- public static int manuallowerPort = 2;
- public static int autoraisePort = 3;
- public static int autolowerPort = 2;
- //public static int switchliftstatePort = 7;
+
+ public static int rollPort = 2;
+ public static int raisePort = 1;
+ public static int lowerPort = 1;
+ public static int manualraisePort = 5;
+ public static int manuallowerPort = 3;
+ public static int autoraisePort = 6;
+ public static int autolowerPort = 4;
+ public static int switchliftstatePort = 11;
 
 
   // CAN Bus Drive
@@ -24,7 +25,7 @@ public class RobotMap {
 
  // Acquistion
  public static int acquisitionPort = 8;
- public static int rollerPort = 4; 
+ public static int rollerPort = 4;
 
  // Lift
  public static int liftPort = 0;

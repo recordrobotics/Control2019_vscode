@@ -23,10 +23,8 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	private final static double Rp = 0.01;
 	private final static double Ri = 0;
 	private final static double Rd = 0;
-	// Tolerance?
 	private final static double tolerance = 0.01;
 	private final static double encoder_conv = 0.001;
-	private static int state;
 
 	public Lifter() {
 		super("Lifter", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -34,50 +32,53 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
 		getPIDController().setEnabled(false);
-		state = 0;
+		getPIDController().setInputRange(0, 2);
+		getPIDController().setOutputRange(-1.0, 1.0);
 	}
 	
   public void initDefaultCommand() {
 		if(Robot.lifter_enable)
 			setDefaultCommand(new LifterCommand());
 		else if(Robot.test_enable)
-		setDefaultCommand(new Test());
+			setDefaultCommand(new Test());
 	}
 	
 	public void setLift(double x) {
-		System.out.println(liftsens*x);
+		if(x < 0 && get0switch() || x > 0 && get2switch())
+				x = 0;
 		liftMotor.set(ControlMode.PercentOutput, liftsens*x);
 	}
 
 	public boolean get0switch() {
 		return resetswitch.get();
-		}
-	public boolean get1switch() {
-			return switch0_1.get();
 	}
 	public boolean get2switch() {
-		return switch1_2.get();
-}
-	  public double getlifterpos () {
+		return switch1_2.get() && switch0_1.get();
+	}
+	public double getlifterpos () {
 		return liftEncoder.getDistance() * encoder_conv;
 	}
-
 	public void encoderReset() {
 		liftEncoder.reset();
 	}
 	public void stop() {
 		liftMotor.set(ControlMode.PercentOutput, 0);
 	}
-    protected double returnPIDInput() {
+  protected double returnPIDInput() {
     	return liftEncoder.getDistance() * encoder_conv; // returns the sensor value that is providing the feedback for the system
 	}
 	
 	public void setSetPoint(double setpoint) {
-		if(!(state == 2 && state < setpoint*encoder_conv || state == 0 && state > setpoint*encoder_conv))
 			getPIDController().setSetpoint(setpoint);
 	}
 
+	public double getSetPoint() {
+		return getPIDController().getSetpoint();
+	}
+
     protected void usePIDOutput(double output) {
+			if(output < 0 && get0switch() || output > 0 && get2switch())
+				output = 0;
     	liftMotor.pidWrite(output); // this is where the computed output value fromthe PIDController is applied to the motor
     }
 }

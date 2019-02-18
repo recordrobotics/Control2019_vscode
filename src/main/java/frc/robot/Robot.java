@@ -6,16 +6,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.NetworkCommand;
-import frc.robot.commands.Test;
-import frc.robot.commands.AcquisitionCommand;
-import frc.robot.commands.LifterCommand;
-import frc.robot.commands.ManualDrive;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
 import frc.robot.subsystems.Lifter;
 import frc.robot.Network;
 import java.io.*;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.I2C;
 // import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 /**
@@ -34,16 +32,17 @@ public class Robot extends TimedRobot {
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
-  public static boolean manual_enable = true;
-  public static boolean lifter_enable = true;
-  public static boolean test_enable = false;
-  public static boolean acquisition_enable = true;
+  public static boolean drive_enable = true;
+  public static boolean lifter_enable = false;
+  public static boolean test_enable = true;
+  public static boolean acquisition_enable = false;
 
-  // Commands
-  Command acquisitioncommand = new AcquisitionCommand();
-  Command test = new Test();
-  Command liftercommand = new LifterCommand();
-  Command drivecommand = new ManualDrive();
+  public static AHRS gyro;
+  private static boolean gyroSuccess = false;
+
+  public static boolean isCalibrating() {
+    return gyroSuccess && gyro.isCalibrating();
+  }
   
  
   Command m_autonomousCommand;
@@ -56,6 +55,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    
+    try {
+      gyroSuccess = true;
+      gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
+    } catch (RuntimeException ex) {
+      gyroSuccess = false;
+      System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
+    }
+
     m_chooser.setDefaultOption("Default Auto", new NetworkCommand(4.0, 8.0, 0));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -79,7 +87,7 @@ public class Robot extends TimedRobot {
 
   /**
    * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
+   * You can use it to reset any subsystem information you wan8t to clear when
    * the robot is disabled.
    */
   @Override
@@ -117,6 +125,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
+
+    gyro.reset();
   }
 
   /**
@@ -136,6 +146,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    gyro.reset();
   }
 
   /**
@@ -144,6 +156,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    //System.out.println(gyro.getYaw() + " " + isCalibrating());
   }
 
   /**

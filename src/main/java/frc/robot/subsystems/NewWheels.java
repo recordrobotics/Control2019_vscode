@@ -44,13 +44,17 @@ public class NewWheels extends Subsystem {
 			turnsens = 0.5;
 		else
 			turnsens = 0.3;
-		frontRight.set(ControlMode.PercentOutput, sens * forw + turnsens * rot);
-		frontLeft.set(ControlMode.PercentOutput, -(sens * forw - turnsens * rot));
+
+		drive(-sens * forw + turnsens * rot, -sens * forw - turnsens * rot);
 	}
 
 	public void drive(double l, double r) {
-		frontRight.set(ControlMode.PercentOutput, l);
-		frontLeft.set(ControlMode.PercentOutput, -r);
+		if(Robot.isCalibrating()) {
+		//	l = 0.0;
+		//	r = 0.0;
+		}
+		frontLeft.set(ControlMode.PercentOutput, l);
+		frontRight.set(ControlMode.PercentOutput, -r);
 	}
 	
 	public void stop() {
@@ -60,7 +64,7 @@ public class NewWheels extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		if(Robot.manual_enable)
+		if(Robot.drive_enable)
 			setDefaultCommand(new ManualDrive());
 	}
 }
