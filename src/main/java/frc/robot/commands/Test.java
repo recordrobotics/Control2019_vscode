@@ -10,23 +10,39 @@ public class Test extends Command {
 		requires(Robot.lifter); 
 		requires(Robot.acquisition); 
 	}
-	final static double liftsens = 0.5;
-	final static double acquisitionsens = 0.5;
+	final static double upliftsens = 1.5;
+	final static double downliftsens = 0.5;
+	final static double upacqsens = 0.5;
+	final static double downacqsens = 0.2;
 	@Override
 	protected void initialize() {
 	}
 	@Override
 	protected void execute() {
-		if((OI.getManualRaiseButton() ? 1 : 0) - (OI.getManualLowerButton() ? 1 : 0) != 0) {
-			Robot.lifter.setLift(liftsens*(OI.getManualRaiseButton() ? 1 : 0));
-			Robot.lifter.setLift(-liftsens*(OI.getManualLowerButton() ? 1 : 0));
-			SmartDashboard.putNumber("LiftEncoder", Robot.lifter.getlifterpos());
+		int lift = (OI.getManualRaiseButton() ? 1 : 0) - (OI.getManualLowerButton() ? 1 : 0);
+		double liftsens = 0.0;
+		if(lift > 0 && !Robot.lifter.get2switch()) {
+			liftsens = upliftsens;
 		}
-		if((OI.getRaiseButton() ? 1 : 0) - (OI.getLowerButton() ? 1 : 0) != 0) {
-			Robot.acquisition.rotate(acquisitionsens*(OI.getManualRaiseButton() ? 1 : 0));
-			Robot.lifter.setLift(-acquisitionsens*(OI.getManualLowerButton() ? 1 : 0));
-			SmartDashboard.putNumber("AcquisitionEncoder", Robot.acquisition.getacquisitionpos());
+		else if(!Robot.lifter.get0switch())
+			liftsens = downliftsens;
+		else {
+			System.out.println((Robot.lifter.get0switch() ? 1 : 0) + " " + (Robot.lifter.get2switch() ? 1 : 0));
 		}
+		Robot.lifter.setLift(liftsens * lift);
+		//SmartDashboard.putNumber("LiftEncoder", Robot.lifter.getlifterpos());
+		//System.out.println("LiftEncoder: " + Robot.lifter.getlifterpos());
+		double acquisitionsens = 0.0;
+		int roll = (OI.getRaiseButton() ? 1 : 0) - (OI.getLowerButton() ? 1 : 0);
+		if(roll > 0 && (!Robot.acquisition.getswitch1())) {
+			acquisitionsens = upacqsens;
+			System.out.println(acquisitionsens);
+		}
+		else if(!Robot.acquisition.getswitch0())
+			acquisitionsens = downacqsens;
+		Robot.acquisition.rotate(acquisitionsens * roll);
+		//SmartDashboard.putNumber("AcquisitionEncoder", Robot.acquisition.getacquisitionpos());
+		//System.out.println("AcquisitionEncoder: " + Robot.acquisition.getacquisitionpos());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

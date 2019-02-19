@@ -16,36 +16,41 @@ public class RobotMap {
  public static int switchliftstatePort = 11;
 
 
-  // CAN Bus Drive
+  // CAN Bus Drive 
  public static int driveFrontRightPort = 7;
  public static int driveFrontLeftPort = 5;
  public static int driveBackRightPort = 2;
  public static int driveBackLeftPort = 1;
- public static int testMotorPort = 8;
+ //public static int testMotorPort = 8;
 
- // Acquistion
- public static int acquisitionPort = 8;
+ // Acquistion might be reversed
+ public static int acquisitionPort = 3;
  public static int rollerPort = 4;
 
- // Lift
+ // Lift Good
  public static int liftPort = 0;
 
-  // Encoders
-  public static int leftEncoderPort1 = 4;
-  public static int leftEncoderPort2 = 3;
-  public static int rightEncoderPort1 = 5;
-  public static int rightEncoderPort2 = 6;
-  public static int acquisition_encoderPort1 = 1; 
-  public static int acquisition_encoderPort2 = 2; 
+  // Encoders All good
+  public static int leftEncoderPort1 = 10;
+  public static int leftEncoderPort2 = 11;
+  public static int rightEncoderPort1 = 12;
+  public static int rightEncoderPort2 = 13;
+  public static int acquisition_encoderPort1 = 5; 
+  public static int acquisition_encoderPort2 = 6; 
+  public static int roller_encoderPort1 = 3;
+  public static int roller_encoderPort2 = 4;
   public static int lifter_encoderPort1 = 7;
   public static int lifter_encoderPort2 = 8;
 
-  // Magnetic Switches
-  public static int acquisition0Port = 0;
-  public static int acquisition1Port = 12;
-  public static int lifter1Port = 10;
-  public static int lifter2Port = 11;
-  public static int lifter0Port = 9;
+
+  // LED
+  public static int relayPort = 1;
+  // Magnetic Switches Lifter 2 and lifter 0 good
+  public static int acquisition0Port = 2;
+  public static int acquisition1Port = 1;
+  public static int lifter1Port = 0;
+  public static int lifter2Port = 8;
+  public static int lifter0Port = 7;
    
 /*
    // Old Robot

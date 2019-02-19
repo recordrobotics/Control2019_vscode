@@ -1,5 +1,6 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -16,18 +17,25 @@ public class AcquisitionCommand extends Command {
 	// Double representing the position of the acquisition, of 3. Not currently used
 	double state = 0;
 	final static double rollerSpeed = 0.5;
-	final static double acquisitionSpeed = 0.5;
+	final static double updaterate = 0.01;
 	double acquisitionpos = 0;
 	double movement = 0;
 	// Threshold for lift encoder values below which acquisition cannot drop down to bottom state
-	final static double dropthreshold = 1.2;
+	final static double dropthreshold = -1e9;
 	double liftpos;
 	int reset = 0;
 
 	@Override
 	protected void initialize() {
 		Robot.acquisition.stop();
-		reset = 1;
+		Robot.acquisition.getPIDController().setEnabled(false);
+		reset = 0;
+
+		// Remove later
+		Robot.acquisition.encoderReset();
+		Robot.acquisition.rotate(0.0);
+		Robot.lifter.getPIDController().setEnabled(true);
+		Robot.lifter.setSetpoint(0.0);
 	}
 	@Override
 	protected void execute() {
@@ -38,14 +46,17 @@ public class AcquisitionCommand extends Command {
 		lowerbutton = OI.getLowerButton() ? 1 : 0;
 		rollbutton = OI.getRollButton();
 		// Reset the lift back to default position, and reset encoder values if necessary
+		
 		if(reset == 1) {
 			if(!switch0)
 				movement = -0.1;
 			else {
 				reset = 0;
 				Robot.acquisition.encoderReset();
-				acquisitionpos = Robot.lifter.getlifterpos();
-			}			
+				Robot.acquisition.rotate(0.0);
+				Robot.lifter.getPIDController().setEnabled(true);
+				Robot.lifter.setSetpoint(0.0);
+			}
 		}
 		// Can roll in two directions based on which roll button is pressed
 		Robot.acquisition.roll(rollerSpeed*rollbutton);
@@ -63,10 +74,11 @@ public class AcquisitionCommand extends Command {
 			// Only use lower input if not in state 2
 			if(!switch1) {
 				movement += lowerbutton;
-			}
-			movement *= acquisitionSpeed; // Either 1, -1 or 0
+				
+			}// Either 1, -1 or 0
 		}
-		Robot.acquisition.rotate(movement);
+		SmartDashboard.putNumber("acquisition.movement", movement);
+		Robot.acquisition.setSetpoint(Robot.acquisition.getSetPoint() + updaterate*movement);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

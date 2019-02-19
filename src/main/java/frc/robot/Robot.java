@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Relay;
 import frc.robot.commands.NetworkCommand;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 
   public static AHRS gyro;
   private static boolean gyroSuccess = false;
+  public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
@@ -48,6 +50,12 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  public static void setLight(boolean turnOn) {
+    if(turnOn)
+      led.set(Relay.Value.kOn);
+    else
+      led.set(Relay.Value.kOff);
+  }
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -55,22 +63,18 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    setLight(true);
     
     try {
-      gyroSuccess = true;
       gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
+      gyroSuccess = true;
     } catch (RuntimeException ex) {
-      gyroSuccess = false;
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
     }
 
     m_chooser.setDefaultOption("Default Auto", new NetworkCommand(4.0, 8.0, 0));
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putData("Drivetrain", newdrivetrain);
-    SmartDashboard.putData("Acquisition", acquisition);
-    SmartDashboard.putData("Lifter", lifter);
-    SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
+    //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
   }
 
   /**
@@ -83,6 +87,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
+    SmartDashboard.putNumber("gyro.yaw", gyro.getYaw());
+    SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
+    SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
+    SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
+    SmartDashboard.putNumber("roller.encoder", acquisition.getrollerpos());
+    SmartDashboard.putBoolean("acquisition.switch0", acquisition.getswitch0());
+    SmartDashboard.putBoolean("acquisition.switch1", acquisition.getswitch1());
+    SmartDashboard.putNumber("lifter.encoder", lifter.getlifterpos());
+    SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
+    SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
+    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
+    setLight(true);
   }
 
   /**
