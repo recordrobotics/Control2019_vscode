@@ -31,16 +31,16 @@ public class RobotMap {
  public static int liftPort = 0;
 
   // Encoders All good
-  public static int leftEncoderPort1 = 10;
-  public static int leftEncoderPort2 = 11;
+  public static int leftEncoderPort1 = 15;
+  public static int leftEncoderPort2 = 16;
   public static int rightEncoderPort1 = 12;
   public static int rightEncoderPort2 = 13;
   public static int acquisition_encoderPort1 = 5; 
   public static int acquisition_encoderPort2 = 6; 
   public static int roller_encoderPort1 = 3;
   public static int roller_encoderPort2 = 4;
-  public static int lifter_encoderPort1 = 7;
-  public static int lifter_encoderPort2 = 8;
+  public static int lifter_encoderPort1 = 8;
+  public static int lifter_encoderPort2 = 9;
 
 
   // LED
@@ -48,8 +48,8 @@ public class RobotMap {
   // Magnetic Switches Lifter 2 and lifter 0 good
   public static int acquisition0Port = 2;
   public static int acquisition1Port = 1;
-  public static int lifter1Port = 0;
-  public static int lifter2Port = 8;
+  public static int lifter1Port = 10;
+  public static int lifter2Port = 0;
   public static int lifter0Port = 7;
    
 /*

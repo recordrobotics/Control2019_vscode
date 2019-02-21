@@ -16,8 +16,11 @@ public class AcquisitionCommand extends Command {
 	boolean switch1;
 	// Double representing the position of the acquisition, of 3. Not currently used
 	double state = 0;
-	final static double rollerSpeed = 0.5;
-	final static double updaterate = 0.01;
+	final static double rollerSpeed = 0.25;
+	final static double upacqsens = 0.4;
+	final static double downacqsens = 0.2;
+	final static double updaterate = 0.04;
+	boolean release;
 	double acquisitionpos = 0;
 	double movement = 0;
 	// Threshold for lift encoder values below which acquisition cannot drop down to bottom state
@@ -29,13 +32,13 @@ public class AcquisitionCommand extends Command {
 	protected void initialize() {
 		Robot.acquisition.stop();
 		Robot.acquisition.getPIDController().setEnabled(false);
-		reset = 0;
+		reset = 1;
 
 		// Remove later
-		Robot.acquisition.encoderReset();
+		/*Robot.acquisition.encoderReset();
 		Robot.acquisition.rotate(0.0);
-		Robot.lifter.getPIDController().setEnabled(true);
-		Robot.lifter.setSetpoint(0.0);
+		Robot.acquisition.getPIDController().setEnabled(true);
+		Robot.acquisition.setSetpoint(0.0);*/
 	}
 	@Override
 	protected void execute() {
@@ -45,24 +48,32 @@ public class AcquisitionCommand extends Command {
 		raisebutton = -1*(OI.getRaiseButton() ? 1 : 0);
 		lowerbutton = OI.getLowerButton() ? 1 : 0;
 		rollbutton = OI.getRollButton();
+		switch0 = Robot.acquisition.getswitch0();
+		switch1 = Robot.acquisition.getswitch1();
+		release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
 		if(reset == 1) {
 			if(!switch0)
-				movement = -0.1;
+				Robot.acquisition.rotate(-0.3);
 			else {
 				reset = 0;
 				Robot.acquisition.encoderReset();
-				Robot.acquisition.rotate(0.0);
-				Robot.lifter.getPIDController().setEnabled(true);
-				Robot.lifter.setSetpoint(0.0);
+				Robot.acquisition.stop();
+				Robot.acquisition.getPIDController().setEnabled(true);
+				Robot.acquisition.setSetpoint(0.0);
 			}
+		}
+		else if(switch0) {
+			Robot.acquisition.encoderReset();
+			acquisitionpos = Robot.acquisition.getacquisitionpos();
 		}
 		// Can roll in two directions based on which roll button is pressed
 		Robot.acquisition.roll(rollerSpeed*rollbutton);
 		// Raise button and lower button are not pushed at the same time, and one is active
 		if(reset == 0 && raisebutton+lowerbutton != 0)
 		{
+			//Robot.acquisition.getPIDController().setEnabled(false);
 			// Only use raise input if not in state 0
 			if(!switch0) {
 				movement += raisebutton;
@@ -76,8 +87,25 @@ public class AcquisitionCommand extends Command {
 				movement += lowerbutton;
 				
 			}// Either 1, -1 or 0
+			/*
+			double acquisitionsens = 0.0;
+			if(movement < 0) {
+				acquisitionsens = upacqsens;
+				//System.out.println(acquisitionsens);
+			}
+			else
+				acquisitionsens = downacqsens;
+			
+			//Robot.acquisition.rotate(acquisitionsens*movement);
 		}
-		SmartDashboard.putNumber("acquisition.movement", movement);
+		if (release) {
+			Robot.acquisition.rotate(0.0);
+			Robot.acquisition.getPIDController().setEnabled(true);
+			Robot.acquisition.setSetPoint(Robot.acquisition.getacquisitionpos());
+		}
+		*/
+		//SmartDashboard.putNumber("acquisition.movement", movement);
+		}
 		Robot.acquisition.setSetpoint(Robot.acquisition.getSetPoint() + updaterate*movement);
 	}
 

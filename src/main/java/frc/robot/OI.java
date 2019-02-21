@@ -68,10 +68,14 @@ public class OI {
     return left.getRawButton(RobotMap.lowerPort);
   }
 
+  public static boolean getAcquisitionRelease() {
+    boolean release = (right.getRawButtonReleased(RobotMap.raisePort) && !left.getRawButton(RobotMap.lowerPort) ||
+    left.getRawButtonReleased(RobotMap.lowerPort) && !right.getRawButton(RobotMap.raisePort));
+    return release;
+  }
+
   public static boolean getManualRaiseButton() {
     boolean manualraise = right.getRawButton(RobotMap.manualraisePort);
-    if(!getswitchLiftControl())
-      manualraise = false;
     /*
     if(manualraise) {
      
@@ -86,8 +90,6 @@ public class OI {
 
   public static boolean getManualLowerButton() {
     boolean manuallower = right.getRawButton(RobotMap.manuallowerPort);
-    if(!getswitchLiftControl())
-      manuallower = false;
     /*
     if(manuallower){
       if(manuallowertoggler)
@@ -98,11 +100,14 @@ public class OI {
     */
     return manuallower;
   }
+  public static boolean getManualRelease() {
+    boolean release = (right.getRawButtonReleased(RobotMap.manualraisePort) && !right.getRawButton(RobotMap.manuallowerPort) ||
+    right.getRawButtonReleased(RobotMap.manuallowerPort) && !right.getRawButton(RobotMap.manualraisePort));
+    return release;
+  }
 
   public static boolean getAutoRaiseButton() {
     boolean autoraise = right.getRawButtonReleased(RobotMap.autoraisePort);
-    if(getswitchLiftControl())
-      autoraise = false;
     /*
     if(autoraise){
       if(autoraisetoggler)
@@ -116,8 +121,7 @@ public class OI {
 
   public static boolean getAutoLowerButton() {
     boolean autolower = right.getRawButtonReleased(RobotMap.autolowerPort);
-    if(getswitchLiftControl()) 
-      autolower = false;
+    //System.out.println(autolower);
     /*
     if(autolower){
       if(autolowertoggler)
@@ -129,20 +133,6 @@ public class OI {
     return autolower;
   }
 
-  public static boolean getswitchLiftControl() {
-    boolean liftControl = left.getRawButtonReleased(RobotMap.switchliftstatePort);
-    if(liftControl) {
-      if(controltoggler == 1) {
-        System.out.println("Auto");
-        controltoggler = 0;
-      }
-      else if(controltoggler == 0) {
-        System.out.println("Manual");
-        controltoggler = 1;
-      }
-    }
-    return controltoggler == 1;
-  }
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.

@@ -58,12 +58,17 @@ public class NetworkCommand extends Command {
       trigger = true;
     //input[2] = theta;
 
+    double max_vel = 0.6;
+    double min_vel = 0.3;
+    
     double[] vel = Robot.move_net.feed(input);
     // SmartDashboard.putNumber("move", vel[0]);
-    for (int i = 0; i < 2; i++) {
-      vel[i] = 0.3 * 0.5 * (vel[i] + 1.0) + 0.25;
-    }
+    double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
+    vel[0] = 0.5 * (vel[1] + 1.0) * vm;
+    vel[1] = (1.0 - 0.5 * (vel[1] + 1.0)) * vm; 
+    
     Robot.newdrivetrain.drive(vel[0], vel[1]);
+    
     SmartDashboard.putNumber("velocity0", vel[0]);
     SmartDashboard.putNumber("velocity1", vel[1]);
     System.out.println(vel[0] + " " + vel[1]);

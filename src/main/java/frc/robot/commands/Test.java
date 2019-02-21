@@ -14,11 +14,13 @@ public class Test extends Command {
 	final static double downliftsens = 0.5;
 	final static double upacqsens = 0.5;
 	final static double downacqsens = 0.2;
+	final static double rollerSpeed = 0.5;
 	@Override
 	protected void initialize() {
 	}
 	@Override
 	protected void execute() {
+		/*
 		int lift = (OI.getManualRaiseButton() ? 1 : 0) - (OI.getManualLowerButton() ? 1 : 0);
 		double liftsens = 0.0;
 		if(lift > 0 && !Robot.lifter.get2switch()) {
@@ -27,19 +29,28 @@ public class Test extends Command {
 		else if(!Robot.lifter.get0switch())
 			liftsens = downliftsens;
 		else {
-			System.out.println((Robot.lifter.get0switch() ? 1 : 0) + " " + (Robot.lifter.get2switch() ? 1 : 0));
+			//SmartDashboard.putNumber("LifterBottomSwitch", Robot.lifter.get0switch() ? 1 : 0);
+			//SmartDashboard.putNumber("LifterTopSwitch", Robot.lifter.get2switch() ? 1 : 0);
+			//System.out.println((Robot.lifter.get0switch() ? 1 : 0) + " " + (Robot.lifter.get2switch() ? 1 : 0));
 		}
 		Robot.lifter.setLift(liftsens * lift);
 		//SmartDashboard.putNumber("LiftEncoder", Robot.lifter.getlifterpos());
 		//System.out.println("LiftEncoder: " + Robot.lifter.getlifterpos());
+		*/
 		double acquisitionsens = 0.0;
 		int roll = (OI.getRaiseButton() ? 1 : 0) - (OI.getLowerButton() ? 1 : 0);
+		int rollbutton = OI.getRollButton();
+		
 		if(roll > 0 && (!Robot.acquisition.getswitch1())) {
 			acquisitionsens = upacqsens;
-			System.out.println(acquisitionsens);
+			//System.out.println(acquisitionsens);
 		}
 		else if(!Robot.acquisition.getswitch0())
 			acquisitionsens = downacqsens;
+		else {
+			SmartDashboard.putNumber("AcquisitionEncoder", Robot.acquisition.getacquisitionpos());
+		}
+		Robot.acquisition.roll(rollerSpeed*rollbutton);
 		Robot.acquisition.rotate(acquisitionsens * roll);
 		//SmartDashboard.putNumber("AcquisitionEncoder", Robot.acquisition.getacquisitionpos());
 		//System.out.println("AcquisitionEncoder: " + Robot.acquisition.getacquisitionpos());

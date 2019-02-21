@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Relay;
 import frc.robot.commands.NetworkCommand;
+import frc.robot.commands.Autonomous;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
@@ -34,9 +35,9 @@ public class Robot extends TimedRobot {
   public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
   public static boolean drive_enable = true;
-  public static boolean lifter_enable = false;
-  public static boolean test_enable = true;
-  public static boolean acquisition_enable = false;
+  public static boolean lifter_enable = true;
+  public static boolean test_enable = false;
+  public static boolean acquisition_enable = true;
 
   public static AHRS gyro;
   private static boolean gyroSuccess = false;
@@ -72,8 +73,8 @@ public class Robot extends TimedRobot {
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
     }
 
-    m_chooser.setDefaultOption("Default Auto", new NetworkCommand(4.0, 8.0, 0));
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    m_chooser.setDefaultOption("Simple Auto", new Autonomous()); //new NetworkCommand(4.0, 8.0, 0));
+    m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
     //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
   }
 
@@ -100,6 +101,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
     SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
     setLight(true);
+    //System.out.println(acquisition.getSetPoint());
   }
 
   /**

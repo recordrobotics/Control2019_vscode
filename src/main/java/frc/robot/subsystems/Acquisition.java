@@ -16,21 +16,20 @@ public class Acquisition extends PIDSubsystem {
 	// Encoder used in evaluating position of acquisition
 	private static Encoder acquisition_encoder = new Encoder(RobotMap.acquisition_encoderPort1, 
 		RobotMap.acquisition_encoderPort2, false, Encoder.EncodingType.k1X);
-		private static Encoder roller_encoder = new Encoder(RobotMap.roller_encoderPort1, 
+	private static Encoder roller_encoder = new Encoder(RobotMap.roller_encoderPort1, 
 		RobotMap.roller_encoderPort2, false, Encoder.EncodingType.k1X);
 	// Magnetic switch also used to evalutae position of robot
 	private static DigitalInput switch0 = new DigitalInput(RobotMap.acquisition0Port);
 	private static DigitalInput switch1 = new DigitalInput(RobotMap.acquisition1Port);
 	// Value which will be used to convert the raw encoder output into more easily usable numbers
-	final static double encoder_conv = 1;
-	final static double acquisitionsens = 0.5;
-	final static double motorsens = 0.5;
-	private final static double Rp = 0.01;
-	private final static double Ri = 0;
-	private final static double Rd = 0;
+	final static double encoder_conv = -1.0/19000.0;
+	final static double encoder_cons = 2.2105263158;
+	private final static double Rp = 0.5;
+	private final static double Ri = 0.0;
+	private final static double Rd = 0.1;
 	private final static double tolerance = 0.01;
-	final static double acquisitionRaiseSpeed = 1;
-	final static double acquisitionLowerSpeed = 0.1;
+	final static double acquisitionRaiseSpeed = 1.0;
+	final static double acquisitionLowerSpeed = 0.3;
 
 	public Acquisition() {
 		super("Acquisition", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -38,7 +37,7 @@ public class Acquisition extends PIDSubsystem {
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
 		getPIDController().setEnabled(false);
-		getPIDController().setInputRange(0, 2.0);
+		getPIDController().setInputRange(-0.2, 4.0);
 		getPIDController().setOutputRange(-1.0, 1.0);
 	}
 	
@@ -55,7 +54,7 @@ public class Acquisition extends PIDSubsystem {
 	}
 
 	public double getrollerpos () {
-		return roller_encoder.getDistance() * encoder_conv;
+		return roller_encoder.getDistance() * encoder_conv + encoder_cons;
 	}
 
 	public void encoderReset() {
@@ -74,7 +73,7 @@ public class Acquisition extends PIDSubsystem {
 	public void rotate(double x) {
 		//if(x < 0 && getswitch0() || x > 0 && getswitch1())
 			//x = 0;
-		acquisitionMotor.set(ControlMode.PercentOutput, x);
+		acquisitionMotor.set(ControlMode.PercentOutput, -x);
 	} 
 
 	public void roll(double x) {
@@ -101,11 +100,11 @@ public class Acquisition extends PIDSubsystem {
 	protected void usePIDOutput(double output) {
 		if(output < 0 && getswitch0() || output > 0 && getswitch1())
 			output = 0;
-		else if(output > 0)
-			output *= acquisitionRaiseSpeed;
 		else if(output < 0)
+			output = -0.2 + output * acquisitionRaiseSpeed;
+		else if(output > 0)
 			output *= acquisitionLowerSpeed;
-
-		acquisitionMotor.pidWrite(output); // this is where the computed output value fromthe PIDController is applied to the motor
+		//System.out.println(output);
+		acquisitionMotor.pidWrite(-output); // this is where the computed output value fromthe PIDController is applied to the motor
 	}
 }

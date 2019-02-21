@@ -7,6 +7,8 @@ import frc.robot.Robot;
 public class Autonomous extends Command {
   public Autonomous() {
     requires(Robot.newdrivetrain);
+    requires(Robot.acquisition);
+    requires(Robot.lifter);
   }
 
   @Override
@@ -15,13 +17,14 @@ public class Autonomous extends Command {
 
   @Override
   protected void execute() {
-    double base_speed = 0.2;                                                                                                  
-    double turn_factor = -0.4;
-    double line_error = SmartDashboard.getNumber("tapes", -2.0);
+    double base_speed = 0.4;                                                                                                  
+    double turn_factor = -3.0;
+    double line_error1 = SmartDashboard.getNumber("tapes|PI_1", -2.0);
+    double line_error2 = SmartDashboard.getNumber("tapes|PI_2", -2.0);
     double turn_clamp = 0.1;
-    if(line_error > -1.5)
+    if(line_error1 > -1.5)
     {
-      Robot.newdrivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error*turn_factor)));
+      Robot.newdrivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error1 * turn_factor)));
     }
   }
 
