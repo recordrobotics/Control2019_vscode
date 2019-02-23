@@ -9,16 +9,8 @@ public class ManualDrive extends Command {
 		requires(Robot.newdrivetrain);
 	}
 
-	// Forward and rotation values from joystick
-	double joyforw;
-	double joyrot;
-	// Used in gradual acceleration attempt
 	double forward;
 	double rotation;
-	double nextrotation;
-	double nextforward;
-	double counter = 0;
-	//double counter1 = 0;
 	final double updaterate = 0.1;
 	final double maxupdaterate = 0.05;
 
@@ -29,7 +21,6 @@ public class ManualDrive extends Command {
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
-		counter = 0;
 		forward = 0;
 		rotation = 0;
 	}

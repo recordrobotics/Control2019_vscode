@@ -2,12 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Relay;
 import frc.robot.commands.NetworkCommand;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.Reset;
 //import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
@@ -48,7 +50,7 @@ public class Robot extends TimedRobot {
   }
   
  
-  Command m_autonomousCommand;
+  CommandGroup m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static void setLight(boolean turnOn) {
@@ -131,7 +133,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = new CommandGroup();
+    m_autonomousCommand.addSequential(new Reset());
+    m_autonomousCommand.addSequential(m_chooser.getSelected());
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -144,7 +148,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
-
     gyro.reset();
   }
 

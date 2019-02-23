@@ -30,6 +30,7 @@ public class Acquisition extends PIDSubsystem {
 	private final static double tolerance = 0.01;
 	final static double acquisitionRaiseSpeed = 1.0;
 	final static double acquisitionLowerSpeed = 0.3;
+	final static double rollerSpeed = 0.25;
 
 	public Acquisition() {
 		super("Acquisition", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -77,7 +78,7 @@ public class Acquisition extends PIDSubsystem {
 	} 
 
 	public void roll(double x) {
-		rollerMotor.set(ControlMode.PercentOutput, x);
+		rollerMotor.set(ControlMode.PercentOutput, x*rollerSpeed);
 	}
 
 	public void stop() {

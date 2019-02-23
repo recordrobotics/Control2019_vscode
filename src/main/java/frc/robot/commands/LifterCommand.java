@@ -5,26 +5,21 @@ import frc.robot.Robot;
 
 public class LifterCommand extends Command {
 	// Toggled button to switch from automatic or manual lift. Not currently used because automatic and manual lift use different buttons.
-	boolean manualLift = false;
 	// Magnetic switches
-	boolean switch0 = false;
-	boolean top_switch = false;
-	/*
-	Buttons for raising and lowering lift using PID loop vs Manual code. 
-	Auto is currently press while Manual is hold. Both raise/lower to the next available position. 
-	*/
-	boolean autoraise = false;
-	boolean autolower = false;
-	boolean manualraise = false;
-	boolean manuallower = false;
-	boolean manualrelease = false;
+	boolean switch0;
+	boolean top_switch;
+	// Standard lift positions
+	double[] auto_positions;
+	// Joystick inputs
+	boolean autoraise;
+	boolean autolower;
+	boolean manualraise;
+	boolean manuallower;
+	boolean manualrelease;
 	//final static double manualupdaterate = 0.01;
 
-	int reset = 0;
-	double movement = 0;
-
-
-	final double[] auto_positions = {0.0, 0.10471428, 0.971, 1.171, 1.9462857, 2.0957};
+	int reset;
+	double movement;
 	int auto_position_index = 0;
 
 	public LifterCommand() {
@@ -53,6 +48,7 @@ public class LifterCommand extends Command {
 		manualraise = OI.getManualRaiseButton();
 		manuallower = OI.getManualLowerButton();
 		manualrelease = OI.getManualRelease();
+		auto_positions = Robot.lifter.getAutoPositions();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		if(reset == 1) {
 			if(!switch0) {

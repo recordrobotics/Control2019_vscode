@@ -8,25 +8,24 @@ public class AcquisitionCommand extends Command {
 	public AcquisitionCommand() {
 		requires(Robot.acquisition);
 	}
-	int rollbutton = 0;
-	// Raising lowers encoder values, so must be negative input
-	int raisebutton = 0;
-	int lowerbutton = 0;
+	// Joystick inputs
+	int raisebutton;
+	int lowerbutton;
+	int rollbutton;
+	boolean release;
+	// Switches
 	boolean switch0; 
 	boolean switch1;
-	// Double representing the position of the acquisition, of 3. Not currently used
-	double state = 0;
-	final static double rollerSpeed = 0.25;
-	final static double upacqsens = 0.4;
-	final static double downacqsens = 0.2;
+	// Encoders
+	double acquisitionpos;
+	double liftpos;
+
+	double movement;
+	int reset;
+	
 	final static double updaterate = 0.04;
-	boolean release;
-	double acquisitionpos = 0;
-	double movement = 0;
 	// Threshold for lift encoder values below which acquisition cannot drop down to bottom state
 	final static double dropthreshold = -1e9;
-	double liftpos;
-	int reset = 0;
 
 	@Override
 	protected void initialize() {
@@ -69,7 +68,7 @@ public class AcquisitionCommand extends Command {
 			acquisitionpos = Robot.acquisition.getacquisitionpos();
 		}
 		// Can roll in two directions based on which roll button is pressed
-		Robot.acquisition.roll(rollerSpeed*rollbutton);
+		Robot.acquisition.roll(rollbutton);
 		// Raise button and lower button are not pushed at the same time, and one is active
 		if(reset == 0 && raisebutton+lowerbutton != 0)
 		{
