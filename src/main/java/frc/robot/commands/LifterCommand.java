@@ -18,8 +18,10 @@ public class LifterCommand extends Command {
 	boolean manualrelease;
 	//final static double manualupdaterate = 0.01;
 
-	int reset;
-	double movement;
+	int reset = 0;
+	double movement = 0;
+
+
 	int auto_position_index = 0;
 
 	public LifterCommand() {
@@ -69,9 +71,9 @@ public class LifterCommand extends Command {
 				// To raise the lift cannot be at the top position
 				if(autoraise && !top_switch) { 
 					// The PID controller should move to position 1 if at 0,s or 2 if at 1. Actual values will be different.
-					if(auto_position_index < (auto_positions.length - 1)) {
+					if(auto_position_index < (Robot.lifter.auto_positions.length - 1)) {
 						auto_position_index++;
-						Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
+						Robot.lifter.setSetPoint(Robot.lifter.auto_positions[auto_position_index]);
 					}
 				}
 				// To lower the lift cannot be at the bottom position
@@ -79,7 +81,7 @@ public class LifterCommand extends Command {
 					// The PID controller should move to position 1 if at 2 or 0 if at 1. Actual values will be different.
 					if(auto_position_index > 0) {
 						auto_position_index--;
-						Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
+						Robot.lifter.setSetPoint(Robot.lifter.auto_positions[auto_position_index]);
 					}
 				}
 			}
