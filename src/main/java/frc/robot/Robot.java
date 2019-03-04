@@ -133,6 +133,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    gyro.reset();
     m_autonomousCommand = new CommandGroup();
     m_autonomousCommand.addSequential(new Reset());
     m_autonomousCommand.addSequential(m_chooser.getSelected());
@@ -148,7 +149,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
-    gyro.reset();
   }
 
   /**
