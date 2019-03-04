@@ -23,11 +23,10 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	private final static double Rd = 10.0;
 	private final static double tolerance = 0.01;
 	private final static double encoder_conv = -1.0/7000.0;
-	private final double[] auto_positions = {0.0, 0.10471428, 0.971, 1.171, 1.9462857, 2.0957};
 	final static double raiseSpeed = 0.5;
 	final static double lowerSpeed = 0.3;
 	
-    public final double[] auto_positions = {0.0, 0.10471428, 0.971, 1.171, 1.9462857, 2.0957};
+  public final double[] auto_positions = {0.0, 0.10471428, 0.971, 1.171, 1.9462857, 2.0957};
 
 	public Lifter() {
 		super("Lifter", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
