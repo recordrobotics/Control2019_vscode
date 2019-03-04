@@ -21,7 +21,6 @@ public class RobotMap {
  public static int driveFrontLeftPort = 5;
  public static int driveBackRightPort = 2;
  public static int driveBackLeftPort = 1;
- //public static int testMotorPort = 8;
 
  // Acquistion might be reversed
  public static int acquisitionPort = 3;
@@ -51,7 +50,6 @@ public class RobotMap {
   public static int lifter1Port = 10;
   public static int lifter2Port = 0;
   public static int lifter0Port = 7;
-   
 /*
    // Old Robot
  

@@ -32,12 +32,6 @@ public class AcquisitionCommand extends Command {
 		Robot.acquisition.stop();
 		Robot.acquisition.getPIDController().setEnabled(false);
 		reset = 1;
-
-		// Remove later
-		/*Robot.acquisition.encoderReset();
-		Robot.acquisition.rotate(0.0);
-		Robot.acquisition.getPIDController().setEnabled(true);
-		Robot.acquisition.setSetpoint(0.0);*/
 	}
 	@Override
 	protected void execute() {
@@ -72,7 +66,6 @@ public class AcquisitionCommand extends Command {
 		// Raise button and lower button are not pushed at the same time, and one is active
 		if(reset == 0 && raisebutton+lowerbutton != 0)
 		{
-			//Robot.acquisition.getPIDController().setEnabled(false);
 			// Only use raise input if not in state 0
 			if(!switch0) {
 				movement += raisebutton;

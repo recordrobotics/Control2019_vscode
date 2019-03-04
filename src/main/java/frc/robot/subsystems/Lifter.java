@@ -45,8 +45,6 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	}
 	
 	public void setLift(double x) {
-		if(x < 0 && get0switch() || x > 0 && get2switch())
-			x = 0;
 		if(x > 0)
 			x*= raiseSpeed;
 		if(x < 0)

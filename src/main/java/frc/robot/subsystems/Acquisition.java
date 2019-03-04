@@ -72,8 +72,6 @@ public class Acquisition extends PIDSubsystem {
 	}
 
 	public void rotate(double x) {
-		//if(x < 0 && getswitch0() || x > 0 && getswitch1())
-			//x = 0;
 		acquisitionMotor.set(ControlMode.PercentOutput, -x);
 	} 
 

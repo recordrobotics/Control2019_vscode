@@ -33,7 +33,8 @@ public class ManualDrive extends Command {
 		forward += clamp((OI.getForward() - forward) * updaterate, -maxupdaterate, maxupdaterate);
 		rotation += clamp((OI.getRotation() - rotation) * updaterate, -maxupdaterate, maxupdaterate);
 
-		/*joyforw = OI.getForward();
+		/*
+		joyforw = OI.getForward();
 		joyrot = OI.getRotation();
 		if (counter == 0 || nextforward > 0 && joyforw < nextforward || nextforward < 0 && joyforw > nextforward) {
 			forward = joyforw/2;
@@ -44,8 +45,7 @@ public class ManualDrive extends Command {
 		else if(joyforw > 0 && nextforward + updaterate <= joyforw)
 			forward = nextforward + updaterate;
 		else
-			forward = joyforw;*/
-			/*
+			forward = joyforw;
 		if (counter1 == 0 || Math.abs(joyrot) < Math.abs(nextrotation)) {
 			rotation = joyrot/2;
 			counter++;

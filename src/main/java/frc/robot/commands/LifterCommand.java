@@ -30,12 +30,6 @@ public class LifterCommand extends Command {
 		Robot.lifter.getPIDController().setEnabled(false);
 		Robot.lifter.setLift(0);
 		reset = 1;
-
-		// REMOVE LATER
-		/*Robot.lifter.encoderReset();
-		Robot.lifter.setLift(0.0);
-		Robot.lifter.getPIDController().setEnabled(true);
-		Robot.lifter.setSetpoint(0.0);*/
 	}
 	@Override
 	protected void execute() {
@@ -79,11 +73,6 @@ public class LifterCommand extends Command {
 						auto_position_index++;
 						Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
 					}
-					/*if(lifterpos > 0.8 && switch2)
-						Robot.lifter.setSetPoint(2.0);
-					else if(lifterpos >= 0) 
-						Robot.lifter.setSetPoint(1.0);
-					Robot.lifter.getPIDController().setEnabled(true);*/
 				}
 				// To lower the lift cannot be at the bottom position
 				else if(autolower && !switch0) {
@@ -92,31 +81,19 @@ public class LifterCommand extends Command {
 						auto_position_index--;
 						Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
 					}
-					/*if(lifterpos < 1.2 && switch1)
-						Robot.lifter.setSetPoint(0.0);
-					else if(lifterpos <= 2 && switch2) 
-						Robot.lifter.setSetPoint(1.0);
-					Robot.lifter.getPIDController().setEnabled(true);*/
 				}
 			}
 			// Manual does not use stages
 			if((manualraise || manuallower) && !(manualraise && manuallower)) {
 				Robot.lifter.getPIDController().setEnabled(false);
 				if(manualraise && !top_switch) {
-					//if(lifterpos > 0.8 && !switch2)
-					//	movement = 1;
-					//else if(lifterpos >= 0 && !switch1) 
 					movement = 1;
 				}
 				else if(manuallower && !switch0) {
-					//if(!switch0)
-					//	movement = -1;
-					//else if(lifterpos <= 2 && !switch1) 
-						movement = -1;
+					movement = -1;
 				}
 				Robot.lifter.setLift(movement);
 			}
-
 			if (manualrelease) {
 				Robot.lifter.setLift(0.0);
 				Robot.lifter.getPIDController().setEnabled(true);
@@ -124,7 +101,6 @@ public class LifterCommand extends Command {
 			}
 		}
 		//Robot.lifter.setSetpoint(Robot.lifter.getSetPoint() + manualupdaterate*movement);
-			//System.out.println(Robot.lifter.getSetpoint());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
