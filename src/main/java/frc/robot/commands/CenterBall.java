@@ -35,13 +35,13 @@ public class CenterBall {
     double ball_x = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
     double ball_y = SmartDashboard.getNumber("ball_y|PI_2", -2.0);
     
-    if(ball_x < -1.5) {
+    if(ball_x < -1.0) {
       error_x = 0.0;
     } else {
       error_x = ball_x - zero_x;
     }
     
-    if(ball_y < -1.5) {
+    if(ball_y < -1.0) {
       error_y = 0.0;
     } else {
       error_y = ball_y - zero_y;
