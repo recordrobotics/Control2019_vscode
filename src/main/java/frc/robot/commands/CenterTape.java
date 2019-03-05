@@ -18,7 +18,7 @@ public class CenterTape extends Command {
   @Override
   protected void initialize() {
     Robot.newdrivetrain.stop();
-    start_time = System.getTimeMillis();
+    start_time = System.currentTimeMillis();
     done = false;
   }
 
@@ -41,7 +41,7 @@ public class CenterTape extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return done || (System.getTimeMillis() - start_time > timeout);
+    return done || (System.currentTimeMillis() - start_time > timeout);
   }
 
   // Called once after isFinished returns true

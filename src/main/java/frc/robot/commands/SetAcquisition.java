@@ -14,7 +14,7 @@ public class SetAcquisition extends Command {
   
   @Override
   protected void initialize() {
-    Robot.acquisition.getPIDContoller().setEnabled(true);
+    Robot.acquisition.getPIDController().setEnabled(true);
     Robot.acquisition.setSetpoint(val);
   }
 

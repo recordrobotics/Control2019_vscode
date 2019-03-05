@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.Robot;
 
-public class CenterBall {
+public class CenterBall extends Command {
   private long timeout, start_time;
   private double error_x, error_y;
 
@@ -25,7 +25,7 @@ public class CenterBall {
   @Override
   protected void initialize() {
     Robot.newdrivetrain.stop();
-    start_time = System.getTimeMillis();
+    start_time = System.currentTimeMillis();
     error_x = 0.0;
     error_y = 0.0;
   }
@@ -99,7 +99,7 @@ public class CenterBall {
   @Override
   protected boolean isFinished() {
     return (Math.abs(error_x) <= threshold_x && Math.abs(error_y) <= threshold_y) ||
-           (System.getTimeMillis() - start_time > timeout);
+           (System.currentTimeMillis() - start_time > timeout);
   }
 
   // Called once after isFinished returns true
