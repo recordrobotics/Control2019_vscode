@@ -12,8 +12,8 @@ public class CenterBall {
   final private double zero_y = 0.5;
   final private double threshold_x = 0.02;
   final private double threshold_y = 0.02;
-  final private double move_x = 0.1;
-  final private double move_y = 0.1;
+  //final private double move_x = 0.1;
+  //final private double move_y = 0.1;
 
   public CenterBall(long t) {
     timeout = t;
@@ -28,6 +28,36 @@ public class CenterBall {
     start_time = System.getTimeMillis();
     error_x = 0.0;
     error_y = 0.0;
+  }
+
+  private double clamp(double v, double min, double max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  private double calculateX() {
+    double min = 0.1;
+    double max = 0.3;
+    double f = 0.5;
+    if(error_x > 0.0) {
+      return clamp(error_x * f, min, max);
+    }
+    else if(error_x < 0.0) {
+      return clamp(error_x * f, -max, -min);
+    }
+    return 0.0;
+  }
+
+  private double calculateY() {
+    double min = 0.1;
+    double max = 0.3;
+    double f = 0.5;
+    if(error_y > 0.0) {
+      return clamp(error_y * f, min, max);
+    }
+    else if(error_y < 0.0) {
+      return clamp(error_y * f, -max, -min);
+    }
+    return 0.0;
   }
 
   @Override
@@ -51,13 +81,13 @@ public class CenterBall {
     double right = 0.0;
 
     if(Math.abs(error_x) > threshold_x) {
-      double x = Math.signum(error_x) * move_x;
+      double x = calculateX();
       left += x;
       right -= x;
     }
     
     if(Math.abs(error_y) > threshold_y) {
-      double y = Math.signum(error_y) * move_y;
+      double y = calculateY();
       left -= y;
       right -= y;
     }
