@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Autonomous extends CommandGroup {
   public Autonomous() {
     addSequential(new CenterBall(1000));
-    addSequential(new SetAcquisition(1.2));
+    /*addSequential(new SetAcquisition(1.2));
     addSequential(new SetRoller(0.1));
     addSequential(new Delay(1000));
     addSequential(new SetRoller(0.0));
@@ -19,6 +19,6 @@ public class Autonomous extends CommandGroup {
     addSequential(new CenterTape(3000));
     addSequential(new SetRoller(-0.1));
     addSequential(new Delay(1000));
-    addSequential(new SetRoller(0.0));
+    addSequential(new SetRoller(0.0));*/
   }
 }
