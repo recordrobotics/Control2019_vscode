@@ -133,6 +133,15 @@ public class OI {
     return autolower;
   }
 
+  public static int getManualLiftStick() {
+    int stick = left.getPOV(0);
+    return stick;
+  }
+  public static int getAutoLiftStick() {
+    int stick = right.getPOV(0);
+    return stick;
+  }
+
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.

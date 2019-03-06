@@ -59,6 +59,17 @@ public class Robot extends TimedRobot {
     else
       led.set(Relay.Value.kOff);
   }
+
+  public static double smoothAccel(double joyVal, long[] start_time, long warmUp, double sens) {
+    double output;
+    if(Math.abs(joyVal) < 0.2)
+      start_time[0] = System.currentTimeMillis();
+    if((System.currentTimeMillis() - start_time[0]) > warmUp)
+      output = sens * joyVal;
+    else
+      output = ((System.currentTimeMillis() - start_time[0])/warmUp)*sens*joyVal;
+    return output;
+  }
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.

@@ -39,10 +39,10 @@ public class LifterCommand extends Command {
 		movement = 0;
 		switch0 = Robot.lifter.get0switch();
 		top_switch = Robot.lifter.get1switch() && Robot.lifter.get2switch();
-		autoraise = OI.getAutoRaiseButton();
-		autolower = OI.getAutoLowerButton();
-		manualraise = OI.getManualRaiseButton();
-		manuallower = OI.getManualLowerButton();
+		autoraise = OI.getAutoLiftStick() != -1 && (OI.getAutoLiftStick() >= 315 || OI.getAutoLiftStick() <= 45); 
+		autolower = OI.getAutoLiftStick() != -1 && (OI.getAutoLiftStick() <= 225 || OI.getAutoLiftStick() <= 135);
+		manualraise = OI.getManualLiftStick() != -1 && (OI.getManualLiftStick() >= 315 || OI.getManualLiftStick() <= 45);
+		manuallower = OI.getManualLiftStick() != -1 && (OI.getManualLiftStick() >= 225 || OI.getManualLiftStick() <= 135);
 		manualrelease = OI.getManualRelease();
 		auto_positions = Robot.lifter.getAutoPositions();
 		// Reset the lift back to default position, and reset encoder values if necessary
