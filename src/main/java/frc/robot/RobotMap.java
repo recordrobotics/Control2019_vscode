@@ -1,4 +1,6 @@
 package frc.robot;
+import edu.wpi.first.wpilibj.SerialPort;
+
 
 public class RobotMap {
   
@@ -67,9 +69,9 @@ public class RobotMap {
   public static int leftgrabberPort = 5;
   public static int rightgrabberPort = 6;
 
- // Sensors 
-  public static int rangefinderPort = 7;
-  public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);
-
  */
+ // Sensors 
+  // public static int rangefinderPort = 7;
+  // public static SerialPort rangeFinderPort = new SerialPort(9600, SerialPort.Port.kOnboard);
+
 }
