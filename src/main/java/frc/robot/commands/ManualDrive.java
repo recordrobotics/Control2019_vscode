@@ -12,10 +12,13 @@ public class ManualDrive extends Command {
 	long[] f_start_time = {0};
 	long[] r_start_time = {0};
 
-	long f_warmup = 500;
-	long r_warmup = 500;
-	double f_sens = 0.5;
-	double r_sens = 0.5;
+	final long f_warmup = 500;
+	final long r_warmup = 500;
+	final double f_sens = 0.5;
+	final double r_sens = 0.5;
+	final double f_pow = 3.0;
+	final double r_pow = 1.0;
+
 
 	@Override
 	protected void initialize() {
@@ -57,8 +60,8 @@ public class ManualDrive extends Command {
 		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
 		*/
 
-		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens);
-		double rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens);
+		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
+		double rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
 
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;

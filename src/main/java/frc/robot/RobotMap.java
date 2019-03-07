@@ -13,7 +13,7 @@ public class RobotMap {
  public static int manuallowerPort = 3;
  public static int autoraisePort = 6;
  public static int autolowerPort = 4;
- public static int switchliftstatePort = 11;
+ //public static int switchliftstatePort = 11;
 
 
   // CAN Bus Drive 

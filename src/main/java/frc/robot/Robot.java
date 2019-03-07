@@ -60,14 +60,14 @@ public class Robot extends TimedRobot {
       led.set(Relay.Value.kOff);
   }
 
-  public static double smoothAccel(double joyVal, long[] start_time, long warmUp, double sens) {
+  public static double smoothAccel(double joyVal, long[] start_time, long warmUp, double sens, double pow) {
     double output;
     if(Math.abs(joyVal) < 0.2)
       start_time[0] = System.currentTimeMillis();
     if((System.currentTimeMillis() - start_time[0]) > warmUp)
-      output = sens * joyVal;
+      output = Math.pow(sens * joyVal, pow);
     else
-      output = ((System.currentTimeMillis() - start_time[0])/warmUp)*sens*joyVal;
+      output = Math.pow(((System.currentTimeMillis() - start_time[0])/warmUp)*sens*joyVal, pow);
     return output;
   }
   /**
