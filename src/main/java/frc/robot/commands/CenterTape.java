@@ -4,15 +4,30 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.Robot;
 
+import java.nio.ByteBuffer;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.*;
+
+
 public class CenterTape extends Command {
   private double timeout, start_time;
   private boolean done;
+  private SerialPort device;
+
 
   public CenterTape(long t) {
     timeout = t;
     start_time = 0;
     done = false;
     requires(Robot.newdrivetrain);
+    device = new SerialPort(9600, SerialPort.Port.kOnboard);
+  }
+
+  public long bytesToLong(byte[] bytes) {
+    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+    buffer.put(bytes);
+    buffer.flip();//need flip 
+    return buffer.getLong();
   }
 
   @Override
@@ -27,6 +42,22 @@ public class CenterTape extends Command {
     double base_speed = 0.4;                                                                                                  
     double turn_factor = -3.0;
     double turn_clamp = 0.1;
+
+    int length = device.getBytesReceived();
+    byte[] data = device.read(length);
+    byte[] leftByte = new byte[4];
+    byte[] rightByte = new byte[4];
+    for (int i = 0; i < 4; i++){
+      leftByte[i] = data[i];
+      rightByte[i] = data[i+4];
+    }
+
+    long cmLeft = bytesToLong(leftByte);
+    long cmRight = bytesToLong(rightByte);
+
+    System.out.println("cmLeft: " + cmLeft);
+    System.out.println("cmRight: " + cmRight);
+
     
     double line_error1 = SmartDashboard.getNumber("tapes|PI_1", -2.0);
     //double line_error2 = SmartDashboard.getNumber("tapes|PI_2", -2.0);

@@ -66,10 +66,10 @@ public class RobotMap {
   public static int climbmotorPort = 4;
   public static int leftgrabberPort = 5;
   public static int rightgrabberPort = 6;
+ */
 
  // Sensors 
-  public static int rangefinderPort = 7;
-  public static  SerialPort rangeFinderPort = new SerialPort(SerialPort.Port.kOnboard);
+  // public static int rangefinderPort = 7;
+  // public static  SerialPort rangeFinderPort = new SerialPort(9600, SerialPort.Port.kOnboard);
 
- */
 }
