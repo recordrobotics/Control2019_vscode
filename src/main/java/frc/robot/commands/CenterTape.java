@@ -22,14 +22,22 @@ public class CenterTape extends Command {
     start_time = 0;
     done = false;
     requires(Robot.newdrivetrain);
-    device = new SerialPort(9600, SerialPort.Port.kOnboard);
+    device = new SerialPort(9600, Port.kUSB);
   }
 
-  public long bytesToLong(byte[] bytes) {
-    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-    buffer.put(bytes);
-    buffer.flip();//need flip 
-    return buffer.getLong();
+  public long bytesToLong(byte[] b) {
+    return ( ( (long) b[7]) & 0xFF) +
+      ( ( ( (long) b[6]) & 0xFF) << 8) +
+      ( ( ( (long) b[5]) & 0xFF) << 16) +
+      ( ( ( (long) b[4]) & 0xFF) << 24) +
+      ( ( ( (long) b[3]) & 0xFF) << 32) +
+      ( ( ( (long) b[2]) & 0xFF) << 40) +
+      ( ( ( (long) b[1]) & 0xFF) << 48) +
+      ( ( ( (long) b[0]) & 0xFF) << 56);
+    // ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+    // buffer.put(bytes);
+    // buffer.flip();//need flip 
+    // return buffer.getLong();
   }
 
   @Override
@@ -54,11 +62,14 @@ public class CenterTape extends Command {
       rightByte[i] = data[i+4];
     }
 
-    long cmLeft = bytesToLong(leftByte);
-    long cmRight = bytesToLong(rightByte);
+    System.out.println("cmLeft: " + leftByte);
+    System.out.println("cmRight: " + rightByte);
 
-    System.out.println("cmLeft: " + cmLeft);
-    System.out.println("cmRight: " + cmRight);
+    // long cmLeft = bytesToLong(leftByte);
+    // long cmRight = bytesToLong(rightByte);
+
+    // System.out.println("cmLeft: " + cmLeft);
+    // System.out.println("cmRight: " + cmRight);
 
     
     double line_error1 = SmartDashboard.getNumber("tapes|PI_1", -2.0);
