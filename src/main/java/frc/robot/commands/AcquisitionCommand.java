@@ -43,7 +43,7 @@ public class AcquisitionCommand extends Command {
 		rollbutton = OI.getRollButton();
 		switch0 = Robot.acquisition.getswitch0();
 		switch1 = Robot.acquisition.getswitch1();
-		release = OI.getAcquisitionRelease();
+		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
 		if(reset == 1) {

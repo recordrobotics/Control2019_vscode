@@ -1,5 +1,6 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -20,12 +21,11 @@ public class OI {
 	private static double forward;
   private static double rotation;
   private static int controltoggler = 0;
-    /*
   private static boolean manualraisetoggler = false;
   private static boolean manuallowertoggler = false;
   private static boolean autoraisetoggler = false;
   private static boolean autolowertoggler = false;
-  */
+
   public static double getForward() {
     forward = 0.5*(left.getY() + right.getY());
    // if(Math.abs(right.getY()) < 0.3 || Math.abs(left.getY()) < 0.3)
@@ -57,7 +57,8 @@ public class OI {
   }
 */
   public static int getRollButton() {
-    return (left.getRawButton(RobotMap.rollPort) ? 1 : 0) - (right.getRawButton(RobotMap.rollPort) ? 1 : 0);
+    return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
+    ((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
   }
 
   public static boolean getRaiseButton() {
@@ -67,18 +68,20 @@ public class OI {
   public static boolean getLowerButton() {
     return left.getRawButton(RobotMap.lowerPort);
   }
-
+/*
   public static boolean getAcquisitionRelease() {
     boolean release = (right.getRawButtonReleased(RobotMap.raisePort) && !left.getRawButton(RobotMap.lowerPort) ||
     left.getRawButtonReleased(RobotMap.lowerPort) && !right.getRawButton(RobotMap.raisePort));
     return release;
   }
-
+*/
   public static boolean getManualRaiseButton() {
-    boolean manualraise = right.getRawButton(RobotMap.manualraisePort);
+    boolean manualraise = left.getRawButton(RobotMap.manualraisePort);
     /*
-    if(manualraise) {
-     
+    boolean manualraise = left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45);
+    SmartDashboard.putNumber("left joy POV #", left.getPOVCount());
+    SmartDashboard.putNumber("left joy POV", left.getPOV());
+    if(manualraise){
       if(manualraisetoggler)
         manualraise = false;
       else 
@@ -89,8 +92,11 @@ public class OI {
   }
 
   public static boolean getManualLowerButton() {
-    boolean manuallower = right.getRawButton(RobotMap.manuallowerPort);
+    boolean manuallower = left.getRawButton(RobotMap.manuallowerPort);
     /*
+    boolean manuallower = left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225);
+    SmartDashboard.putNumber("left joy POV #", left.getPOVCount());
+    SmartDashboard.putNumber("left joy POV", left.getPOV());
     if(manuallower){
       if(manuallowertoggler)
         manuallower = false;
@@ -100,6 +106,7 @@ public class OI {
     */
     return manuallower;
   }
+  
   public static boolean getManualRelease() {
     boolean release = (right.getRawButtonReleased(RobotMap.manualraisePort) && !right.getRawButton(RobotMap.manuallowerPort) ||
     right.getRawButtonReleased(RobotMap.manuallowerPort) && !right.getRawButton(RobotMap.manualraisePort));
@@ -109,6 +116,10 @@ public class OI {
   public static boolean getAutoRaiseButton() {
     boolean autoraise = right.getRawButtonReleased(RobotMap.autoraisePort);
     /*
+    boolean autoraise = right.getPOV() != -1 && (right.getPOV() >= 315 || right.getPOV() <= 45);
+    SmartDashboard.putNumber("right joy POV #", right.getPOVCount());
+    SmartDashboard.putNumber("right joy POV", right.getPOV());
+    
     if(autoraise){
       if(autoraisetoggler)
         autoraise = false;
@@ -121,8 +132,12 @@ public class OI {
 
   public static boolean getAutoLowerButton() {
     boolean autolower = right.getRawButtonReleased(RobotMap.autolowerPort);
-    //System.out.println(autolower);
     /*
+    boolean autolower = right.getPOV() != -1 && (right.getPOV() >= 135 || right.getPOV() <= 225);
+    SmartDashboard.putNumber("right joy POV #", right.getPOVCount());
+    SmartDashboard.putNumber("right joy POV", right.getPOV());
+    //System.out.println(autolower);
+    
     if(autolower){
       if(autolowertoggler)
         autolower = false;
@@ -131,15 +146,6 @@ public class OI {
     }
     */
     return autolower;
-  }
-
-  public static int getManualLiftStick() {
-    int stick = left.getPOV(0);
-    return stick;
-  }
-  public static int getAutoLiftStick() {
-    int stick = right.getPOV(0);
-    return stick;
   }
 
   // There are a few additional built in buttons you can use. Additionally,
