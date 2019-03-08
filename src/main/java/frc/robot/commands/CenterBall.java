@@ -20,6 +20,7 @@ public class CenterBall extends Command {
     start_time = 0;
     error_x = 0.0;
     error_y = 0.0;
+    requires(Robot.newdrivetrain);
   }
 
   @Override
@@ -35,21 +36,21 @@ public class CenterBall extends Command {
   }
 
   private double calculateX() {
-    double min = 0.1;
-    double max = 0.3;
+    double min = 0.02;
+    double max = 0.07;
     double f = 0.5;
     if(error_x > 0.0) {
-      return clamp(error_x * f, min, max);
+      return -clamp(error_x * f, min, max);
     }
     else if(error_x < 0.0) {
-      return clamp(error_x * f, -max, -min);
+      return -clamp(error_x * f, -max, -min);
     }
     return 0.0;
   }
 
   private double calculateY() {
-    double min = 0.1;
-    double max = 0.3;
+    double min = 0.02;
+    double max = 0.15;
     double f = 0.5;
     if(error_y > 0.0) {
       return clamp(error_y * f, min, max);

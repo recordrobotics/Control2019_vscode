@@ -9,20 +9,18 @@ public class ManualDrive extends Command {
 		requires(Robot.newdrivetrain);
 	}
 
-	double forward;
-	double rotation;
-	final double updaterate = 0.1;
-	final double maxupdaterate = 0.05;
+	long[] f_start_time = {0};
+	long[] r_start_time = {0};
 
-	private double clamp(double x, double l, double u) {
-		return Math.max(l, Math.min(x, u));
-	}
+	long f_warmup = 500;
+	long r_warmup = 500;
+	double f_sens = 0.5;
+	double r_sens = 0.2;
+	double r_sens2 = 0.5;
 
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
-		forward = 0;
-		rotation = 0;
 	}
 
 	@Override
@@ -30,8 +28,8 @@ public class ManualDrive extends Command {
 	// On old robot, showed some effect, but could not prevent backheavy robot from nearly tipping when quickly stopping in reverse.
 	// When the robot was driven with some caution and at reasonable sensitivities, the code appeared unnecessary, so it is not currently implemented.
 	protected void execute() {
-		forward += clamp((OI.getForward() - forward) * updaterate, -maxupdaterate, maxupdaterate);
-		rotation += clamp((OI.getRotation() - rotation) * updaterate, -maxupdaterate, maxupdaterate);
+		//forward += clamp((OI.getForward() - forward) * updaterate, -maxupdaterate, maxupdaterate);
+		//rotation += clamp((OI.getRotation() - rotation) * updaterate, -maxupdaterate, maxupdaterate);
 
 		/*
 		joyforw = OI.getForward();
@@ -59,11 +57,21 @@ public class ManualDrive extends Command {
 		
 		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
 		*/
+
+		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens);
+		double rotation = 0.0;
+		if(Math.abs(forward) < 0.2)
+			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens2);
+		else
+			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens);
+		
+		//System.out.println(OI.getForward());
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;
 		//nextrotation = rotation;
 		
 		//Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation());
+		System.out.println(Robot.newdrivetrain.getrightdistance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

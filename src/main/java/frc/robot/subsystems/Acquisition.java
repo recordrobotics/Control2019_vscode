@@ -29,7 +29,7 @@ public class Acquisition extends PIDSubsystem {
 	private final static double Rd = 0.1;
 	private final static double tolerance = 0.01;
 	final static double acquisitionRaiseSpeed = 1.0;
-	final static double acquisitionLowerSpeed = 0.3;
+	final static double acquisitionLowerSpeed = 0.1;
 	final static double rollerSpeed = 0.25;
 
 	public Acquisition() {
@@ -65,10 +65,10 @@ public class Acquisition extends PIDSubsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		if(Robot.acquisition_enable)
+		/*if(Robot.acquisition_enable)
 			setDefaultCommand(new AcquisitionCommand());
 		else if(Robot.test_enable)
-			setDefaultCommand(new Test());
+			setDefaultCommand(new Test());*/
 	}
 
 	public void rotate(double x) {

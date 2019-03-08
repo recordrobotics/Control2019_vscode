@@ -28,15 +28,15 @@ public class OI {
   */
   public static double getForward() {
     forward = 0.5*(left.getY() + right.getY());
-    if(Math.abs(right.getY()) < 0.3 || Math.abs(left.getY()) < 0.3)
-      forward = 0;
+   // if(Math.abs(right.getY()) < 0.3 || Math.abs(left.getY()) < 0.3)
+     // forward = 0;
     return forward;
   }
 
 	public static double getRotation() {
     rotation = 0.5*(right.getZ() + left.getZ());
-    if(Math.abs(right.getZ()) < 0.3 || Math.abs(left.getZ()) < 0.3)
-      rotation = 0;
+  //  if(Math.abs(right.getZ()) < 0.3 || Math.abs(left.getZ()) < 0.3)
+    //  rotation = 0;
 		return rotation;
   }
   
@@ -131,6 +131,15 @@ public class OI {
     }
     */
     return autolower;
+  }
+
+  public static int getManualLiftStick() {
+    int stick = left.getPOV(0);
+    return stick;
+  }
+  public static int getAutoLiftStick() {
+    int stick = right.getPOV(0);
+    return stick;
   }
 
   // There are a few additional built in buttons you can use. Additionally,

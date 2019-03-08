@@ -39,12 +39,7 @@ public class NewWheels extends Subsystem {
 		backLeft.follow(frontLeft);
 	}
 	public void curvatureDrive(double forw, double rot) {
-		// Adjust rotation sensitivity if the robot is moving or not
-		if (forw < 0.3)
-			turnsens = 0.5;
-		else
-			turnsens = 0.3;
-		drive(-sens * forw + turnsens * rot, -sens * forw - turnsens * rot);
+		drive(-forw + rot, -forw - rot);
 	}
 
 	public void drive(double l, double r) {

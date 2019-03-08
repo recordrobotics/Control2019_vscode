@@ -55,6 +55,13 @@ public class Reset extends Command {
 	@Override
 	protected void end() {
 		Robot.lifter.stop();
+		Robot.lifter.encoderReset();
+		Robot.lifter.getPIDController().setEnabled(true);
+		Robot.lifter.setSetpoint(0.0);
+		Robot.acquisition.encoderReset();
+		Robot.acquisition.stop();
+		Robot.acquisition.getPIDController().setEnabled(true);
+		Robot.acquisition.setSetpoint(0.0);
 	}
 
 	// Called when another command which requires one or more of the same
@@ -62,5 +69,6 @@ public class Reset extends Command {
 	@Override
 	protected void interrupted() {
 		Robot.lifter.stop();
+		Robot.acquisition.stop();
 	}
 }
