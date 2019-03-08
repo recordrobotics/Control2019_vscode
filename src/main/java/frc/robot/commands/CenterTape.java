@@ -13,6 +13,8 @@ public class CenterTape extends Command {
   private double timeout, start_time;
   private boolean done;
   private SerialPort device;
+  private SerialPort.Port kOnboard;
+
 
 
   public CenterTape(long t) {
@@ -62,11 +64,11 @@ public class CenterTape extends Command {
     double line_error1 = SmartDashboard.getNumber("tapes|PI_1", -2.0);
     //double line_error2 = SmartDashboard.getNumber("tapes|PI_2", -2.0);
     
-    if(line_error1 >= -1.0) {
-      Robot.newdrivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error1 * turn_factor)));
-    } else {
-      done = true;
-    }
+    // if(line_error1 >= -1.0) {
+    //   Robot.newdrivetrain.curvatureDrive(-base_speed, -Math.max(-turn_clamp, Math.min(turn_clamp, line_error1 * turn_factor)));
+    // } else {
+    //   done = true;
+    // }
   }
 
   // Make this return true when this Command no longer needs to run execute()
