@@ -56,9 +56,18 @@ public class OI {
     return leftstick.getRawButton(RobotMap.climberbuttonPort);
   }
 */
+
+  public static boolean getCameraSwitch() {
+    return right.getRawButtonReleased(RobotMap.cameraSwitchPort);
+  }
+
   public static int getRollButton() {
     return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
     ((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
+  }
+
+  public static boolean getBallAdjustButton() {
+    return left.getRawButton(RobotMap.ballAdjustPort);
   }
 
   public static boolean getRaiseButton() {

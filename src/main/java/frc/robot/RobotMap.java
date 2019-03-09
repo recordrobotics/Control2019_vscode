@@ -13,8 +13,10 @@ public class RobotMap {
  public static int manuallowerPort = 3;
  public static int autoraisePort = 6;
  public static int autolowerPort = 4;
+ public static int ballAdjustPort = 7;
  //public static int switchliftstatePort = 11;
 
+ public static int cameraSwitchPort = 7;
 
   // CAN Bus Drive 
  public static int driveFrontRightPort = 7;
@@ -34,8 +36,8 @@ public class RobotMap {
   public static int leftEncoderPort2 = 16;
   public static int rightEncoderPort1 = 12;
   public static int rightEncoderPort2 = 13;
-  public static int acquisition_encoderPort1 = 5; 
-  public static int acquisition_encoderPort2 = 6; 
+  public static int acquisition_encoderPort1 = 5;
+  public static int acquisition_encoderPort2 = 6;
   public static int roller_encoderPort1 = 3;
   public static int roller_encoderPort2 = 4;
   public static int lifter_encoderPort1 = 8;

@@ -2,6 +2,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ManualDrive extends Command {
 	public ManualDrive() {
@@ -18,6 +19,8 @@ public class ManualDrive extends Command {
 	final double r_sens = 0.5;
 	final double f_pow = 3.0;
 	final double r_pow = 1.0;
+
+	final double b_sens = 0.1;
 
 	@Override
 	protected void initialize() {
@@ -62,12 +65,22 @@ public class ManualDrive extends Command {
 		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
 		double rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
 
+		double b = 0.0;
+		if(OI.getBallAdjustButton()) {
+			b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
+			if(b < -1.0) {
+				b = 0;
+			}
+		}
+
+		rotation += b * b_sens;
+
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;
 		//nextrotation = rotation;
 		
 		//Robot.drivetrain.curvatureDrive(OI.getForward(), OI.getRotation());
-		System.out.println(Robot.newdrivetrain.getrightdistance());
+		//System.out.println(Robot.newdrivetrain.getrightdistance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

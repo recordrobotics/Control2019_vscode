@@ -46,6 +46,8 @@ public class Robot extends TimedRobot {
   private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
+  private static Cameras cameras = new Cameras(640, 480);
+
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
   }
@@ -71,7 +73,7 @@ public class Robot extends TimedRobot {
       if((System.currentTimeMillis() - start_time[0]) > warmUp)
         output = Math.pow(sens * joyVal, pow);
       else
-        output = Math.pow(((double)(System.currentTimeMillis() - start_time[0])/(double)warmUp)*sens*joyVal);
+        output = Math.pow(((double)(System.currentTimeMillis() - start_time[0])/(double)warmUp)*sens*joyVal, pow);
     
       if(output > 0.0)
         output += 0.1;
@@ -99,7 +101,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Simple Auto", new Autonomous()); //new NetworkCommand(4.0, 8.0, 0));
     m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
     //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -112,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    /*SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
+    SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
     SmartDashboard.putNumber("gyro.yaw", gyro.getYaw());
     SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
     SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
@@ -123,7 +125,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("lifter.encoder", lifter.getlifterpos());
     SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
-    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());*/
+    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
     setLight(true);
     //System.out.println(acquisition.getacquisitionpos());
   }
