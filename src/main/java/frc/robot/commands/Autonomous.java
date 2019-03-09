@@ -21,6 +21,7 @@ public class Autonomous extends CommandGroup {
     addSequential(new CenterTape(3000));
     addSequential(new SetRoller(-0.1));
     addSequential(new Delay(1000));
-    addSequential(new Se(int(ballAvgX), int(ballAvgY))tRoller(0.0));*/
+    addSequential(new Se(int(ballAvgX), int(ballAvgY))tRoller(0.0));
+    addSequential(new CenterTape(3000));*/
   }
 }
