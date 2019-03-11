@@ -42,19 +42,24 @@ public class OI {
     return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
   }
 
-  public static double getForward() {
-    forward = 0.5*(left.getY() + right.getY());
-   // if(Math.abs(right.getY()) < 0.3 || Math.abs(left.getY()) < 0.3)
-     // forward = 0;
-    return forward;
-  }
-
-	public static double getRotation() {
-    rotation = 0.5*(right.getZ() + left.getZ());
-  //  if(Math.abs(right.getZ()) < 0.3 || Math.abs(left.getZ()) < 0.3)
-    //  rotation = 0;
+  public static double getRotation() {
+    rotation = 0.0;
+    if(Math.abs(rightstick.getZ()) > 0.3){
+      rotation += rightstick.getZ() * r_joystick_sens;
+    }
+    if(Math.abs(leftstick.getZ()) > 0.1){
+      rotation += leftstick.getZ() * l_joystick_sens;
 		return rotation;
-  }
+	}
+	
+	public static double getForward() {
+    forward = 0.0; 
+    if(Math.abs(rightstick.getY()) > 0.3){
+      forward += rightstick.getY() * r_joystick_sens;
+    }
+    if(Math.abs(leftstick.getY()) > 0.1){
+      forward += leftstick.getY() * l_joystick_sens;
+    }
   
   public Joystick getRightStick() {
     return right;
