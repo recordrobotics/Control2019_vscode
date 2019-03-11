@@ -12,11 +12,11 @@ import frc.robot.Robot;
 
 public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftPort);
-	public static Encoder liftEncoder = new Encoder(RobotMap.lifter_encoderPort1, 
-		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
-	public static DigitalInput switch0_1 = new DigitalInput(RobotMap.lifter1Port);
-	public static DigitalInput switch1_2 = new DigitalInput(RobotMap.lifter2Port);
-	public static DigitalInput resetswitch = new DigitalInput(RobotMap.lifter0Port);
+	public static Encoder liftEncoder;// = new Encoder(RobotMap.lifter_encoderPort1, 
+//s		RobotMap.lifter_encoderPort2, false, Encoder.EncodingType.k1X);
+	public static DigitalInput switch0_1;// = new DigitalInput(RobotMap.lifter1Port);
+	public static DigitalInput switch1_2;// = new DigitalInput(RobotMap.lifter2Port);
+	public static DigitalInput resetswitch;// = new DigitalInput(RobotMap.lifter0Port);
 	// Proportional, Integral and Derivative R values for PID Loop
 	private final static double Rp = 20.0;
 	private final static double Ri = 0.0;
@@ -39,10 +39,10 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 	}
 	
   public void initDefaultCommand() {
-		if(Robot.lifter_enable)
+	/*	if(Robot.lifter_enable)
 			setDefaultCommand(new LifterCommand(false));
 		else if(Robot.test_enable)
-			setDefaultCommand(new Test());
+			setDefaultCommand(new Test());*/
 	}
 	
 	public void setLift(double x) {

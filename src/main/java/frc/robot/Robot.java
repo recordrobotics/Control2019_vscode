@@ -126,14 +126,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("gyro.yaw", gyro.getAngle());
     SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
     SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
-    SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
+    /*SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
     SmartDashboard.putNumber("roller.encoder", acquisition.getrollerpos());
     SmartDashboard.putBoolean("acquisition.switch0", acquisition.getswitch0());
     SmartDashboard.putBoolean("acquisition.switch1", acquisition.getswitch1());
     SmartDashboard.putNumber("lifter.encoder", lifter.getlifterpos());
     SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
-    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
+    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());*/
     setLight(true);
    //System.out.println(lifter.getSetpoint());
     //acquisition.rotate(1.0);
