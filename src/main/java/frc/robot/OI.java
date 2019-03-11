@@ -24,6 +24,10 @@ public class OI {
 	private static Joystick rightstick = new Joystick(RobotMap.rightjoystickPort);
   private static Joystick leftstick = new Joystick(RobotMap.leftjoystickPort);
   
+  private static double l_joystick_sens = 0.1;
+  private static double r_joystick_sens = 0.4;
+
+
 	private static double forward;
   private static double rotation;
   private static int toggler = 0;
@@ -37,9 +41,14 @@ public class OI {
 	}
 	
 	public static double getForward() {
-    forward = (leftstick.getY() + rightstick.getY())/2;
-    if(Math.abs(rightstick.getY()) < 0.3 || Math.abs(leftstick.getY()) < 0.3)
-      forward = 0;
+    forward = 0; 
+    if(Math.abs(rightstick.getY()) > 0.3){
+      forward += rightstick.getY() * r_joystick_sens;
+    }
+    if(Math.abs(leftstick.getY()) > 0.2){
+      forward += leftstick.getY() * l_joystick_sens;
+    }
+
     return forward;
   }
   
