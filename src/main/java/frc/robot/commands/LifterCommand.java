@@ -20,19 +20,21 @@ public class LifterCommand extends Command {
 	//final static double manualupdaterate = 0.01;
 
 	int reset = 0;
+	boolean doReset = false;
 	double movement = 0;
 
 
 	int auto_position_index = 0;
 
-	public LifterCommand() {
+	public LifterCommand(boolean r) {
 		requires(Robot.lifter);
+		doReset = r;
 	}
 	@Override
 	protected void initialize() {
 		Robot.lifter.getPIDController().setEnabled(false);
 		Robot.lifter.setLift(0);
-		reset = 1;
+		reset = doReset ? 1 : 0;
 	}
 	@Override
 	protected void execute() {

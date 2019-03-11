@@ -40,7 +40,7 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 	
   public void initDefaultCommand() {
 		if(Robot.lifter_enable)
-			setDefaultCommand(new LifterCommand());
+			setDefaultCommand(new LifterCommand(false));
 		else if(Robot.test_enable)
 			setDefaultCommand(new Test());
 	}

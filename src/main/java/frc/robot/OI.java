@@ -31,7 +31,7 @@ public class OI {
 
   public OI() {
     JoystickButton but = new JoystickButton(right, RobotMap.resetPort);
-    but.whenPressed(new Reset(false));
+    but.whenPressed(new Reset(4000));
   }
 
   public static boolean getRangeButtonPressed() {

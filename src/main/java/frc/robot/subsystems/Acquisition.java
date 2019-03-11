@@ -71,7 +71,7 @@ public class Acquisition extends PIDSubsystem {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 		if(Robot.acquisition_enable)
-			setDefaultCommand(new AcquisitionCommand(0.6));
+			setDefaultCommand(new AcquisitionCommand());
 		else if(Robot.test_enable)
 			setDefaultCommand(new Test());
 	}

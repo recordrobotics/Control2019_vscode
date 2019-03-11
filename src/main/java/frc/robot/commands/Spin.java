@@ -37,7 +37,7 @@ public class Spin extends Command {
   protected void initialize() {
     start_time = System.currentTimeMillis();
     if(useGyro) {
-      start_angle = Robot.gyro.getYaw();
+      start_angle = Robot.gyro.getAngle();
     } else {
       start_angle = 0.0;
       last_l = Robot.newdrivetrain.getleftdistance();
@@ -50,7 +50,7 @@ public class Spin extends Command {
   @Override
   protected void execute() {
     if(useGyro) {
-      angle = Robot.gyro.getYaw();
+      angle = Robot.gyro.getAngle();
     } else {
       double l = Robot.newdrivetrain.getleftdistance();
       double r = Robot.newdrivetrain.getrightdistance();

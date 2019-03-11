@@ -33,6 +33,12 @@ public class RobotMap {
  public static int driveBackRightPort = 2;
  public static int driveBackLeftPort = 1;
 
+ // Sparks
+ public static int driveFrontRightPortOld = 2;
+ public static int driveFrontLeftPortOld = 0;
+ public static int driveBackRightPortOld = 3;
+ public static int driveBackLeftPortOld = 1;
+
  // Acquistion might be reversed
  public static int acquisitionPort = 3;
  public static int rollerPort = 4;
@@ -52,6 +58,11 @@ public class RobotMap {
   public static int lifter_encoderPort1 = 8;
   public static int lifter_encoderPort2 = 9;
 
+  // Old encoders
+  public static int leftEncoderPort1Old = 4;
+  public static int leftEncoderPort2Old = 3;
+  public static int rightEncoderPort1Old = 5;
+  public static int rightEncoderPort2Old = 6;
 
   // LED
   public static int relayPort = 1;

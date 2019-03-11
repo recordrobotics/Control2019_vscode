@@ -43,10 +43,6 @@ public class NewWheels extends Subsystem {
 	}
 
 	public void drive(double l, double r) {
-		if(Robot.isCalibrating()) {
-		//	l = 0.0;
-		//	r = 0.0;
-		}
 		frontLeft.set(ControlMode.PercentOutput, l);
 		frontRight.set(ControlMode.PercentOutput, -r);
 	}

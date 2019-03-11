@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import frc.robot.commands.NetworkCommand;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.Reset;
-//import frc.robot.subsystems.Wheels;
+import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
 import frc.robot.subsystems.Lifter;
@@ -19,7 +19,8 @@ import frc.robot.Network;
 import java.io.*;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
-// import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,10 +33,10 @@ public class Robot extends TimedRobot {
   public static double drivetrainWidth = 0.585;
 
   public static OI m_oi;
-  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  // public static Wheels drivetrain = new Wheels();
+  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+
   // Subsystems
-  public static NewWheels newdrivetrain = new NewWheels();
+  public static Wheels newdrivetrain = new Wheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
   public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
@@ -44,15 +45,15 @@ public class Robot extends TimedRobot {
   public static boolean test_enable = false;
   public static boolean acquisition_enable = true;
 
-  public static AHRS gyro;
-  private static boolean gyroSuccess = false;
+  // public static AHRS gyro;
+  // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
   private static Cameras cameras = new Cameras(640, 480);
-
+  /*
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
-  }
+  }*/
  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -98,12 +99,12 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     setLight(true);
     
-    try {
+    /*try {
       gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
       gyroSuccess = true;
     } catch (RuntimeException ex) {
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
-    }
+    }*/
 
     m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL2)); //new NetworkCommand(4.0, 8.0, 0));
   // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
@@ -121,8 +122,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
-    SmartDashboard.putNumber("gyro.yaw", gyro.getYaw());
+    //SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
+    SmartDashboard.putNumber("gyro.yaw", gyro.getAngle());
     SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
     SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
     SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());

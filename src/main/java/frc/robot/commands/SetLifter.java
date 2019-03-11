@@ -6,14 +6,17 @@ import frc.robot.Robot;
 
 public class SetLifter extends Command {
   private double val;
+  long time, start_time;
 
-  public SetLifter(double v) {
+  public SetLifter(double v, long t) {
     val = v;
+    time = t;
     requires(Robot.lifter);
   }
   
-  public SetLifter(int pos) {
+  public SetLifter(int pos, long t) {
     val = Robot.lifter.auto_positions[pos];
+    time = t;
     requires(Robot.lifter);
   }
 
@@ -21,6 +24,7 @@ public class SetLifter extends Command {
   protected void initialize() {
     Robot.lifter.getPIDController().setEnabled(true);
     Robot.lifter.setSetpoint(val);
+    start_time = System.currentTimeMillis();
   }
 
   @Override
@@ -30,12 +34,13 @@ public class SetLifter extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return (System.currentTimeMillis() - start_time > time);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.lifter.setSetpoint(Robot.lifter.getlifterpos());
   }
 
   // Called when another command which requires one or more of the same
