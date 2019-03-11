@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
   }
-  
  
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();

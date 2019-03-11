@@ -31,6 +31,16 @@ public class NetworkCommand extends Command {
     trigger = false;
   }
 
+  private double[] convert_vel(double[] vel) {
+    double[] output = new double[2];
+
+    double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
+    output[0] = 0.5 * (vel[1] + 1.0) * vm;
+    output[1] = (1.0 - 0.5 * (vel[1] + 1.0)) * vm; 
+  
+    return output;
+  }
+
   @Override
   protected void execute() {
     double l = Robot.newdrivetrain.getleftdistance();
@@ -63,9 +73,7 @@ public class NetworkCommand extends Command {
     
     double[] vel = Robot.move_net.feed(input);
     // SmartDashboard.putNumber("move", vel[0]);
-    double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
-    vel[0] = 0.5 * (vel[1] + 1.0) * vm;
-    vel[1] = (1.0 - 0.5 * (vel[1] + 1.0)) * vm; 
+    vel = convert_vel(vel);
     
     Robot.newdrivetrain.drive(vel[0], vel[1]);
     
