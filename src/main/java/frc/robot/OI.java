@@ -34,18 +34,21 @@ public class OI {
   
 	
 	public static double getRotation() {
-    rotation = (rightstick.getZ() + leftstick.getZ())/2;
-    if(Math.abs(rightstick.getZ()) < 0.3 || Math.abs(leftstick.getZ()) < 0.3)
-      rotation = 0;
+    rotation = 0.0;
+    if(Math.abs(rightstick.getZ()) > 0.3){
+      rotation += rightstick.getZ() * r_joystick_sens;
+    }
+    if(Math.abs(leftstick.getZ()) > 0.1){
+      rotation += leftstick.getZ() * l_joystick_sens;
 		return rotation;
 	}
 	
 	public static double getForward() {
-    forward = 0; 
+    forward = 0.0; 
     if(Math.abs(rightstick.getY()) > 0.3){
       forward += rightstick.getY() * r_joystick_sens;
     }
-    if(Math.abs(leftstick.getY()) > 0.2){
+    if(Math.abs(leftstick.getY()) > 0.1){
       forward += leftstick.getY() * l_joystick_sens;
     }
 
