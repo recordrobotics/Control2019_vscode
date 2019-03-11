@@ -178,13 +178,13 @@ public class AcquisitionCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.acquisition.stop();
+		Robot.acquisition.setSetpoint(Robot.acquisition.getacquisitionpos());
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.acquisition.stop();
+		Robot.acquisition.setSetpoint(Robot.acquisition.getacquisitionpos());
 	}
 }

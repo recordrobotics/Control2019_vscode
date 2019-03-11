@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj.I2C;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static double drivetrainWidth = 0.585;
+
   public static OI m_oi;
   //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   // public static Wheels drivetrain = new Wheels();
@@ -81,12 +83,18 @@ public class Robot extends TimedRobot {
     }
     return output;
   }
+
+	public static double clamp(double v, double min, double max) {
+		return Math.max(min, Math.min(max, v));
+	}
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+    SmartDashboard.clearPersistent("auto_move");
     m_oi = new OI();
     setLight(true);
     
@@ -97,7 +105,7 @@ public class Robot extends TimedRobot {
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
     }
 
-    m_chooser.setDefaultOption("Simple Auto", new Autonomous()); //new NetworkCommand(4.0, 8.0, 0));
+    m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL2)); //new NetworkCommand(4.0, 8.0, 0));
   // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
     //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
     //CameraServer.getInstance().startAutomaticCapture();

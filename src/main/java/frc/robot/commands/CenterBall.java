@@ -31,19 +31,16 @@ public class CenterBall extends Command {
     error_y = 0.0;
   }
 
-  private double clamp(double v, double min, double max) {
-    return Math.max(min, Math.min(max, v));
-  }
-
+  
   private double calculateX() {
     double min = 0.02;
     double max = 0.07;
     double f = 0.5;
     if(error_x > 0.0) {
-      return -clamp(error_x * f, min, max);
+      return -Robot.clamp(error_x * f, min, max);
     }
     else if(error_x < 0.0) {
-      return -clamp(error_x * f, -max, -min);
+      return -Robot.clamp(error_x * f, -max, -min);
     }
     return 0.0;
   }
@@ -53,10 +50,10 @@ public class CenterBall extends Command {
     double max = 0.15;
     double f = 0.5;
     if(error_y > 0.0) {
-      return clamp(error_y * f, min, max);
+      return Robot.clamp(error_y * f, min, max);
     }
     else if(error_y < 0.0) {
-      return clamp(error_y * f, -max, -min);
+      return Robot.clamp(error_y * f, -max, -min);
     }
     return 0.0;
   }

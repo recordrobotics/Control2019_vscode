@@ -1,13 +1,16 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.OI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class NetworkCommand extends Command {
   private double[] input;
-  private double last_l, last_r, x_i, y_i, theta_i;
-  private boolean trigger;
-  public NetworkCommand(double x, double y, double theta) {
+  private double last_l, last_r, x_i, y_i, theta_i, end_y_pos;
+  private long start_time, timeout;
+  private boolean stopped;
+
+  public NetworkCommand(double x, double y, double theta, double end, long time) {
     requires(Robot.newdrivetrain);
     input = new double[3];
     last_l = 0.0;
@@ -15,24 +18,31 @@ public class NetworkCommand extends Command {
     x_i = x;
     y_i = y;
     theta_i = theta;
+    end_y_pos = end;
+    start_time = 0;
+    timeout = time;
+    stopped = false;
   }
 
   @Override
   protected void initialize() {
     last_l = Robot.newdrivetrain.getleftdistance();
 		last_r = Robot.newdrivetrain.getrightdistance();
-    theta_i = 0;
+    stopped = false;
 
     input[0] = -x_i;
     input[1] = -y_i;
     input[2] = -theta_i;
     
     Robot.newdrivetrain.stop();
-    trigger = false;
+    start_time = System.currentTimeMillis();
   }
 
   private double[] convert_vel(double[] vel) {
     double[] output = new double[2];
+
+    double max_vel = 0.6;
+    double min_vel = 0.3;
 
     double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
     output[0] = 0.5 * (vel[1] + 1.0) * vm;
@@ -57,19 +67,16 @@ public class NetworkCommand extends Command {
     last_l = l;
     last_r = r;
 
-    double dtheta = (dl - dr)/0.585;
+    double dtheta = (dl - dr)/Robot.drivetrainWidth;
     input[2] += dtheta;
     
     SmartDashboard.putNumber("theta", input[2]);
 
     input[0] += 0.5 * (dl + dr) * Math.sin(input[2]);
     input[1] += 0.5 * (dl + dr) * Math.cos(input[2]);
-    if (input[1] > 0.1) 
-      trigger = true;
+    
     //input[2] = theta;
 
-    double max_vel = 0.6;
-    double min_vel = 0.3;
     
     double[] vel = Robot.move_net.feed(input);
     // SmartDashboard.putNumber("move", vel[0]);
@@ -80,12 +87,16 @@ public class NetworkCommand extends Command {
     SmartDashboard.putNumber("velocity0", vel[0]);
     SmartDashboard.putNumber("velocity1", vel[1]);
     System.out.println(vel[0] + " " + vel[1]);
+
+    if(Math.abs(OI.getRotation()) > 0.2 || Math.abs(OI.getForward()) > 0.2) {
+      stopped = true;
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return trigger;
+    return stopped || input[1] > end_y_pos || (System.currentTimeMillis() - start_time > timeout);
   }
 
   // Called once after isFinished returns true

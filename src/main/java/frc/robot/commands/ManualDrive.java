@@ -32,10 +32,6 @@ public class ManualDrive extends Command {
 		Robot.newdrivetrain.stop();
 	}
 
-	private double clamp(double v, double min, double max) {
-		return Math.max(min, Math.min(max, v));
-	}
-
 	@Override
 	// Attempt to slowly increment and decrement forward and rotation inputs to motors to prevent robot from tipping when accelerating quickly
 	// On old robot, showed some effect, but could not prevent backheavy robot from nearly tipping when quickly stopping in reverse.
@@ -43,7 +39,7 @@ public class ManualDrive extends Command {
 	protected void execute() {
 		//forward += clamp((OI.getForward() - forward) * updaterate, -maxupdaterate, maxupdaterate);
 		//rotation += clamp((OI.getRotation() - rotation) * updaterate, -maxupdaterate, maxupdaterate);
-		double rotation;
+		
 		/*
 		joyforw = OI.getForward();
 		joyrot = OI.getRotation();
@@ -71,7 +67,17 @@ public class ManualDrive extends Command {
 		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
 		*/
 
+		double[] auto_v = SmartDashboard.getNumberArray("auto_move", new double[] {0.0});
+		if(auto_v.length == 3) {
+			double x = auto_v[0];
+			double y = auto_v[1];
+			double a = auto_v[2];
+			SmartDashboard.delete("auto_move");
+			(new NetworkCommand(x, y, a, 0.2, 5000)).start();
+		}
+
 		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
+		double rotation = 0.0;
 		if(forward > 0.3)
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
 		else
@@ -82,7 +88,7 @@ public class ManualDrive extends Command {
 			if(b < -1.0) {
 				b = 0.0;
 			} else {
-				rotation = clamp(b * b_sens, -b_max, b_max);
+				rotation = Robot.clamp(b * b_sens, -b_max, b_max);
 			}
 		}
 		else if(OI.getTapeAdjustButton()) {
@@ -90,11 +96,9 @@ public class ManualDrive extends Command {
 			if(tape < -1.0) {
 		   		tape = 0.0;
 			} else {
-				rotation = clamp(tape * tape_sens, -tape_max, tape_max);
+				rotation = Robot.clamp(tape * tape_sens, -tape_max, tape_max);
 			}
 		}
-
-		
 
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;

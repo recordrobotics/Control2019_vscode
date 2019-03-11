@@ -6,7 +6,19 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 //import frc.robot.Robot;
 
 public class Autonomous extends CommandGroup {
-  public Autonomous() {
+  public enum Start {
+    LEVEL2, LEVEL1
+  }
+  public Autonomous(Start start) {
+    addSequential(new SetRoller(0.5));
+    addSequential(new Delay(300));
+    addSequential(new SetRoller(0.0));
+    if(start == Start.LEVEL2) {
+      addSequential(new SetDrive(-0.2, -0.2));
+      addSequential(new Delay(2000));
+      addSequential(new SetDrive(0.0, 0.0));
+      addSequential(new Spin(180.0, false, 1000, Spin.Finish.PASS, 0.0));
+    }
     addParallel(new LifterCommand());
     addParallel(new ManualDrive());
     addSequential(new AcquisitionCommand(0.6));
