@@ -8,6 +8,7 @@ public class ManualDrive extends Command {
 	public ManualDrive() {
 		//requires(Robot.drivetrain);
 		requires(Robot.newdrivetrain);
+
 	}
 
 	long[] f_start_time = {0};
@@ -16,15 +17,23 @@ public class ManualDrive extends Command {
 	final long f_warmup = 500;
 	final long r_warmup = 500;
 	final double f_sens = 0.5;
-	final double r_sens = 0.5;
-	final double f_pow = 3.0;
+	final double r_sens = 0.25;
+	final double f_pow = 1.0;
 	final double r_pow = 1.0;
 
-	final double b_sens = 0.1;
+	final double b_sens = 1.5;
+	final double b_max = 0.17;
+
+	final double tape_sens = 0.6;
+	final double tape_max = 0.15;
 
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
+	}
+
+	private double clamp(double v, double min, double max) {
+		return Math.max(min, Math.min(max, v));
 	}
 
 	@Override
@@ -34,7 +43,7 @@ public class ManualDrive extends Command {
 	protected void execute() {
 		//forward += clamp((OI.getForward() - forward) * updaterate, -maxupdaterate, maxupdaterate);
 		//rotation += clamp((OI.getRotation() - rotation) * updaterate, -maxupdaterate, maxupdaterate);
-
+		double rotation;
 		/*
 		joyforw = OI.getForward();
 		joyrot = OI.getRotation();
@@ -63,17 +72,29 @@ public class ManualDrive extends Command {
 		*/
 
 		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
-		double rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
+		if(forward > 0.3)
+			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
+		else
+			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		double b = 0.0;
 		if(OI.getBallAdjustButton()) {
-			b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
+			double b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
 			if(b < -1.0) {
-				b = 0;
+				b = 0.0;
+			} else {
+				rotation = clamp(b * b_sens, -b_max, b_max);
+			}
+		}
+		else if(OI.getTapeAdjustButton()) {
+			double tape = SmartDashboard.getNumber("tapes|PI_1", -2.0);	
+			if(tape < -1.0) {
+		   		tape = 0.0;
+			} else {
+				rotation = clamp(tape * tape_sens, -tape_max, tape_max);
 			}
 		}
 
-		rotation += b * b_sens;
+		
 
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;

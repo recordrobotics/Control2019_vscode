@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     }
 
     m_chooser.setDefaultOption("Simple Auto", new Autonomous()); //new NetworkCommand(4.0, 8.0, 0));
-    m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
+  // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
     //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
     //CameraServer.getInstance().startAutomaticCapture();
   }
@@ -127,7 +127,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
     SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
     setLight(true);
-    //System.out.println(acquisition.getacquisitionpos());
+   //System.out.println(lifter.getSetpoint());
+    //acquisition.rotate(1.0);
   }
 
   /**
@@ -202,7 +203,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
+    //acquisition.rotate(1.0);
     //System.out.println(gyro.getYaw() + " " + isCalibrating());
   }
 

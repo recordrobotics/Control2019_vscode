@@ -48,8 +48,9 @@ public class Cameras {
                 } else {
                     downSink.grabFrame(source);
                 }
-                Imgproc.drawMarker(source, new Point(width / 2, height / 2), new Scalar(0, 0, 255), Imgproc.MARKER_CROSS, 10, 2);
+               // Imgproc.drawMarker(source, new Point(width / 2, height / 2), new Scalar(0, 0, 255), Imgproc.MARKER_CROSS, 10, 2);
                 outputStream.putFrame(source);
+                System.out.println("put frame");
             }
         }).start();
     }
@@ -64,7 +65,7 @@ public class Cameras {
             UsbCamera forward = new UsbCamera("Forward Camera", 0);
             UsbCamera down = new UsbCamera("Down Camera", 1);
             MjpegServer server = CameraServer.getInstance().startAutomaticCapture(forward);
-            
+            System.out.println(server.getListenAddress() + ":" + server.getPort());
             while(!Thread.interrupted()) {
                 if(OI.getCameraSwitch()) {
                     if(usingForward) {

@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Acquisition extends PIDSubsystem {
 	WPI_VictorSPX acquisitionMotor = new WPI_VictorSPX(RobotMap.acquisitionPort);
@@ -24,13 +25,13 @@ public class Acquisition extends PIDSubsystem {
 	// Value which will be used to convert the raw encoder output into more easily usable numbers
 	final static double encoder_conv = -1.0/19000.0;
 	final static double encoder_cons = 2.2105263158;
-	private final static double Rp = 0.5;
+	private final static double Rp = 1.0;
 	private final static double Ri = 0.0;
-	private final static double Rd = 0.1;
+	private final static double Rd = 0.2;
 	private final static double tolerance = 0.01;
 	final static double acquisitionRaiseSpeed = 1.0;
-	final static double acquisitionLowerSpeed = 0.1;
-	final static double rollerSpeed = 0.25;
+	final static double acquisitionLowerSpeed = 0.6;
+	final static double rollerSpeed = 0.4;
 
 	public Acquisition() {
 		super("Acquisition", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -38,7 +39,7 @@ public class Acquisition extends PIDSubsystem {
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
 		getPIDController().setEnabled(false);
-		getPIDController().setInputRange(-0.2, 4.0);
+		getPIDController().setInputRange(-0.4, 1.2);
 		getPIDController().setOutputRange(-1.0, 1.0);
 	}
 	
@@ -62,13 +63,17 @@ public class Acquisition extends PIDSubsystem {
 		acquisition_encoder.reset();
 	}
 
+	public double getEncoderRate() {
+		return acquisition_encoder.getRate();
+	}
+
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		/*if(Robot.acquisition_enable)
-			setDefaultCommand(new AcquisitionCommand());
+		if(Robot.acquisition_enable)
+			setDefaultCommand(new AcquisitionCommand(0.6));
 		else if(Robot.test_enable)
-			setDefaultCommand(new Test());*/
+			setDefaultCommand(new Test());
 	}
 
 	public void rotate(double x) {
@@ -76,6 +81,7 @@ public class Acquisition extends PIDSubsystem {
 	} 
 
 	public void roll(double x) {
+		SmartDashboard.putNumber("acquisition.roll", x);
 		rollerMotor.set(ControlMode.PercentOutput, x*rollerSpeed);
 	}
 
@@ -100,10 +106,9 @@ public class Acquisition extends PIDSubsystem {
 		if(output < 0 && getswitch0() || output > 0 && getswitch1())
 			output = 0;
 		else if(output < 0)
-			output = -0.2 + output * acquisitionRaiseSpeed;
+			output = output * acquisitionRaiseSpeed;
 		else if(output > 0)
 			output *= acquisitionLowerSpeed;
-		//System.out.println(output);
 		acquisitionMotor.pidWrite(-output); // this is where the computed output value fromthe PIDController is applied to the motor
 	}
 }

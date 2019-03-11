@@ -6,7 +6,9 @@ import frc.robot.Robot;
 
 public class Reset extends Command {
 	// Command to test any new motors.
-	public Reset() {
+	boolean moveforw;
+	public Reset(boolean move) {
+		moveforw = move;
 		requires(Robot.lifter); 
 		requires(Robot.acquisition); 
 	}
@@ -20,32 +22,52 @@ public class Reset extends Command {
 	boolean lifterswitch0 = false;
 	boolean acquisitionswitch0 = false;
 	boolean finished = false;
+	long start_t = 0;
+	long middle_t = 0;
 	@Override
 	protected void initialize() {
 		Robot.acquisition.getPIDController().setEnabled(false);
 		Robot.lifter.getPIDController().setEnabled(false);
 		Robot.acquisition.stop();
 		Robot.lifter.stop();
+		start_t = System.currentTimeMillis();
 	}
 	@Override
 	protected void execute() {
-		liftmovement = 0;
-		lifterswitch0 = Robot.lifter.get0switch();
-		if(!lifterswitch0) {
-			liftmovement = -1.0;
-			Robot.lifter.setLift(liftmovement);
+		if(moveforw) {
+			if(System.currentTimeMillis() - start_t < 500)
+				Robot.acquisition.rotate(0.2);
+			else
+				moveforw = false;
 		}
-		acqmovement = 0;
-		acquisitionswitch0 = Robot.acquisition.getswitch0();
-		if(!acquisitionswitch0) {
-			acqmovement = -0.3;
-			Robot.acquisition.rotate(acqmovement);
+		else {
+			if(middle_t == 0) {
+				liftmovement = 0;
+				lifterswitch0 = Robot.lifter.get0switch();
+				if(!lifterswitch0) {
+					liftmovement = -1.0;
+					Robot.lifter.setLift(liftmovement);
+				}
+				acqmovement = 0;
+				acquisitionswitch0 = Robot.acquisition.getswitch0();
+				if(!acquisitionswitch0) {
+					acqmovement = -0.3;
+					Robot.acquisition.rotate(acqmovement);
+				}
+				if(acqmovement + liftmovement == 0)
+					finished = true;
+				else if(System.currentTimeMillis() - start_t > 1500) { 
+					middle_t = System.currentTimeMillis();
+					Robot.acquisition.rotate(0.0);
+				}
+			}
+			else if(System.currentTimeMillis() - middle_t > 300 || Robot.acquisition.getswitch0()) {
+				finished = true;
+			}
 		}
-		if(acqmovement + liftmovement == 0)
-			finished = true;
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
+	// Make this return true when this Comma-nd no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
 		return finished;

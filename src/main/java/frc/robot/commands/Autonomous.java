@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class Autonomous extends CommandGroup {
   public Autonomous() {
+    addParallel(new LifterCommand());
+    addParallel(new ManualDrive());
+    addSequential(new AcquisitionCommand(0.6));
     /*addSequential(new Reset());
     addSequential(new SetAcquisition(1.5));
     addSequential(new Delay(1000));

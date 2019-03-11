@@ -1,5 +1,6 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -50,7 +51,7 @@ public class LifterCommand extends Command {
 			if(!switch0) {
 				movement = -1.0;
 				Robot.lifter.setLift(movement);
-				System.out.println("down");
+				//System.out.println("down");
 			}
 			else {
 				reset = 0;
@@ -71,18 +72,22 @@ public class LifterCommand extends Command {
 				// To raise the lift cannot be at the top position
 				if(autoraise && !top_switch) { 
 					// The PID controller should move to position 1 if at 0,s or 2 if at 1. Actual values will be different.
-					if(auto_position_index < (Robot.lifter.auto_positions.length - 1)) {
-						auto_position_index++;
-						Robot.lifter.setSetPoint(Robot.lifter.auto_positions[auto_position_index]);
+					auto_position_index = auto_positions.length - 1;
+					for(int i = auto_positions.length - 1; i >= 0; i--) {
+						if(auto_positions[i] > Robot.lifter.getlifterpos())
+							auto_position_index = i;
 					}
+					Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
 				}
 				// To lower the lift cannot be at the bottom position
 				else if(autolower && !switch0) {
 					// The PID controller should move to position 1 if at 2 or 0 if at 1. Actual values will be different.
-					if(auto_position_index > 0) {
-						auto_position_index--;
-						Robot.lifter.setSetPoint(Robot.lifter.auto_positions[auto_position_index]);
+					auto_position_index = 0;					
+					for(int i = 0; i < auto_positions.length; i++) {
+						if(auto_positions[i] < Robot.lifter.getlifterpos())
+							auto_position_index = i;
 					}
+					Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
 				}
 			}
 			// Manual does not use stages
@@ -101,6 +106,10 @@ public class LifterCommand extends Command {
 				Robot.lifter.getPIDController().setEnabled(true);
 				Robot.lifter.setSetPoint(Robot.lifter.getlifterpos());
 			}
+			SmartDashboard.putBoolean("liftercommand.pidenabled", Robot.lifter.getPIDController().isEnabled());
+			SmartDashboard.putNumber("liftercommand.lifterpos", Robot.lifter.getlifterpos());
+			SmartDashboard.putNumber("liftercommand.setpoint", Robot.lifter.getSetpoint());
+			SmartDashboard.putNumber("liftercommand.movement", movement);
 		}
 		//Robot.lifter.setSetpoint(Robot.lifter.getSetPoint() + manualupdaterate*movement);
 	}
