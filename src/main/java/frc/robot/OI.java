@@ -1,7 +1,10 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.Reset;
+import frc.robot.commands.CenterTape;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -25,6 +28,19 @@ public class OI {
   private static boolean manuallowertoggler = false;
   private static boolean autoraisetoggler = false;
   private static boolean autolowertoggler = false;
+
+  public OI() {
+    JoystickButton but = new JoystickButton(right, RobotMap.resetPort);
+    but.whenPressed(new Reset(false));
+  }
+
+  public static boolean getRangeButtonPressed() {
+    return left.getRawButtonReleased(RobotMap.rangeLowerButton);
+  }
+
+  public static boolean getRangeButton2Pressed() {
+    return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
+  }
 
   public static double getForward() {
     forward = 0.5*(left.getY() + right.getY());
@@ -61,13 +77,24 @@ public class OI {
     return right.getRawButtonReleased(RobotMap.cameraSwitchPort);
   }
 
-  public static int getRollButton() {
-    return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
-    ((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
+  public static double getRollButton() {
+    SmartDashboard.putNumber("OI.leftPOV", left.getPOV());
+    //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
+    //((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
+    return left.getPOV() != -1 ? ((double)(Math.min(180, left.getPOV()) - 90) / -90.0) : 0;
+  }
+  public static double getSlowRollButton() {
+    //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
+    //((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
+    return right.getPOV() != -1 ? ((double)(Math.min(right.getPOV(), 180) - 90) / -90.0) : 0;
   }
 
   public static boolean getBallAdjustButton() {
     return left.getRawButton(RobotMap.ballAdjustPort);
+  }
+
+  public static boolean getTapeAdjustButton() {
+    return right.getRawButton(RobotMap.tapeAdjustPort);
   }
 
   public static boolean getRaiseButton() {
@@ -76,6 +103,14 @@ public class OI {
 
   public static boolean getLowerButton() {
     return left.getRawButton(RobotMap.lowerPort);
+  }
+
+  public static boolean getRaiseButtonPressed() {
+    return right.getRawButtonPressed(RobotMap.raisePort);
+  }
+
+  public static boolean getLowerButtonPressed() {
+    return left.getRawButtonPressed(RobotMap.lowerPort);
   }
 /*
   public static boolean getAcquisitionRelease() {
@@ -112,13 +147,14 @@ public class OI {
       else 
         manuallower = true;
     }
+
     */
     return manuallower;
   }
   
   public static boolean getManualRelease() {
-    boolean release = (right.getRawButtonReleased(RobotMap.manualraisePort) && !right.getRawButton(RobotMap.manuallowerPort) ||
-    right.getRawButtonReleased(RobotMap.manuallowerPort) && !right.getRawButton(RobotMap.manualraisePort));
+    boolean release = (left.getRawButtonReleased(RobotMap.manualraisePort) && !left.getRawButton(RobotMap.manuallowerPort) ||
+    left.getRawButtonReleased(RobotMap.manuallowerPort) && !left.getRawButton(RobotMap.manualraisePort));
     return release;
   }
 

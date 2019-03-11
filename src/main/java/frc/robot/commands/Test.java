@@ -39,7 +39,7 @@ public class Test extends Command {
 		*/
 		double acquisitionsens = 0.0;
 		int roll = (OI.getRaiseButton() ? 1 : 0) - (OI.getLowerButton() ? 1 : 0);
-		int rollbutton = OI.getRollButton();
+		double rollbutton = OI.getRollButton();
 		
 		if(roll > 0 && (!Robot.acquisition.getswitch1())) {
 			acquisitionsens = upacqsens;

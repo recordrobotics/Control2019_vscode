@@ -33,7 +33,7 @@ public class NewWheels extends Subsystem {
   	public double getrightdistance() {
   		return right_encoder.getDistance() * encoder_conv;
 	}
-
+	
 	public NewWheels() {
 		backRight.follow(frontRight);
 		backLeft.follow(frontLeft);
