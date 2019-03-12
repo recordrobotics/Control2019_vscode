@@ -43,6 +43,13 @@ public class Wheels extends Subsystem {
 		frontRight.set(-r);
 		backRight.set(-r);
 	}
+
+	public void pidWrite(double l, double r) {
+		frontLeft.pidWrite(l);
+		backLeft.pidWrite(l);
+		frontRight.pidWrite(-r);
+		backRight.pidWrite(-r);
+	}
 	
 	public void stop() {
 		drive(0.0, 0.0);

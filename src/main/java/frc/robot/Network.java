@@ -1,7 +1,8 @@
 package frc.robot;
 
 import java.io.File;
-import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

@@ -46,6 +46,11 @@ public class NewWheels extends Subsystem {
 		frontLeft.set(ControlMode.PercentOutput, l);
 		frontRight.set(ControlMode.PercentOutput, -r);
 	}
+
+	public void pidWrite(double l, double r) {
+		frontLeft.pidWrite(l);
+		frontRight.pidWrite(-r);
+	}
 	
 	public void stop() {
 		frontRight.set(ControlMode.PercentOutput, 0);

@@ -2,7 +2,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.Network;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+import java.net.Socket;
+import java.lang.Thread;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class ManualDrive extends Command {
 	public ManualDrive() {
@@ -10,6 +19,8 @@ public class ManualDrive extends Command {
 		requires(Robot.newdrivetrain);
 
 	}
+
+	Thread auto_thread = null;
 
 	long[] f_start_time = {0};
 	long[] r_start_time = {0};
@@ -27,9 +38,125 @@ public class ManualDrive extends Command {
 	final double tape_sens = 0.6;
 	final double tape_max = 0.15;
 
+	private static final String auto_server_url = "roborio-6731-frc.local";
+	private static final int auto_server_port = 1000;
+
+	private void run_auto_move(ArrayList<double[]> segments, ArrayList<Integer> indices) {
+		if(segments.size() == indices.size() && this.isRunning()) {
+			CommandGroup group = new CommandGroup();
+			for(int i = 0; i < segments.size(); i++) {
+				double[] d = segments.get(i);
+				Network n = Robot.getNetwork(indices.get(i));
+				if(n != null) {
+					group.addSequential(new NetworkCommand(n, d[0], d[1], d[2], 0.2, 5000, true));
+				}
+			}
+			group.start();
+		}
+	}
+
+	private Socket create_auto_socket(Socket prev_socket) {
+		if(prev_socket != null) {
+			try {
+				prev_socket.close();
+			} catch (Exception e) {
+			}
+		}
+		Socket socket = null;
+		try {
+			socket = new Socket(auto_server_url, auto_server_port);
+		} catch (Exception e) {
+			System.out.println("Error creating auto move socket: " + e.getMessage());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ie) {
+			}
+		}
+		return socket;
+	}
+
+	private void listen() {
+		auto_thread = new Thread(() -> {
+			Socket socket = create_auto_socket(null);
+			while(!Thread.interrupted()) {
+				while(!Thread.interrupted() && (socket == null || !socket.isConnected())) {
+					socket = create_auto_socket(socket);
+				}
+
+				System.out.println("Auto move socket connected");
+
+				while(!Thread.interrupted()) {
+					if(!socket.isConnected()) {
+						System.out.println("Auto move socket disconnected!");
+						break;
+					}
+
+					BufferedReader input;
+					try {
+						input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					} catch (Exception e) {
+						System.out.println("Error creating auto move socket reading devices: " + e.getMessage());
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException ie) {
+						}
+						continue;
+					}
+					
+					String line;
+					while(!Thread.interrupted()) {
+						try {
+							line = input.readLine();
+						} catch(Exception e) {
+							System.out.println("Error reading auto move stream: " + e.getMessage());
+							continue;
+						}
+
+						if(line != null) {
+							Scanner scanner;
+							try {
+								scanner = new Scanner(line);
+							} catch (Exception e) {
+								System.out.println("Error creating auto move scanner: " + e.getMessage());
+								continue;
+							}
+
+							try {
+								int num_segments = scanner.nextInt();
+								ArrayList<double[]> segments = new ArrayList<double[]>();
+								ArrayList<Integer> indices = new ArrayList<Integer>();
+								for(int i = 0; i < num_segments; i++) {
+									double x = scanner.nextDouble();
+									double y = scanner.nextDouble();
+									double a = scanner.nextDouble();
+									int idx = scanner.nextInt();
+
+									segments.add(new double[] {x, y, a});
+									indices.add(idx);
+								}
+
+								run_auto_move(segments, indices);
+							} catch (Exception e) {
+								System.out.println("Error reading auto move scanner: " + e.getMessage());
+							}
+						}
+					}
+				}
+			}
+			if(socket != null) {
+				try {
+					socket.close();
+				} catch (Exception e) {
+				}
+			}
+		});
+		auto_thread.start();
+	}
+
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
+		listen();
 	}
 
 	@Override
@@ -67,14 +194,14 @@ public class ManualDrive extends Command {
 		//Robot.drivetrain.curvatureDrive(forward, OI.getRotation());
 		*/
 
-		double[] auto_v = SmartDashboard.getNumberArray("auto_move", new double[] {0.0});
+		/*double[] auto_v = SmartDashboard.getNumberArray("auto_move", new double[] {0.0});
 		if(auto_v.length == 3) {
 			double x = auto_v[0];
 			double y = auto_v[1];
 			double a = auto_v[2];
 			SmartDashboard.delete("auto_move");
-			(new NetworkCommand(x, y, a, 0.2, 5000)).start();
-		}
+			(new NetworkCommand(x, y, a, 0.2, 5000, true)).start();
+		}*/
 
 		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
 		double rotation = 0.0;
@@ -118,6 +245,9 @@ public class ManualDrive extends Command {
 	@Override
 	protected void end() {
 		Robot.newdrivetrain.stop();
+		if(auto_thread != null) {
+			auto_thread.interrupt();
+		}
 	}
 
 	// Called when another command which requires one or more of the same
