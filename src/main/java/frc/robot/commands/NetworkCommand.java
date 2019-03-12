@@ -41,13 +41,11 @@ public class NetworkCommand extends Command {
   private double[] convert_vel(double[] vel) {
     double[] output = new double[2];
 
-    double max_vel = 0.6;
-    double min_vel = 0.3;
+    double max_vel = 0.4;
+    double min_vel = 0.0;
 
-    double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
-    output[0] = 0.5 * (vel[1] + 1.0) * vm;
-    output[1] = (1.0 - 0.5 * (vel[1] + 1.0)) * vm; 
-  
+    output[0] = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
+    output[1] = 0.5 * (vel[1] + 1.0) * (max_vel - min_vel) + min_vel;
     return output;
   }
 
@@ -79,6 +77,7 @@ public class NetworkCommand extends Command {
 
     
     double[] vel = Robot.move_net.feed(input);
+    //System.out.println("Before: " + vel[0] + " " + vel[1]);
     // SmartDashboard.putNumber("move", vel[0]);
     vel = convert_vel(vel);
     
@@ -86,7 +85,7 @@ public class NetworkCommand extends Command {
     
     SmartDashboard.putNumber("velocity0", vel[0]);
     SmartDashboard.putNumber("velocity1", vel[1]);
-    System.out.println(vel[0] + " " + vel[1]);
+   // System.out.println("After: " + vel[0] + " " + vel[1]);
 
     if(Math.abs(OI.getRotation()) > 0.2 || Math.abs(OI.getForward()) > 0.2) {
       stopped = true;

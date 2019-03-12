@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public static Wheels newdrivetrain = new Wheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
-  public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
+  public static Network move_net = new Network(new File("/home/admin/data.text"));
   public static boolean drive_enable = true;
   public static boolean lifter_enable = true;
   public static boolean test_enable = false;
@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     SmartDashboard.clearPersistent("auto_move");
+    SmartDashboard.clearPersistent("Network Construction Error");
     m_oi = new OI();
     setLight(true);
     

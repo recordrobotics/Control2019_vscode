@@ -109,11 +109,14 @@ public class Network {
 		return layers.get(layerNumber);
 	}
 	public double[] feed(double[] inputs){
+		if(numLayers == 0) {
+			return new double[] {0.0, 0.0};
+		}
 		double[] prevOutputs = inputs.clone();
 		for (int y = 0; y < numLayers-1; y++) {
 			prevOutputs = layers.get(y).feed(prevOutputs);
 		}
-		SmartDashboard.putNumber("numlayers", numLayers);
+		//SmartDashboard.putNumber("numlayers", numLayers);
 		return prevOutputs;
 	}
 	public static void main (String[] args) {
