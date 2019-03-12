@@ -39,7 +39,9 @@ public class Robot extends TimedRobot {
   public static Wheels newdrivetrain = new Wheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
-  public static Network move_net = new Network(new File("/home/lvuser/data/data.text"));
+  
+  private static Network[] networks;
+  
   public static boolean drive_enable = true;
   public static boolean lifter_enable = true;
   public static boolean test_enable = false;
@@ -87,7 +89,24 @@ public class Robot extends TimedRobot {
 
 	public static double clamp(double v, double min, double max) {
 		return Math.max(min, Math.min(max, v));
-	}
+  }
+
+  public static Network getNetwork(int i) {
+    if(i < networks.length) {
+      return networks[i];
+    } else {
+      return null;
+    }
+  }
+  
+  private static void init_networks() {
+    networks = new Network[5];
+    networks[0] = new Network(new File("/home/admin/data/data_4.0.text"));
+    networks[1] = new Network(new File("/home/admin/data/data_3.0.text"));
+    networks[2] = new Network(new File("/home/admin/data/data_2.25.text"));
+    networks[3] = new Network(new File("/home/admin/data/data_1.6875.text"));
+    networks[4] = new Network(new File("/home/admin/data/data_1.265625.text"));
+  }
 
   /**
    * This function is run when the robot is first started up and should be
@@ -95,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    SmartDashboard.clearPersistent("auto_move");
+    init_networks();
     m_oi = new OI();
     setLight(true);
     
