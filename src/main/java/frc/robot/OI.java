@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Reset;
 import frc.robot.commands.CenterTape;
+import frc.robot.commands.NetworkCommand;
+import frc.robot.commands.PIDSpin;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,7 +39,23 @@ public class OI {
 
   public OI() {
     JoystickButton but = new JoystickButton(right, RobotMap.resetPort);
-    but.whenPressed(new Reset(4000));
+    //but.whenPressed(new Reset(4000));
+
+    /*double x = 1.0;
+		double y = 3.0;
+		double a = 0.0;
+		SmartDashboard.delete("auto_move");
+		Network n = Robot.getNetwork(0);
+		if(n != null) {
+			System.out.println("Network called");
+			//but.whenPressed(new NetworkCommand(n, x, y, a, 0.2, 10000, true));
+    }
+    but.whenPressed(new PIDSpin(180.0, true, 4000, 1.0));
+    (new JoystickButton(right, 11)).whenPressed(new PIDSpin(0.0, true, 4000, 1.0));*/
+  }
+
+  public static int getRightPOV() {
+    return right.getPOV();
   }
 
   public static double getOldLifter(){
@@ -116,7 +135,7 @@ public class OI {
   }
 
   public static boolean getBallAdjustButton() {
-    return left.getRawButton(RobotMap.ballAdjustPort);
+    return right.getRawButton(RobotMap.ballAdjustPort);
   }
 
   public static boolean getTapeAdjustButton() {
