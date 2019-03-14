@@ -15,7 +15,7 @@ public class Network {
 		int neuro;
 		int prevNeuro;
 		public Layer(int numNeurons, int prevNeurons){
-			System.out.println("Created " + numNeurons + " " + prevNeurons);
+			//System.out.println("Created " + numNeurons + " " + prevNeurons);
 			weights = new double[prevNeurons][numNeurons];
 			neuro = numNeurons;
 			prevNeuro = prevNeurons;
@@ -85,9 +85,9 @@ public class Network {
 					for (int y = 0; y < l.getNumNeurons(); y++){
 						double weight = s.nextDouble();
 						l.setWeight(y, z, weight);
-						if (x == 1) {
+						/*if (x == 1) {
 							System.out.println("Weight " + y + ", " + z + ": " + weight);
-						}
+						}*/
 					}
 					
 				}
@@ -102,7 +102,7 @@ public class Network {
 			}
 			s.close();
 		} catch (Exception e){
-			SmartDashboard.putString("Network Construction Error", e.getMessage());
+			System.out.println("Network Construction Error: " + e.getMessage());
 		}
 	}
 	public Layer getLayer(int layerNumber){
@@ -114,7 +114,6 @@ public class Network {
 		for (int y = 0; y < numLayers-1; y++) {
 			prevOutputs = layers.get(y).feed(prevOutputs);
 		}
-		SmartDashboard.putNumber("numlayers", numLayers);
 		return prevOutputs;
 	}
 	public static void main (String[] args) {

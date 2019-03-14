@@ -22,7 +22,7 @@ public class Cameras {
         width = w;
         height = h;
 
-        start_automatic();
+        //start_automatic();
     }
 
     public void start_crosshair() {

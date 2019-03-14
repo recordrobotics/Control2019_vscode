@@ -25,6 +25,7 @@ public class NetworkCommand extends Command {
     start_angle = 0;
     useGyro = gyro;
     net = n;
+    timeout = time;
   }
 
   @Override
@@ -43,12 +44,11 @@ public class NetworkCommand extends Command {
   private double[] convert_vel(double[] vel) {
     double[] output = new double[2];
 
-    double max_vel = 0.6;
-    double min_vel = 0.3;
+    double max_vel = 0.5;
+    double min_vel = 0.22;
 
-    double vm = 0.5 * (vel[0] + 1.0) * (max_vel - min_vel) + min_vel;
-    output[0] = 0.5 * (vel[1] + 1.0) * vm;
-    output[1] = (1.0 - 0.5 * (vel[1] + 1.0)) * vm; 
+    output[0] = vel[0] * (max_vel - min_vel) + min_vel;
+    output[1] = vel[1] * (max_vel - min_vel) + min_vel;
   
     return output;
   }
@@ -61,7 +61,6 @@ public class NetworkCommand extends Command {
     SmartDashboard.putNumber("input0", input[0]);
     SmartDashboard.putNumber("input1", input[1]);
     
-  
     double dl = l - last_l;
     double dr = r - last_r;
     SmartDashboard.putNumber("dl", dl);
@@ -70,7 +69,7 @@ public class NetworkCommand extends Command {
     last_r = r;
 
     if(useGyro) {
-      input[2] = Robot.gyro.getAngle() - start_angle - theta_i;
+      input[2] = (Robot.gyro.getAngle() - start_angle ) * Math.PI / 180.0 - theta_i;
     } else {
       double dtheta = (dl - dr)/Robot.drivetrainWidth;
       input[2] += dtheta;
@@ -89,7 +88,7 @@ public class NetworkCommand extends Command {
     vel = convert_vel(vel);
     
     Robot.newdrivetrain.drive(vel[0], vel[1]);
-    
+  
     SmartDashboard.putNumber("velocity0", vel[0]);
     SmartDashboard.putNumber("velocity1", vel[1]);
     System.out.println(vel[0] + " " + vel[1]);
