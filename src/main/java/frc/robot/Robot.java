@@ -103,11 +103,11 @@ public class Robot extends TimedRobot {
   
   private static void init_networks() {
     networks = new Network[5];
-    networks[0] = new Network(new File("/home/admin/data/data_4.0.text"));
-    networks[1] = new Network(new File("/home/admin/data/data_3.0.text"));
-    networks[2] = new Network(new File("/home/admin/data/data_2.25.text"));
-    networks[3] = new Network(new File("/home/admin/data/data_1.6875.text"));
-    networks[4] = new Network(new File("/home/admin/data/data_1.265625.text"));
+    networks[0] = new Network(new File("/home/admin/data/data_4.0.txt"));
+    networks[1] = new Network(new File("/home/admin/data/data_3.0.txt"));
+    networks[2] = new Network(new File("/home/admin/data/data_2.25.txt"));
+    networks[3] = new Network(new File("/home/admin/data/data_1.6875.txt"));
+    networks[4] = new Network(new File("/home/admin/data/data_1.265625.txt"));
   }
 
   /**

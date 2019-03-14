@@ -38,6 +38,7 @@ public class Wheels extends Subsystem {
 	}
 
 	public void drive(double l, double r) {
+		System.out.println(l + " " + r);
 		frontLeft.set(l);
 		backLeft.set(l);
 		frontRight.set(-r);

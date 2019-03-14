@@ -17,7 +17,6 @@ public class ManualDrive extends Command {
 	public ManualDrive() {
 		//requires(Robot.drivetrain);
 		requires(Robot.newdrivetrain);
-
 	}
 
 	Thread auto_thread = null;
@@ -35,25 +34,16 @@ public class ManualDrive extends Command {
 	final double b_sens = 1.5;
 	final double b_max = 0.17;
 
+	final double b_slow_sens = 0.2;
+	final double t_slow_sens = 0.2;
+
 	final double tape_sens = 0.6;
 	final double tape_max = 0.15;
 
 	private static final String auto_server_url = "roborio-6731-frc.local";
 	private static final int auto_server_port = 1000;
 
-	private void run_auto_move(ArrayList<double[]> segments, ArrayList<Integer> indices) {
-		if(segments.size() == indices.size() && this.isRunning()) {
-			CommandGroup group = new CommandGroup();
-			for(int i = 0; i < segments.size(); i++) {
-				double[] d = segments.get(i);
-				Network n = Robot.getNetwork(indices.get(i));
-				if(n != null) {
-					group.addSequential(new NetworkCommand(n, d[0], d[1], d[2], 0.2, 5000, true));
-				}
-			}
-			group.start();
-		}
-	}
+	private Command spinCommand = null;
 
 	private Socket create_auto_socket(Socket prev_socket) {
 		if(prev_socket != null) {
@@ -123,19 +113,21 @@ public class ManualDrive extends Command {
 
 							try {
 								int num_segments = scanner.nextInt();
-								ArrayList<double[]> segments = new ArrayList<double[]>();
-								ArrayList<Integer> indices = new ArrayList<Integer>();
+								CommandGroup group = new CommandGroup();
 								for(int i = 0; i < num_segments; i++) {
 									double x = scanner.nextDouble();
 									double y = scanner.nextDouble();
 									double a = scanner.nextDouble();
 									int idx = scanner.nextInt();
 
-									segments.add(new double[] {x, y, a});
-									indices.add(idx);
+									Network n = Robot.getNetwork(idx);
+									if(n != null) {
+										group.addSequential(new NetworkCommand(n, x, y, a, 0.2, 5000, true));
+									}
 								}
-
-								run_auto_move(segments, indices);
+								if(isRunning()) {
+									group.start();
+								}
 							} catch (Exception e) {
 								System.out.println("Error reading auto move scanner: " + e.getMessage());
 							}
@@ -156,7 +148,7 @@ public class ManualDrive extends Command {
 	@Override
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
-		listen();
+		//listen();
 	}
 
 	@Override
@@ -195,17 +187,21 @@ public class ManualDrive extends Command {
 		*/
 
 		/*double[] auto_v = SmartDashboard.getNumberArray("auto_move", new double[] {0.0});
-		if(auto_v.length == 3) {
+		if(auto_v.length == 4) {
 			double x = auto_v[0];
 			double y = auto_v[1];
 			double a = auto_v[2];
 			SmartDashboard.delete("auto_move");
-			(new NetworkCommand(x, y, a, 0.2, 5000, true)).start();
+			Network n = Robot.getNetwork((int)auto_v[3]);
+			if(n != null) {
+				System.out.println("Network called");
+				(new NetworkCommand(n, x, y, a, 0.2, 5000, false)).start();
+			}
 		}*/
 
 		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
 		double rotation = 0.0;
-		if(forward > 0.3)
+		if(Math.abs(forward) > 0.3)
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
@@ -215,7 +211,7 @@ public class ManualDrive extends Command {
 			if(b < -1.0) {
 				b = 0.0;
 			} else {
-				rotation = Robot.clamp(b * b_sens, -b_max, b_max);
+				rotation = b_slow_sens * rotation + Robot.clamp(b * b_sens, -b_max, b_max);
 			}
 		}
 		else if(OI.getTapeAdjustButton()) {
@@ -223,8 +219,19 @@ public class ManualDrive extends Command {
 			if(tape < -1.0) {
 		   		tape = 0.0;
 			} else {
-				rotation = Robot.clamp(tape * tape_sens, -tape_max, tape_max);
+				rotation = t_slow_sens * rotation + Robot.clamp(tape * tape_sens, -tape_max, tape_max);
 			}
+		}
+
+		int pov = OI.getRightPOV();
+		if(pov == -1) {
+			if(spinCommand != null) {
+				spinCommand.cancel();
+				spinCommand = null;
+			}
+		} else if(spinCommand == null) {
+			spinCommand = new PIDSpin(pov, false, 1000, 1.0);
+			spinCommand.start();
 		}
 
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
