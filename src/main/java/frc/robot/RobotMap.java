@@ -75,6 +75,12 @@ public class RobotMap {
 /*
    // Old Robot
  
+   */
+  
+  public static int oldLiftPort = 9;
+  
+  
+   /*
  public static int climberbuttonPort = 1;
  public static int togglegrabberbuttonPort = 2;
  public static int toggleextendbuttonPort = 7;

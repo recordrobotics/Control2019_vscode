@@ -29,12 +29,26 @@ public class OI {
   private static boolean autoraisetoggler = false;
   private static boolean autolowertoggler = false;
 
-  private static final double l_joystick_sens = 0.07;
+  private static final double l_joystick_sens = 0.1;
   private static final double r_joystick_sens = 0.45;
+  //for Alex set at l = 0.35 and r = 1
+  
 
   public OI() {
     JoystickButton but = new JoystickButton(right, RobotMap.resetPort);
     but.whenPressed(new Reset(4000));
+  }
+
+  public static double getOldLifter(){
+    int joyStickStateRight = right.getPOV(); // returns state of joystick
+    System.out.println("getOldLifter is called");
+    if(joyStickStateRight == 0){
+      return 1.0;
+    }
+    if(joyStickStateRight == 180){
+      return -1.0;
+    } 
+    return 0;
   }
 
   public static boolean getRangeButtonPressed() {

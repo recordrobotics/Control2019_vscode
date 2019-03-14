@@ -15,6 +15,7 @@ import frc.robot.subsystems.Wheels;
 import frc.robot.subsystems.NewWheels;
 import frc.robot.subsystems.Acquisition;
 import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.OldLifter;
 import frc.robot.Network;
 import java.io.*;
 import com.kauailabs.navx.frc.AHRS;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
   public static Wheels newdrivetrain = new Wheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
+  public static OldLifter oldLifter = new OldLifter();
   
   private static Network[] networks;
   
