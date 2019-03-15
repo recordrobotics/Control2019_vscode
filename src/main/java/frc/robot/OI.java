@@ -32,8 +32,8 @@ public class OI {
   private static boolean autoraisetoggler = false;
   private static boolean autolowertoggler = false;
 
-  private static final double l_joystick_sens = 0.1;
-  private static final double r_joystick_sens = 0.45;
+  private static final double l_joystick_sens = 0.35;
+  private static final double r_joystick_sens = 1.0;
   //for Alex set at l = 0.35 and r = 1
   
 

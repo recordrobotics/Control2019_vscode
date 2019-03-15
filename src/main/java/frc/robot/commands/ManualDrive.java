@@ -206,7 +206,7 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		if(OI.getBallAdjustButton()) {
+		/*if(OI.getBallAdjustButton()) {
 			double b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
 			if(b < -1.0) {
 				b = 0.0;
@@ -232,7 +232,7 @@ public class ManualDrive extends Command {
 		} else if(spinCommand == null) {
 			spinCommand = new PIDSpin(pov, false, 1000, 1.0);
 			spinCommand.start();
-		}
+		}*/
 
 		Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;
