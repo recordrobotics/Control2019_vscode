@@ -64,7 +64,7 @@ public class Spin extends Command {
     }
 
     double f = Robot.clamp(sens * (angle - final_angle), -max_speed, max_speed);
-    Robot.newdrivetrain.drive(f, f);
+    Robot.newdrivetrain.drive(f, -f);
   }
 
   // Make this return true when this Command no longer needs to run execute()
