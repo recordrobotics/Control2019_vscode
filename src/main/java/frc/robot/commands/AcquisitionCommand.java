@@ -125,10 +125,7 @@ public class AcquisitionCommand extends Command {
 		{
 			
 				movement += raisebutton;
-			
 				movement += lowerbutton;
-				
-			
 		}
 		if (release) {
 			Robot.acquisition.rotate(0.0);
