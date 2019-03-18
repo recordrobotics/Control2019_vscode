@@ -44,6 +44,7 @@ public class Spin extends Command {
     }
     angle = start_angle;
     final_angle = start_angle + d_angle;
+    Robot.newdrivetrain.stop();
   }
 
   @Override

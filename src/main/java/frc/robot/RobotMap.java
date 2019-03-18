@@ -16,9 +16,9 @@ public class RobotMap {
 
  
 
- public static int ballAdjustPort = 2; // left
+ public static int ballAdjustPort = 2; // right
  public static int resetPort = 12; // right
- public static int tapeAdjustPort = 2; // right
+ public static int tapeAdjustPort = 1; // right
  public static int rangeLowerButton = 8; // left
  public static int rangeRaiseButton = 9; // left
 
@@ -75,6 +75,12 @@ public class RobotMap {
 /*
    // Old Robot
  
+   */
+  
+  public static int oldLiftPort = 9;
+  
+  
+   /*
  public static int climberbuttonPort = 1;
  public static int togglegrabberbuttonPort = 2;
  public static int toggleextendbuttonPort = 7;
