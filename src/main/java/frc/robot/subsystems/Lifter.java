@@ -53,6 +53,32 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 		liftMotor.set(ControlMode.PercentOutput, x);
 	}
 
+	public void incAuto() {
+		int auto_position_index = auto_positions.length - 1;
+		for(int i = auto_positions.length - 1; i >= 0; i--) {
+			if(auto_positions[i] > getlifterpos())
+					auto_position_index = i;
+		}
+		setSetPoint(auto_positions[auto_position_index]);
+	}
+
+	public void decAuto() {
+		int auto_position_index = 0;					
+		for(int i = 0; i < auto_positions.length; i++) {
+			if(auto_positions[i] < getlifterpos())
+				auto_position_index = i;
+		}
+		setSetPoint(auto_positions[auto_position_index]);
+	}
+
+	/*public void setAuto(double pos) {
+		double set = 5E9;
+		for(int i = 0; i < auto_positions.length; i++) {
+			if(Math.abs(pos - auto_positions[i]) < set
+		}
+
+	}
+	*/
 	public boolean get0switch() {
 		return !resetswitch.get();
 	}

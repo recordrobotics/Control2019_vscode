@@ -74,12 +74,7 @@ public class LifterCommand extends Command {
 				// To raise the lift cannot be at the top position
 				if(autoraise && !top_switch) { 
 					// The PID controller should move to position 1 if at 0,s or 2 if at 1. Actual values will be different.
-					auto_position_index = auto_positions.length - 1;
-					for(int i = auto_positions.length - 1; i >= 0; i--) {
-						if(auto_positions[i] > Robot.lifter.getlifterpos())
-							auto_position_index = i;
-					}
-					Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
+					Robot.lifter.incAuto();
 				}
 				// To lower the lift cannot be at the bottom position
 				else if(autolower && !switch0) {
