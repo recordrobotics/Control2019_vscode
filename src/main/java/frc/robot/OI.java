@@ -35,6 +35,7 @@ public class OI {
 
   private static final double l_joystick_sens = 0.35;
   private static final double r_joystick_sens = 1.0;
+  private static double joystick_slider_sens = 0.0;
   //for Alex set at l = 0.35 and r = 1
   
 
@@ -85,8 +86,9 @@ public class OI {
 
   public static double getRotation() {
     rotation = 0.0;
+    joystick_slider_sens = right.getThrottle() * 0.5 + 0.5;
     if(Math.abs(right.getZ()) > 0.3) {
-      rotation += right.getZ() * r_joystick_sens;
+      rotation += right.getZ() * joystick_slider_sens;
     }
     /*if(Math.abs(left.getZ()) > 0.1) {
       rotation += left.getZ() * l_joystick_sens;
@@ -96,8 +98,9 @@ public class OI {
 	
 	public static double getForward() {
     forward = 0.0;
+    joystick_slider_sens = right.getThrottle() * 0.5 + 0.5;
     if(Math.abs(right.getY()) > 0.3) {
-      forward += right.getY() * r_joystick_sens;
+      forward += right.getY() * joystick_slider_sens;
     }
     return forward;
   }
