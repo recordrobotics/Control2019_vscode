@@ -5,6 +5,7 @@ public class RobotMap {
 // Joysticks and buttons
  public static int leftjoyPort = 1;
  public static int rightjoyPort = 0;
+ public static int buttonPanelPort = 2;
 
  public static int raisePort = 4;
  public static int lowerPort = 3;

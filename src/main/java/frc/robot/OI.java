@@ -23,6 +23,7 @@ public class OI {
   // Button button = new JoystickButton(stick, buttonNumber);
 	private static Joystick right = new Joystick(RobotMap.rightjoyPort);
   private static Joystick left = new Joystick(RobotMap.leftjoyPort);
+  private static Joystick buttons = new Joystick(RobotMap.buttonPanelPort);
   
 	private static double forward;
   private static double rotation;
@@ -54,9 +55,13 @@ public class OI {
     (new JoystickButton(right, 11)).whenPressed(new PIDSpin(0.0, true, 4000, 1.0));*/
   }
 
-  public static int getRightPOV() {
-    return right.getPOV();
-  }
+  // public static int getRightPOV() {
+  //   return right.getPOV();
+  // }
+  // public static int getButtonPOV(){
+  //   System.println(buttons.getPOV());
+  //   return buttons.getPOV();
+  // }
 
   public static double getOldLifter(){
     int joyStickStateRight = right.getPOV(); // returns state of joystick
