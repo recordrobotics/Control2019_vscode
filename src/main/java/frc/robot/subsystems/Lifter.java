@@ -25,8 +25,15 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	private final static double encoder_conv = -1.0/7000.0;
 	final static double raiseSpeed = 0.5;
 	final static double lowerSpeed = 0.3;
-	
-public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171, */1.9462857/*, 2.0957*/};
+	public final static double bottom_hatch = 0.0;
+	public final static double bottom_ball = 0.10471428;
+	public final static double middle_hatch = 0.971;
+	public final static double middle_ball = 1.171;
+	public final static double top_hatch = 1.9462857;
+	public final static double top_ball = 2.0957;
+
+	public final double[] auto_positions = {bottom_hatch, bottom_ball, middle_hatch, 
+		middle_ball, top_hatch, top_ball};
 
 	public Lifter() {
 		super("Lifter", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -39,10 +46,10 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 	}
 	
   public void initDefaultCommand() {
-	if(Robot.lifter_enable)
+	/*if(Robot.lifter_enable)
 			setDefaultCommand(new LifterCommand(false));
 		else if(Robot.test_enable)
-			setDefaultCommand(new Test());
+			setDefaultCommand(new Test());*/
 	}
 	
 	public void setLift(double x) {
@@ -52,7 +59,7 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 			x*= lowerSpeed;
 		liftMotor.set(ControlMode.PercentOutput, x);
 	}
-
+	/*
 	public void incAuto() {
 		int auto_position_index = auto_positions.length - 1;
 		for(int i = auto_positions.length - 1; i >= 0; i--) {
@@ -70,15 +77,11 @@ public final double[] auto_positions = {0.0, /*0.10471428, */0.8, /*0.971, 1.171
 		}
 		setSetPoint(auto_positions[auto_position_index]);
 	}
-
-	/*public void setAuto(double pos) {
-		double set = 5E9;
-		for(int i = 0; i < auto_positions.length; i++) {
-			if(Math.abs(pos - auto_positions[i]) < set
-		}
-
-	}
 	*/
+	public void setAuto(double pos) {
+		setSetPoint(pos);
+	}
+	
 	public boolean get0switch() {
 		return !resetswitch.get();
 	}

@@ -53,7 +53,7 @@ public class AcquisitionCommand extends Command {
 	}
 	@Override
 	protected void execute() {
-		/*movement = 0;
+		/* movement = 0;
 		liftpos = Robot.lifter.getlifterpos();
 		acquisitionpos = Robot.acquisition.getacquisitionpos();
 		raisebutton = -1*(OI.getRaiseButton() ? 1 : 0);

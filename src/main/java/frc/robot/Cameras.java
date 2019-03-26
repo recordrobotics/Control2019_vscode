@@ -22,7 +22,7 @@ public class Cameras {
         width = w;
         height = h;
 
-        //start_automatic();
+        start_automatic();
     }
 
     public void start_crosshair() {
@@ -56,8 +56,9 @@ public class Cameras {
     }
 
     public void start_automatic() {
-        CameraServer.getInstance().startAutomaticCapture("Forward Camera", 0);
-        CameraServer.getInstance().startAutomaticCapture("Down Camera", 1);
+        UsbCamera cam = CameraServer.getInstance().startAutomaticCapture("Forward Camera", 0);
+        cam.setResolution(640, 480);
+        //CameraServer.getInstance().startAutomaticCapture("Down Camera", 1);
     }
 
     public void start_sink() {

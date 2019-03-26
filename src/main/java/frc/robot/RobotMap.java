@@ -6,21 +6,26 @@ public class RobotMap {
  public static int leftjoyPort = 1;
  public static int rightjoyPort = 0;
 
- public static int raisePort = 1;
- public static int lowerPort = 1;
- public static int manualraisePort = 5;
- public static int manuallowerPort = 3;
- public static int autoraisePort = 6;
- public static int autolowerPort = 4;
-
-
- 
+ public static int raisePort = 4;
+ public static int lowerPort = 3;
+ public static int manualraisePort = 6;
+ public static int manuallowerPort = 5;
 
  public static int ballAdjustPort = 2; // right
  public static int resetPort = 12; // right
  public static int tapeAdjustPort = 1; // right
  public static int rangeLowerButton = 8; // left
  public static int rangeRaiseButton = 9; // left
+
+ public static int greenleft = 1;
+ public static int greenright = 2;
+ public static int yellowleft = 3;
+ public static int yellowright = 4;
+ public static int redleft = 7;
+ public static int redright = 5;
+ public static int blueleft = 8;
+ public static int blueright = 9;
+ public static int white = 6;
 
 
  

@@ -51,7 +51,7 @@ public class Spin extends Command {
   protected void execute() {
     if(useGyro) {
       angle = Robot.gyro.getAngle();
-    } 
+    }
     else {
       double l = Robot.newdrivetrain.getleftdistance();
       double r = Robot.newdrivetrain.getrightdistance();

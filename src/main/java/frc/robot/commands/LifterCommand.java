@@ -17,6 +17,7 @@ public class LifterCommand extends Command {
 	boolean manualraise;
 	boolean manuallower;
 	boolean manualrelease;
+	int buttons;
 	//final static double manualupdaterate = 0.01;
 
 	int reset = 0;
@@ -42,12 +43,11 @@ public class LifterCommand extends Command {
 		movement = 0;
 		switch0 = Robot.lifter.get0switch();
 		top_switch = Robot.lifter.get1switch() && Robot.lifter.get2switch();
-		autoraise = OI.getAutoRaiseButton();
-		autolower = OI.getAutoLowerButton();
 		manualraise = OI.getManualRaiseButton();
 		manuallower = OI.getManualLowerButton();
 		manualrelease = OI.getManualRelease();
 		auto_positions = Robot.lifter.getAutoPositions();
+		buttons = OI.getButtons();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		if(reset == 1) {
 			if(!switch0) {
@@ -69,23 +69,8 @@ public class LifterCommand extends Command {
 
 		//Auto automatically raises/lowers to the next available standard position
 		if(reset == 0) {
-			if((autoraise || autolower) && !(autoraise && autolower)) { // Either but not both raise and lower must be activated	
-				System.out.println("Auto called");
-				// To raise the lift cannot be at the top position
-				if(autoraise && !top_switch) { 
-					// The PID controller should move to position 1 if at 0,s or 2 if at 1. Actual values will be different.
-					Robot.lifter.incAuto();
-				}
-				// To lower the lift cannot be at the bottom position
-				else if(autolower && !switch0) {
-					// The PID controller should move to position 1 if at 2 or 0 if at 1. Actual values will be different.
-					auto_position_index = 0;					
-					for(int i = 0; i < auto_positions.length; i++) {
-						if(auto_positions[i] < Robot.lifter.getlifterpos())
-							auto_position_index = i;
-					}
-					Robot.lifter.setSetPoint(auto_positions[auto_position_index]);
-				}
+			if(buttons >= 1 && buttons <= 6) { // Either but not both raise and lower must be activated
+				Robot.lifter.setSetPoint(auto_positions[buttons - 1]);
 			}
 			// Manual does not use stages
 			if((manualraise || manuallower) && !(manualraise && manuallower)) {

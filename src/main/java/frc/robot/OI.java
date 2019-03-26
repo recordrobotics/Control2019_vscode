@@ -60,7 +60,7 @@ public class OI {
 
   public static double getOldLifter(){
     int joyStickStateRight = right.getPOV(); // returns state of joystick
-    System.out.println("getOldLifter is called");
+    System.out.println("getOldLifter is called with" + joyStickStateRight);
     if(joyStickStateRight == 0){
       return 1.0;
     }
@@ -70,33 +70,29 @@ public class OI {
     return 0;
   }
 
-  public static boolean getRangeButtonPressed() {
+  /*public static boolean getRangeButtonPressed() {
     return left.getRawButtonReleased(RobotMap.rangeLowerButton);
   }
 
   public static boolean getRangeButton2Pressed() {
     return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
-  }
+  }*/
 
   public static double getRotation() {
     rotation = 0.0;
     if(Math.abs(right.getZ()) > 0.3) {
       rotation += right.getZ() * r_joystick_sens;
     }
-    if(Math.abs(left.getZ()) > 0.1) {
+    /*if(Math.abs(left.getZ()) > 0.1) {
       rotation += left.getZ() * l_joystick_sens;
-    }
+    }*/
 		return rotation;
 	}
 	
 	public static double getForward() {
-    forward = 0.0; 
- 
+    forward = 0.0;
     if(Math.abs(right.getY()) > 0.3) {
       forward += right.getY() * r_joystick_sens;
-    }
-    if(Math.abs(left.getY()) > 0.1) {
-      forward += left.getY() * l_joystick_sens;
     }
     return forward;
   }
@@ -108,15 +104,6 @@ public class OI {
   public Joystick getLeftStick() {
     return left;
   }
-/*
-  public static boolean getRightClimbButton() {
-		return rightstick.getRawButton(RobotMap.climberbuttonPort);
-	}
-
-	public static boolean getLeftClimbButton() {
-    return leftstick.getRawButton(RobotMap.climberbuttonPort);
-  }
-*/
 
   public static boolean getCameraSwitch() {
     return right.getRawButtonReleased(RobotMap.cameraSwitchPort);
@@ -147,7 +134,7 @@ public class OI {
   }
 
   public static boolean getLowerButton() {
-    return left.getRawButton(RobotMap.lowerPort);
+    return right.getRawButton(RobotMap.lowerPort);
   }
 
   public static boolean getRaiseButtonPressed() {
@@ -155,88 +142,40 @@ public class OI {
   }
 
   public static boolean getLowerButtonPressed() {
-    return left.getRawButtonPressed(RobotMap.lowerPort);
+    return right.getRawButtonPressed(RobotMap.lowerPort);
   }
-/*
-  public static boolean getAcquisitionRelease() {
-    boolean release = (right.getRawButtonReleased(RobotMap.raisePort) && !left.getRawButton(RobotMap.lowerPort) ||
-    left.getRawButtonReleased(RobotMap.lowerPort) && !right.getRawButton(RobotMap.raisePort));
-    return release;
-  }
-*/
   public static boolean getManualRaiseButton() {
-    boolean manualraise = left.getRawButton(RobotMap.manualraisePort);
-    /*
-    boolean manualraise = left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45);
-    SmartDashboard.putNumber("left joy POV #", left.getPOVCount());
-    SmartDashboard.putNumber("left joy POV", left.getPOV());
-    if(manualraise){
-      if(manualraisetoggler)
-        manualraise = false;
-      else 
-        manualraise = true;
-    }
-    */
+    boolean manualraise = right.getRawButton(RobotMap.manualraisePort);
     return manualraise;
   }
 
   public static boolean getManualLowerButton() {
-    boolean manuallower = left.getRawButton(RobotMap.manuallowerPort);
-    /*
-    boolean manuallower = left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225);
-    SmartDashboard.putNumber("left joy POV #", left.getPOVCount());
-    SmartDashboard.putNumber("left joy POV", left.getPOV());
-    if(manuallower){
-      if(manuallowertoggler)
-        manuallower = false;
-      else 
-        manuallower = true;
-    }
-
-    */
+    boolean manuallower = right.getRawButton(RobotMap.manuallowerPort);
     return manuallower;
   }
-  
+
   public static boolean getManualRelease() {
-    boolean release = (left.getRawButtonReleased(RobotMap.manualraisePort) && !left.getRawButton(RobotMap.manuallowerPort) ||
-    left.getRawButtonReleased(RobotMap.manuallowerPort) && !left.getRawButton(RobotMap.manualraisePort));
-    return release;
+    boolean manualrelease = (right.getRawButtonReleased(RobotMap.manualraisePort) && !right.getRawButton(RobotMap.manuallowerPort) 
+    || right.getRawButtonReleased(RobotMap.manuallowerPort) && !right.getRawButton(RobotMap.manualraisePort));
+    return manualrelease;
   }
 
-  public static boolean getAutoRaiseButton() {
-    boolean autoraise = right.getRawButtonReleased(RobotMap.autoraisePort);
-    /*
-    boolean autoraise = right.getPOV() != -1 && (right.getPOV() >= 315 || right.getPOV() <= 45);
-    SmartDashboard.putNumber("right joy POV #", right.getPOVCount());
-    SmartDashboard.putNumber("right joy POV", right.getPOV());
-    
-    if(autoraise){
-      if(autoraisetoggler)
-        autoraise = false;
-      else 
-        autoraise = true;
+  public static int getButtons() 
+  {
+    int out = 0;
+    boolean[] buttons = {left.getRawButtonPressed(RobotMap.greenleft), left.getRawButtonPressed(RobotMap.greenright),
+      left.getRawButtonPressed(RobotMap.yellowleft),left.getRawButtonPressed(RobotMap.yellowright), 
+      left.getRawButtonPressed(RobotMap.redleft), left.getRawButtonPressed(RobotMap.redright),
+      left.getRawButtonPressed(RobotMap.blueleft), left.getRawButtonPressed(RobotMap.blueright),
+      left.getRawButtonPressed(RobotMap.white)};
+    loop: for(int i = 0; i < buttons.length; i++) {
+      if(buttons[i]) {
+        out = i + 1;
+        break loop;
+      }
     }
-    */
-    return autoraise;
-  }
-
-  public static boolean getAutoLowerButton() {
-    boolean autolower = right.getRawButtonReleased(RobotMap.autolowerPort);
-    /*
-    boolean autolower = right.getPOV() != -1 && (right.getPOV() >= 135 || right.getPOV() <= 225);
-    SmartDashboard.putNumber("right joy POV #", right.getPOVCount());
-    SmartDashboard.putNumber("right joy POV", right.getPOV());
-    //System.out.println(autolower);
-    
-    if(autolower){
-      if(autolowertoggler)
-        autolower = false;
-      else 
-        autolower = true;
-    }
-    */
-    return autolower;
-  }
+    return out;
+  } 
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
