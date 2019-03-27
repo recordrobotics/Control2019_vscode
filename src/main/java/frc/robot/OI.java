@@ -71,7 +71,8 @@ public class OI {
 
   public static double getRotation() {
     rotation = 0.0;
-    joystick_slider_sens = right.getThrottle() * 0.5 + 0.5;
+    joystick_slider_sens = right.getThrottle() * -0.5 + 0.5;
+
     if(Math.abs(right.getZ()) > 0.3) {
       rotation += right.getZ() * joystick_slider_sens;
     }
@@ -83,7 +84,7 @@ public class OI {
 	
 	public static double getForward() {
     forward = 0.0;
-    joystick_slider_sens = right.getThrottle() * 0.5 + 0.5;
+    joystick_slider_sens = right.getThrottle() * -0.5 + 0.5;
     if(Math.abs(right.getY()) > 0.3) {
       forward += right.getY() * joystick_slider_sens;
     }
