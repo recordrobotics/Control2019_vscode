@@ -34,13 +34,13 @@ public class Robot extends TimedRobot {
   public static double drivetrainWidth = 0.585;
 
   public static OI m_oi;
-  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(I2C.Port.kOnboard);
 
   // Subsystems
-  public static Wheels newdrivetrain = new Wheels();
+  public static NewWheels newdrivetrain = new NewWheels();
   public static Acquisition acquisition = new Acquisition();
   public static Lifter lifter = new Lifter();
-  public static OldLifter oldLifter = new OldLifter();
+  //public static OldLifter oldLifter = new OldLifter();
   
   private static Network[] networks;
   
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static boolean test_enable = false;
   public static boolean acquisition_enable = true;
 
-  // public static AHRS gyro;
+  public static AHRS gyro;
   // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
@@ -120,12 +120,11 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     setLight(true);
     
-    /*try {
+    try {
       gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
-      gyroSuccess = true;
     } catch (RuntimeException ex) {
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
-    }*/
+    }
 
     m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL2)); //new NetworkCommand(4.0, 8.0, 0));
   // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
@@ -147,16 +146,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("gyro.yaw", gyro.getAngle());
     SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
     SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
-    /*SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
+    SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
     SmartDashboard.putNumber("roller.encoder", acquisition.getrollerpos());
     SmartDashboard.putBoolean("acquisition.switch0", acquisition.getswitch0());
     SmartDashboard.putBoolean("acquisition.switch1", acquisition.getswitch1());
     SmartDashboard.putNumber("lifter.encoder", lifter.getlifterpos());
     SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
-    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());*/
+    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
     setLight(true);
-   //System.out.println(lifter.getSetpoint());
+    SmartDashboard.putNumber("lifter.setpoint", lifter.getSetpoint());
     //acquisition.rotate(1.0);
   }
 

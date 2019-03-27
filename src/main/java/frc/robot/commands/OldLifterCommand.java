@@ -8,7 +8,7 @@ import frc.robot.OI;
 public class OldLifterCommand extends Command {
 
   public OldLifterCommand() {
-    requires(Robot.oldLifter);
+    //requires(Robot.oldLifter);
   }
   
   @Override
@@ -20,7 +20,7 @@ public class OldLifterCommand extends Command {
   protected void execute() {
         //System.out.println(OI.getOldLifter());
         //System.out.println("FIUFC");
-        Robot.oldLifter.setLift(OI.getOldLifter()+0.1);
+        //Robot.oldLifter.setLift(OI.getOldLifter()+0.1);
   }
 
   // Make this return true when this Command no longer needs to run execute()

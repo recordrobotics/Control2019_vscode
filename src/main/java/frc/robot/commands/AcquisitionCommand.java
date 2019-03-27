@@ -11,11 +11,11 @@ public class AcquisitionCommand extends Command {
 		requires(Robot.acquisition);
 	}
 	// Joystick inputs
-	/*int raisebutton;
-	int lowerbutton;*/
+	int raisebutton;
+	int lowerbutton;
 	double rollbutton;
 	double slowrollbutton;
-	/*boolean raisebuttonpressed;
+	boolean raisebuttonpressed;
 	boolean lowerbuttonpressed;
 	boolean release;
 	// Switches
@@ -37,7 +37,7 @@ public class AcquisitionCommand extends Command {
 	final static double dropthreshold = -1e9;
 
 	private double reset_vel = 0.3;
-	private double nextrange = 0.0;*/
+	private double nextrange = 0.0;
 	
 	@Override
 	protected void initialize() {
@@ -53,16 +53,16 @@ public class AcquisitionCommand extends Command {
 	}
 	@Override
 	protected void execute() {
-		/* movement = 0;
+		movement = 0;
 		liftpos = Robot.lifter.getlifterpos();
 		acquisitionpos = Robot.acquisition.getacquisitionpos();
 		raisebutton = -1*(OI.getRaiseButton() ? 1 : 0);
 		lowerbutton = OI.getLowerButton() ? 1 : 0;
 		raisebuttonpressed = OI.getRaiseButtonPressed();
-		lowerbuttonpressed = OI.getLowerButtonPressed();*/
+		lowerbuttonpressed = OI.getLowerButtonPressed();
 		rollbutton = OI.getRollButton();
 		slowrollbutton = OI.getSlowRollButton();
-		/*switch0 = Robot.acquisition.getswitch0();
+		switch0 = Robot.acquisition.getswitch0();
 		switch1 = Robot.acquisition.getswitch1();
 		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
@@ -112,7 +112,7 @@ public class AcquisitionCommand extends Command {
 			Robot.acquisition.encoderReset();
 			acquisitionpos = Robot.acquisition.getacquisitionpos();
 		}
-		*/
+		
 		// Can roll in two directions based on which roll button is pressed
 		if(slowrollbutton != 0.0)
 			Robot.acquisition.roll(0.4 * slowrollbutton);
@@ -121,11 +121,10 @@ public class AcquisitionCommand extends Command {
 		else
 			Robot.acquisition.roll(rollbutton);
 		// Raise button and lower button are not pushed at the same time, and one is active
-		/*if(reset == 0 && raisebutton+lowerbutton != 0)
+		if(reset == 0 && raisebutton+lowerbutton != 0)
 		{
-			
-				movement += raisebutton;
-				movement += lowerbutton;
+			movement += raisebutton;
+			movement += lowerbutton;
 		}
 		if (release) {
 			Robot.acquisition.rotate(0.0);
@@ -134,14 +133,13 @@ public class AcquisitionCommand extends Command {
 		}
 		
 		//SmartDashboard.putNumber("acquisition.movement", movement);
-		}
 		double tempupdaterate = updaterate;
 		if(raisebuttonpressed || lowerbuttonpressed)
 			tempupdaterate *= 3;
 		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());
 		Robot.acquisition.setSetpoint(Robot.acquisition.getSetPoint() + tempupdaterate*movement);
 		//Robot.acquisition.rotate(-0.5);
-		//rate = Robot.acquisition.getEncoderRate();*/
+		//rate = Robot.acquisition.getEncoderRate();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

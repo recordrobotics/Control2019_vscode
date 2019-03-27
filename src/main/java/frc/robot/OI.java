@@ -23,24 +23,17 @@ public class OI {
   // Button button = new JoystickButton(stick, buttonNumber);
 	private static Joystick right = new Joystick(RobotMap.rightjoyPort);
   private static Joystick left = new Joystick(RobotMap.leftjoyPort);
-  private static Joystick buttons = new Joystick(RobotMap.buttonPanelPort);
-  
+
 	private static double forward;
   private static double rotation;
-  private static int controltoggler = 0;
-  private static boolean manualraisetoggler = false;
-  private static boolean manuallowertoggler = false;
-  private static boolean autoraisetoggler = false;
-  private static boolean autolowertoggler = false;
 
-  private static final double l_joystick_sens = 0.35;
   private static final double r_joystick_sens = 1.0;
   //for Alex set at l = 0.35 and r = 1
   
 
   public OI() {
-    JoystickButton but = new JoystickButton(right, RobotMap.resetPort);
-    //but.whenPressed(new Reset(4000));
+    JoystickButton but = new JoystickButton(left, RobotMap.white);
+    but.whenPressed(new Reset(4000));
 
     /*double x = 1.0;
 		double y = 3.0;
@@ -74,14 +67,6 @@ public class OI {
     } 
     return 0;
   }
-
-  /*public static boolean getRangeButtonPressed() {
-    return left.getRawButtonReleased(RobotMap.rangeLowerButton);
-  }
-
-  public static boolean getRangeButton2Pressed() {
-    return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
-  }*/
 
   public static double getRotation() {
     rotation = 0.0;
@@ -181,6 +166,14 @@ public class OI {
     }
     return out;
   } 
+
+   public static boolean getRangeButtonPressed() {
+    return left.getRawButtonReleased(RobotMap.rangeLowerButton);
+  }
+  public static boolean getRangeButton2Pressed() {
+    return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
+  }
+
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to

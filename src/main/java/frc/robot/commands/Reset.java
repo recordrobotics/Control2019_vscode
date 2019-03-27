@@ -32,9 +32,11 @@ public class Reset extends Command {
 		//Robot.acquisition.stop();
 		Robot.lifter.stop();
 		start_t = System.currentTimeMillis();
+		finished = false;
 	}
 	@Override
 	protected void execute() {
+		System.out.println("Reseting " + Robot.lifter.get0switch());
 		/*if(moveforw) {
 			if(System.currentTimeMillis() - start_t < 500)
 				Robot.acquisition.rotate(0.2);

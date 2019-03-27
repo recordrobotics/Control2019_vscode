@@ -15,13 +15,13 @@ public class Acquisition extends PIDSubsystem {
 	WPI_VictorSPX acquisitionMotor = new WPI_VictorSPX(RobotMap.acquisitionPort);
 	WPI_VictorSPX rollerMotor = new WPI_VictorSPX(RobotMap.rollerPort);
 	// Encoder used in evaluating position of acquisition
-	private static Encoder acquisition_encoder;// = new Encoder(RobotMap.acquisition_encoderPort1, 
-	//	RobotMap.acquisition_encoderPort2, false, Encoder.EncodingType.k1X);
-	private static Encoder roller_encoder;//= new Encoder(RobotMap.roller_encoderPort1, 
-	//	RobotMap.roller_encoderPort2, false, Encoder.EncodingType.k1X);
+	private static Encoder acquisition_encoder = new Encoder(RobotMap.acquisition_encoderPort1, 
+		RobotMap.acquisition_encoderPort2, false, Encoder.EncodingType.k1X);
+	private static Encoder roller_encoder = new Encoder(RobotMap.roller_encoderPort1, 
+		RobotMap.roller_encoderPort2, false, Encoder.EncodingType.k1X);
 	// Magnetic switch also used to evalutae position of robot
-	private static DigitalInput switch0;// = new DigitalInput(RobotMap.acquisition0Port);
-	private static DigitalInput switch1;// = new DigitalInput(RobotMap.acquisition1Port);
+	private static DigitalInput switch0 = new DigitalInput(RobotMap.acquisition0Port);
+	private static DigitalInput switch1 = new DigitalInput(RobotMap.acquisition1Port);
 	// Value which will be used to convert the raw encoder output into more easily usable numbers
 	final static double encoder_conv = -1.0/19000.0;
 	final static double encoder_cons = 2.2105263158;
@@ -70,10 +70,10 @@ public class Acquisition extends PIDSubsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		/*if(Robot.acquisition_enable)
+		if(Robot.acquisition_enable)
 			setDefaultCommand(new AcquisitionCommand());
 		else if(Robot.test_enable)
-			setDefaultCommand(new Test());*/
+			setDefaultCommand(new Test());
 	}
 
 	public void rotate(double x) {

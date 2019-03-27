@@ -33,9 +33,10 @@ public class LifterCommand extends Command {
 	}
 	@Override
 	protected void initialize() {
-		Robot.lifter.getPIDController().setEnabled(false);
+		Robot.lifter.getPIDController().setEnabled(!doReset);
 		Robot.lifter.setLift(0);
 		reset = doReset ? 1 : 0;
+		Robot.lifter.setSetpoint(Robot.lifter.getlifterpos());
 	}
 	@Override
 	protected void execute() {
@@ -67,6 +68,7 @@ public class LifterCommand extends Command {
 			Robot.lifter.encoderReset();
 		}
 
+		System.out.println("buttons: " + buttons);
 		//Auto automatically raises/lowers to the next available standard position
 		if(reset == 0) {
 			if(buttons >= 1 && buttons <= 6) { // Either but not both raise and lower must be activated

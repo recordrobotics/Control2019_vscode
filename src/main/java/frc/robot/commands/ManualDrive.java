@@ -206,7 +206,7 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		/*if(OI.getBallAdjustButton()) {
+		if(OI.getBallAdjustButton()) {
 			double b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
 			if(b < -1.0) {
 				b = 0.0;
@@ -215,7 +215,7 @@ public class ManualDrive extends Command {
 			}
 		}
 		else if(OI.getTapeAdjustButton()) {
-			double tape = SmartDashboard.getNumber("tapes|PI_1", -2.0);	
+			double tape = SmartDashboard.getNumber("tapes_x|PI_1", -2.0);	
 			if(tape < -1.0) {
 		   		tape = 0.0;
 			} else {
@@ -223,7 +223,7 @@ public class ManualDrive extends Command {
 			}
 		}
 
-		int pov = OI.getRightPOV();
+		/*int pov = OI.getRightPOV();
 		if(pov == -1) {
 			if(spinCommand != null) {
 				spinCommand.cancel();
