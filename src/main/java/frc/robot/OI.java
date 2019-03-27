@@ -34,7 +34,7 @@ public class OI {
 
   public OI() {
     JoystickButton but = new JoystickButton(left, RobotMap.white);
-    but.whenPressed(new Reset(4000));
+    but.whenPressed(new Reset(10000));
 
     /*double x = 1.0;
 		double y = 3.0;

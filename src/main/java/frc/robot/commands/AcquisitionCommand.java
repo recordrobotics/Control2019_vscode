@@ -38,6 +38,8 @@ public class AcquisitionCommand extends Command {
 
 	private double reset_vel = 0.3;
 	private double nextrange = 0.0;
+	private final double horizPos = 1.0;
+	private final double threshHeight = 2.0;
 	
 	@Override
 	protected void initialize() {
@@ -112,7 +114,25 @@ public class AcquisitionCommand extends Command {
 			Robot.acquisition.encoderReset();
 			acquisitionpos = Robot.acquisition.getacquisitionpos();
 		}
-		
+		else {
+			if(liftpos <= threshHeight) {
+				Robot.acquisition.setSetPoint(horizPos);
+			}
+			else if(release) {
+				Robot.acquisition.rotate(0.0);
+				Robot.acquisition.getPIDController().setEnabled(true);
+				Robot.acquisition.setSetPoint(Robot.acquisition.getacquisitionpos());
+			}
+			else if(raisebutton+lowerbutton != 0){
+				movement += raisebutton;
+				movement += lowerbutton;
+				double tempupdaterate = updaterate;
+				if(raisebuttonpressed || lowerbuttonpressed)
+					tempupdaterate *= 3;
+				Robot.acquisition.setSetpoint(Robot.acquisition.getSetPoint() + tempupdaterate*movement);
+			}	
+		}
+		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());
 		// Can roll in two directions based on which roll button is pressed
 		if(slowrollbutton != 0.0)
 			Robot.acquisition.roll(0.4 * slowrollbutton);
@@ -120,24 +140,7 @@ public class AcquisitionCommand extends Command {
 			Robot.acquisition.roll(rollbutton * 0.7);
 		else
 			Robot.acquisition.roll(rollbutton);
-		// Raise button and lower button are not pushed at the same time, and one is active
-		if(reset == 0 && raisebutton+lowerbutton != 0)
-		{
-			movement += raisebutton;
-			movement += lowerbutton;
-		}
-		if (release) {
-			Robot.acquisition.rotate(0.0);
-			Robot.acquisition.getPIDController().setEnabled(true);
-			Robot.acquisition.setSetPoint(Robot.acquisition.getacquisitionpos());
-		}
-		
-		//SmartDashboard.putNumber("acquisition.movement", movement);
-		double tempupdaterate = updaterate;
-		if(raisebuttonpressed || lowerbuttonpressed)
-			tempupdaterate *= 3;
-		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());
-		Robot.acquisition.setSetpoint(Robot.acquisition.getSetPoint() + tempupdaterate*movement);
+		// Raise button and lower button are not pushed at the same time, and one is active	
 		//Robot.acquisition.rotate(-0.5);
 		//rate = Robot.acquisition.getEncoderRate();
 	}
