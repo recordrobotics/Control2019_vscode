@@ -10,13 +10,13 @@ public class LifterCommand extends Command {
 	boolean switch0;
 	boolean top_switch;
 	// Standard lift positions
-	double[] auto_positions;
+	//double[] auto_positions;
 	// Joystick inputs
 	boolean manualraise;
 	boolean manuallower;
 	boolean manualrelease;
 	int buttons;
-	boolean pieceAdjustPressed, pieceAdjustReleased, tapeAdjustReleased;
+	boolean pieceAdjustPressed, pieceAdjustReleased, tapeAdjustReleased, pieceAdjust, tapeAdjust;
 	//final static double manualupdaterate = 0.01;
 
 	int reset = 0;
@@ -50,11 +50,18 @@ public class LifterCommand extends Command {
 		manualraise = OI.getManualRaiseButton();
 		manuallower = OI.getManualLowerButton();
 		manualrelease = OI.getManualRelease();
-		auto_positions = Robot.lifter.getAutoPositions();
+		//auto_positions = Robot.lifter.getAutoPositions();
 		buttons = OI.getButtons();
-		pieceAdjustPressed = OI.getPieceAdjustPressed();
-		pieceAdjustReleased = OI.getPieceAdjustReleased();
-		tapeAdjustReleased = OI.getTapeAdjustReleased();
+
+		boolean prevPieceAdjust = pieceAdjust;
+		boolean prevTapeAdjust = tapeAdjust;
+		pieceAdjust = OI.getPieceAdjustButton();
+		tapeAdjust = OI.getTapeAdjustButton();
+
+		pieceAdjustPressed = pieceAdjust && !prevPieceAdjust;
+		pieceAdjustReleased = !pieceAdjust && prevPieceAdjust;
+		tapeAdjustReleased = !tapeAdjust && prevTapeAdjust;
+
 		// Reset the lift back to default position, and reset encoder values if necessary
 		if(reset == 1) {
 			if(!switch0) {
@@ -77,8 +84,14 @@ public class LifterCommand extends Command {
 		System.out.println("buttons: " + buttons);
 		//Auto automatically raises/lowers to the next available standard position
 		if(reset == 0) {
+			if (manualrelease) {
+				Robot.lifter.setLift(0.0);
+				Robot.lifter.getPIDController().setEnabled(true);
+				Robot.lifter.setSetPoint(Robot.lifter.getlifterpos());
+			}
+
 			if(buttons >= 1 && buttons <= 6) { // Either but not both raise and lower must be activated
-				Robot.lifter.setSetPoint(auto_positions[buttons - 1]);
+				Robot.lifter.setAutoPos(buttons - 1);
 			}
 			// Manual does not use stages
 			if((manualraise || manuallower) && !(manualraise && manuallower)) {
@@ -91,24 +104,22 @@ public class LifterCommand extends Command {
 				}
 				Robot.lifter.setLift(movement);
 			}
-			else if(pieceAdjustPressed) {
-				if(Robot.goingForBalls) {
-					Robot.lifter.setSetpoint(ballPos);
-				} else {
-					Robot.lifter.setSetpoint(hatchPos);
+			else if(Robot.adjustGrabber) {
+				if(pieceAdjustPressed) {
+					if(Robot.goingForBalls) {
+						Robot.lifter.setSetpoint(ballPos);
+					} else {
+						Robot.lifter.setSetpoint(hatchPos);
+					}
 				}
-			}
-			else if(pieceAdjustReleased && !Robot.goingForBalls) {
-				Robot.lifter.setSetpoint(hatchCatchPos);
-			}
-			else if(tapeAdjustReleased && !Robot.goingForBalls) {
-				Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchPos - hatchCatchPos);
-			}
-
-			if (manualrelease) {
-				Robot.lifter.setLift(0.0);
-				Robot.lifter.getPIDController().setEnabled(true);
-				Robot.lifter.setSetPoint(Robot.lifter.getlifterpos());
+				else if(pieceAdjustReleased && !Robot.goingForBalls) {
+					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() - hatchPos + hatchCatchPos);
+					Robot.newdrivetrain.disable(600);
+				}
+				else if(tapeAdjustReleased && !Robot.goingForBalls) {
+					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchPos - hatchCatchPos);
+					Robot.newdrivetrain.disable(600);
+				}
 			}
 			
 			SmartDashboard.putBoolean("liftercommand.pidenabled", Robot.lifter.getPIDController().isEnabled());

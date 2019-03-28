@@ -38,6 +38,23 @@ public class Acquisition extends PIDSubsystem {
 
 	private double rangeOffset = 0.0;
 
+	// Positions for ball depositing
+	public final static double bottom_hatch = -1.0;
+	public final static double bottom_ball = 1.0;
+	public final static double middle_hatch = -1.0;
+	public final static double middle_ball = 1.1;
+	public final static double top_hatch = -1.0;
+	public final static double top_ball = 1.5;
+
+	public final double[] auto_positions = {bottom_hatch, bottom_ball, middle_hatch, 
+		middle_ball, top_hatch, top_ball};
+
+	public void setDepositPos(int i) {
+		if (Robot.goingForBalls && i > -1 && i < auto_positions.length && auto_positions[i] >= 0.0) {
+			setSetpoint(auto_positions[i]);
+		}
+	}
+
 	public Acquisition() {
 		super("Acquisition", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		setAbsoluteTolerance(tolerance);

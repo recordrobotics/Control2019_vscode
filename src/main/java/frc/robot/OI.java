@@ -112,7 +112,11 @@ public class OI {
     return right.getRawButton(RobotMap.pieceAdjustPort);
   }
 
-  public static boolean getPieceAdjustPressed() {
+  public static boolean getTapeAdjustButton() {
+    return right.getRawButton(RobotMap.tapeAdjustPort);
+  }
+
+  /*public static boolean getPieceAdjustPressed() {
     return right.getRawButtonPressed(RobotMap.pieceAdjustPort);
   }
 
@@ -127,6 +131,10 @@ public class OI {
   public static boolean getTapeAdjustReleased() {
     return right.getRawButtonReleased(RobotMap.tapeAdjustPort);
   }
+
+  public static boolean getTapeAdjustPressed() {
+    return right.getRawButtonPressed(RobotMap.tapeAdjustPort);
+  }*/
 
   public static boolean getPivotRaiseButton() {
     return right.getRawButton(RobotMap.pivotraisePort);

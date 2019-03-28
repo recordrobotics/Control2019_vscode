@@ -206,25 +206,28 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		if(Robot.adjustMovement) {
-			if(OI.getPieceAdjustButton() && Robot.goingForBalls) {
-				double b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
-				if(b < -1.0) {
-					b = 0.0;
-				} else {
-					rotation = b_slow_sens * rotation + Robot.clamp(b * b_sens, -b_max, b_max);
-				}
-			}
-			else if(OI.getTapeAdjustButton() || (OI.getPieceAdjustButton() && !Robot.goingForBalls)) {
-				double tape = SmartDashboard.getNumber("tapes_x|PI_1", -2.0);	
-				if(tape < -1.0) {
-			   		tape = 0.0;
-				} else {
-					rotation = t_slow_sens * rotation + Robot.clamp(tape * tape_sens, -tape_max, tape_max);
-				}
+		/*for(int i = 1; i < past_balls.length; i++) {
+			past_balls[i] = past_balls[i - 1];
+		}
+		past_balls[0] = SmartDashboard.getNumber("ball_x|PI_2", -2.0);*/
+
+		if(Robot.adjustMovementPiece && OI.getPieceAdjustButton() && Robot.goingForBalls) {
+			double ball = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
+			if(ball < -1.0) {
+				ball = 0.0;
+			} else {
+				rotation = b_slow_sens * rotation + Robot.clamp(ball * b_sens, -b_max, b_max);
 			}
 		}
-		
+		else if((Robot.adjustMovementTape && OI.getTapeAdjustButton()) || (Robot.adjustMovementPiece && OI.getPieceAdjustButton() && !Robot.goingForBalls)) {
+			double tape = SmartDashboard.getNumber("tapes_x|PI_1", -2.0);	
+			if(tape < -1.0) {
+		   		tape = 0.0;
+			} else {
+				rotation = t_slow_sens * rotation + Robot.clamp(tape * tape_sens, -tape_max, tape_max);
+			}
+		}
+
 		/*int pov = OI.getRightPOV();
 		if(pov == -1) {
 			if(spinCommand != null) {
@@ -236,7 +239,8 @@ public class ManualDrive extends Command {
 			spinCommand.start();
 		}*/
 
-		Robot.newdrivetrain.curvatureDrive(forward, rotation);
+		if(!Robot.newdrivetrain.disabled())
+			Robot.newdrivetrain.curvatureDrive(forward, rotation);
 		//nextforward = forward;
 		//nextrotation = rotation;
 		

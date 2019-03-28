@@ -14,6 +14,9 @@ public class NewWheels extends Subsystem {
 	WPI_VictorSPX frontLeft = new WPI_VictorSPX(RobotMap.driveFrontLeftPort);
 	WPI_VictorSPX backLeft = new WPI_VictorSPX(RobotMap.driveBackLeftPort);
 
+	private long disabled_time = 0;
+	private long disabled_start_time = 0;
+
 	public static Encoder left_encoder = new Encoder(RobotMap.leftEncoderPort1, RobotMap.leftEncoderPort2, false, Encoder.EncodingType.k1X);
     public static Encoder right_encoder = new Encoder(RobotMap.rightEncoderPort1, RobotMap.rightEncoderPort2, false, Encoder.EncodingType.k1X);
 
@@ -56,6 +59,15 @@ public class NewWheels extends Subsystem {
 	public void stop() {
 		frontRight.set(ControlMode.PercentOutput, 0);
 		frontLeft.set(ControlMode.PercentOutput, 0);
+	}
+
+	public boolean disabled() {
+		return System.currentTimeMillis() - disabled_start_time < disabled_time; 
+	}
+
+	public void disable(long t) {
+		disabled_time = t;
+		disabled_start_time = System.currentTimeMillis();
 	}
 
 	public void initDefaultCommand() {

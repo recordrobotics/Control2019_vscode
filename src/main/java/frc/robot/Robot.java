@@ -50,7 +50,9 @@ public class Robot extends TimedRobot {
   public static boolean acquisition_enable = true;*/
 
   public static boolean goingForBalls = true;
-  public static boolean adjustMovement = true;
+  public static boolean adjustMovementTape = true;
+  public static boolean adjustMovementPiece = true;
+  public static boolean adjustGrabber = true;
 
   public static AHRS gyro;
   // private static boolean gyroSuccess = false;

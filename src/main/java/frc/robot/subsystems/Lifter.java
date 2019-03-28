@@ -32,6 +32,8 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	public final static double top_hatch = 1.9462857;
 	public final static double top_ball = 2.0957;
 
+	private int autoPos = -1;
+
 	public final double[] auto_positions = {bottom_hatch, bottom_ball, middle_hatch, 
 		middle_ball, top_hatch, top_ball};
 
@@ -45,11 +47,22 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		getPIDController().setOutputRange(-1.0, 1.0);
 	}
 	
-  public void initDefaultCommand() {
+  	public void initDefaultCommand() {
 		//if(Robot.lifter_enable)
 			setDefaultCommand(new LifterCommand(false));
 		//else if(Robot.test_enable)
 		//	setDefaultCommand(new Test());
+	}
+
+	public void setAutoPos(int i) {
+		if (i > -1 && i < auto_positions.length) {
+			setSetpoint(auto_positions[i]);
+			autoPos = i;
+		}
+	}
+
+	public int getAutoPos() {
+		return autoPos;
 	}
 	
 	public void setLift(double x) {
@@ -58,6 +71,7 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		if(x < 0)
 			x*= lowerSpeed;
 		liftMotor.set(ControlMode.PercentOutput, x);
+		autoPos = -1;
 	}
 	/*
 	public void incAuto() {
@@ -78,9 +92,6 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 		setSetPoint(auto_positions[auto_position_index]);
 	}
 	*/
-	public void setAuto(double pos) {
-		setSetPoint(pos);
-	}
 	
 	public boolean get0switch() {
 		return !resetswitch.get();

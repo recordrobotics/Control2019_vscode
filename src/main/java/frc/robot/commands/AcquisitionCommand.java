@@ -21,7 +21,7 @@ public class AcquisitionCommand extends Command {
 	// Switches
 	boolean switch0; 
 	boolean switch1;
-	boolean pieceAdjustPressed, pieceAdjustReleased, pieceAdjust, tapeAdjustReleased;
+	boolean pieceAdjustPressed, pieceAdjustReleased, pieceAdjust, tapeAdjust, tapeAdjustReleased, tapeAdjustPressed;
 	// Encoders
 	double acquisitionpos;
 	double liftpos;
@@ -34,17 +34,19 @@ public class AcquisitionCommand extends Command {
 	//boolean lockraise;
 	
 	final static double updaterate = 0.04;
-	// Threshold for lift encoder values below which acquisition cannot drop down to bottom state
-	final static double dropthreshold = -1e9;
 
 	private double reset_vel = 0.3;
-	private final double horizPos = 1.0;
-	private final double ballPos = 0.8;
-	private final double threshHeight = 0.5;
-
+	private final double hatchPos = 1.0;
+	private final double ballPickupPos = 1.0;
+	private final double ballHoldPos = 0.8;
+	private final double ballDepositPos = 1.1;
+	
 	private long release_time;
 	private final long release_spin_time = 600;
-	
+
+	public final static double threshHeight = 0.5;
+	public final static double safePos = 1.0;
+
 	@Override
 	protected void initialize() {
 		/*Robot.acquisition.stop();
@@ -71,10 +73,17 @@ public class AcquisitionCommand extends Command {
 		slowrollbutton = OI.getSlowRollButton();
 		switch0 = Robot.acquisition.getswitch0();
 		switch1 = Robot.acquisition.getswitch1();
-		pieceAdjustPressed = OI.getPieceAdjustPressed();
-		pieceAdjustReleased = OI.getPieceAdjustReleased();
+
+		boolean prevPieceAdjust = pieceAdjust;
+		boolean prevTapeAdjust = tapeAdjust;
 		pieceAdjust = OI.getPieceAdjustButton();
-		tapeAdjustReleased = OI.getTapeAdjustReleased();
+		tapeAdjust = OI.getTapeAdjustButton();
+
+		pieceAdjustPressed = pieceAdjust && !prevPieceAdjust;
+		pieceAdjustReleased = !pieceAdjust && prevPieceAdjust;
+		tapeAdjustReleased = !tapeAdjust && prevTapeAdjust;
+		tapeAdjustPressed = tapeAdjust && !prevTapeAdjust;
+
 		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
@@ -132,21 +141,39 @@ public class AcquisitionCommand extends Command {
 				
 			 	double pos = Robot.acquisition.getSetPoint() + tempupdaterate*movement;
 				
-				if(liftpos <= threshHeight && pos > horizPos) {
-					pos = horizPos;
-				}
-
 				Robot.acquisition.setSetpoint(pos);
 			}
-			else if(pieceAdjustReleased && Robot.goingForBalls) {
-				Robot.acquisition.setSetpoint(ballPos);
+			else if(Robot.adjustGrabber) {
+				if (pieceAdjustReleased && Robot.goingForBalls) {
+					Robot.acquisition.setSetpoint(ballHoldPos);
+				}
+				else if(pieceAdjustPressed) {
+					if(Robot.goingForBalls) {
+						Robot.acquisition.setSetpoint(ballPickupPos);
+					} else {
+						Robot.acquisition.setSetpoint(hatchPos);
+					}
+				}
+				else if(tapeAdjustPressed) {
+					if(Robot.goingForBalls) {
+						int p = Robot.lifter.getAutoPos();
+						if(p == -1) {
+							Robot.acquisition.setSetpoint(ballDepositPos);
+						} else {
+							Robot.acquisition.setDepositPos(p);
+						}
+					} else {
+						Robot.acquisition.setSetpoint(hatchPos);
+					}
+				}
 			}
-			else if(pieceAdjustPressed) {
-				Robot.acquisition.setSetpoint(horizPos);
+
+			if(Robot.lifter.getlifterpos() <= threshHeight && Robot.acquisition.getSetpoint() > safePos) {
+				Robot.acquisition.setSetpoint(safePos);
 			}
 		}
 
-		if(tapeAdjustReleased) {
+		if(Robot.adjustGrabber && tapeAdjustReleased && Robot.goingForBalls) {
 			release_time = System.currentTimeMillis();
 		}
 
