@@ -21,6 +21,7 @@ public class SimpleAcquisitionCommand extends Command {
 	@Override
 	protected void initialize() {
 		Robot.acquisition.getPIDController().setEnabled(false);
+		Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor);
 	}
 	@Override
 	protected void execute() {

@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Reset;
 import frc.robot.commands.SimpleAcquisitionCommand;
+import frc.robot.commands.SimpleLifterCommand;
+import frc.robot.commands.SimpleManualDrive;
 import frc.robot.commands.CenterTape;
 import frc.robot.commands.NetworkCommand;
 import frc.robot.commands.PIDSpin;
@@ -29,8 +31,12 @@ public class OI {
   public OI() {
     JoystickButton but = new JoystickButton(left, RobotMap.white);
     but.whenPressed(new Reset(10000));
+    JoystickButton simpleAcquisition = new JoystickButton(right, 8);
+    simpleAcquisition.whenPressed(new SimpleAcquisitionCommand());
     JoystickButton simpleLift = new JoystickButton(right, 11);
-    simpleLift.whenPressed(new SimpleAcquisitionCommand());
+    simpleLift.whenPressed(new SimpleLifterCommand());
+    JoystickButton simpleDrive = new JoystickButton(right, 7);
+    simpleDrive.whenPressed(new SimpleManualDrive());
 
     /*double x = 1.0;
 		double y = 3.0;
