@@ -115,8 +115,16 @@ public class OI {
     return right.getPOV() != -1 ? ((double)(Math.min(right.getPOV(), 180) - 90) / -90.0) : 0;
   }
 
-  public static boolean getBallAdjustButton() {
-    return right.getRawButton(RobotMap.ballAdjustPort);
+  public static boolean getPieceAdjustButton() {
+    return right.getRawButton(RobotMap.pieceAdjustPort);
+  }
+
+  public static boolean getPieceAdjustPressed() {
+    return right.getRawButtonPressed(RobotMap.pieceAdjustPort);
+  }
+
+  public static boolean getPieceAdjustReleased() {
+    return right.getRawButtonReleased(RobotMap.pieceAdjustPort);
   }
 
   public static boolean getTapeAdjustButton() {

@@ -29,6 +29,7 @@ public class Wheels extends Subsystem {
 		return -left_encoder.getDistance() * encoder_conv;
 	}
 	
+	
   	public double getrightdistance() {
   		return right_encoder.getDistance() * encoder_conv;
 	}
@@ -38,7 +39,7 @@ public class Wheels extends Subsystem {
 	}
 
 	public void drive(double l, double r) {
-		System.out.println(l + " " + r);
+		//System.out.println(l + " " + r);
 		frontLeft.set(l);
 		backLeft.set(l);
 		frontRight.set(-r);

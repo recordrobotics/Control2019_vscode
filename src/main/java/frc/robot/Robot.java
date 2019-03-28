@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
   public static boolean test_enable = false;
   public static boolean acquisition_enable = true;
 
+  public static boolean goingForBalls = true;
+
   public static AHRS gyro;
   // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);

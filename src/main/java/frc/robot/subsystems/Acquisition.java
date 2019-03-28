@@ -33,14 +33,24 @@ public class Acquisition extends PIDSubsystem {
 	final static double acquisitionLowerSpeed = 0.6;
 	final static double rollerSpeed = 0.4;
 
+	private final static double upperRange = 1.2;
+	private final static double lowerRange = 0.0;
+
+	private double rangeOffset = 0.0;
+
 	public Acquisition() {
 		super("Acquisition", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
 		setAbsoluteTolerance(tolerance);
 		getPIDController().setContinuous(false);
 		setSetPoint(0);
 		getPIDController().setEnabled(false);
-		getPIDController().setInputRange(-0.4, 1.2);
+		getPIDController().setInputRange(lowerRange, upperRange);
 		getPIDController().setOutputRange(-1.0, 1.0);
+	}
+
+	public void incrementOffset(double v) {
+		rangeOffset += v;
+		SmartDashboard.putNumber("acquisition.rangeOffset", rangeOffset);
 	}
 	
 	public boolean getswitch0() {
@@ -52,7 +62,7 @@ public class Acquisition extends PIDSubsystem {
 	}
 
 	public double getacquisitionpos () {
-		return acquisition_encoder.getDistance() * encoder_conv;
+		return acquisition_encoder.getDistance() * encoder_conv + rangeOffset;
 	}
 
 	public double getrollerpos () {

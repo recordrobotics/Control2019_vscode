@@ -18,11 +18,16 @@ public class LifterCommand extends Command {
 	boolean manuallower;
 	boolean manualrelease;
 	int buttons;
+	boolean pieceAdjustPressed, pieceAdjustReleased;
 	//final static double manualupdaterate = 0.01;
 
 	int reset = 0;
 	boolean doReset = false;
 	double movement = 0;
+
+	private final double ballPos = 0.1;
+	private final double hatchPos = 0.2;
+	private final double hatchCatchPos = 0.3;
 
 
 	int auto_position_index = 0;
@@ -49,6 +54,8 @@ public class LifterCommand extends Command {
 		manualrelease = OI.getManualRelease();
 		auto_positions = Robot.lifter.getAutoPositions();
 		buttons = OI.getButtons();
+		pieceAdjustPressed = OI.getPieceAdjustPressed();
+		pieceAdjustReleased = OI.getPieceAdjustReleased();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		if(reset == 1) {
 			if(!switch0) {
@@ -85,11 +92,23 @@ public class LifterCommand extends Command {
 				}
 				Robot.lifter.setLift(movement);
 			}
+			else if(pieceAdjustPressed) {
+				if(Robot.goingForBalls) {
+					Robot.lifter.setSetpoint(ballPos);
+				} else {
+					Robot.lifter.setSetpoint(hatchPos);
+				}
+			}
+			else if(pieceAdjustReleased && !Robot.goingForBalls) {
+				Robot.lifter.setSetpoint(hatchCatchPos);
+			}
+
 			if (manualrelease) {
 				Robot.lifter.setLift(0.0);
 				Robot.lifter.getPIDController().setEnabled(true);
 				Robot.lifter.setSetPoint(Robot.lifter.getlifterpos());
 			}
+			
 			SmartDashboard.putBoolean("liftercommand.pidenabled", Robot.lifter.getPIDController().isEnabled());
 			SmartDashboard.putNumber("liftercommand.lifterpos", Robot.lifter.getlifterpos());
 			SmartDashboard.putNumber("liftercommand.setpoint", Robot.lifter.getSetpoint());

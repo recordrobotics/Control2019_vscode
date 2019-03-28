@@ -12,7 +12,7 @@ public class RobotMap {
  public static int manualraisePort = 6;
  public static int manuallowerPort = 5;
 
- public static int ballAdjustPort = 2; // right
+ public static int pieceAdjustPort = 2; // right
  public static int resetPort = 12; // right
  public static int tapeAdjustPort = 1; // right
  public static int rangeLowerButton = 8; // left

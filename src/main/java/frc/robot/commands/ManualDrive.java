@@ -206,7 +206,7 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		if(OI.getBallAdjustButton()) {
+		if(OI.getPieceAdjustButton() && Robot.goingForBalls) {
 			double b = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
 			if(b < -1.0) {
 				b = 0.0;
@@ -214,7 +214,7 @@ public class ManualDrive extends Command {
 				rotation = b_slow_sens * rotation + Robot.clamp(b * b_sens, -b_max, b_max);
 			}
 		}
-		else if(OI.getTapeAdjustButton()) {
+		else if(OI.getTapeAdjustButton() || (OI.getPieceAdjustButton() && !Robot.goingForBalls)) {
 			double tape = SmartDashboard.getNumber("tapes_x|PI_1", -2.0);	
 			if(tape < -1.0) {
 		   		tape = 0.0;
