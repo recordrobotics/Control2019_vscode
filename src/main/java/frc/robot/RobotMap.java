@@ -3,20 +3,19 @@ package frc.robot;
 public class RobotMap {
   
 // Joysticks and buttons
- public static int leftjoyPort = 1;
+ public static int leftjoyPort = 1; // Button panel
  public static int rightjoyPort = 0;
- public static int buttonPanelPort = 2;
 
- public static int raisePort = 4;
- public static int lowerPort = 3;
- public static int manualraisePort = 6;
- public static int manuallowerPort = 5;
+ public static int manualraisePort = 3;
+ public static int manuallowerPort = 4;
 
- public static int pieceAdjustPort = 2; // right
- public static int resetPort = 12; // right
- public static int tapeAdjustPort = 1; // right
- public static int rangeLowerButton = 8; // left
- public static int rangeRaiseButton = 9; // left
+ public static int pivotraisePort = 5;
+ public static int pivotlowerPort = 6;
+
+ public static int pieceAdjustPort = 2; 
+ public static int tapeAdjustPort = 1;
+ public static int rangeLowerButton = 8;
+ public static int rangeRaiseButton = 9;
 
  public static int greenleft = 1;
  public static int greenright = 2;

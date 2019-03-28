@@ -60,7 +60,7 @@ public class NewWheels extends Subsystem {
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		if(Robot.drive_enable)
+		//if(Robot.drive_enable)
 			setDefaultCommand(new ManualDrive());
 	}
 }

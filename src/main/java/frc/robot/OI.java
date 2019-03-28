@@ -14,15 +14,8 @@ import frc.robot.commands.PIDSpin;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
 	private static Joystick right = new Joystick(RobotMap.rightjoyPort);
-  private static Joystick left = new Joystick(RobotMap.leftjoyPort);
+  private static Joystick left = new Joystick(RobotMap.leftjoyPort); // Button Panel
 
 	private static double forward;
   private static double rotation;
@@ -104,10 +97,10 @@ public class OI {
   }
 
   public static double getRollButton() {
-    SmartDashboard.putNumber("OI.leftPOV", left.getPOV());
+    //SmartDashboard.putNumber("OI.leftPOV", left.getPOV());
     //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
     //((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
-    return left.getPOV() != -1 ? ((double)(Math.min(180, left.getPOV()) - 90) / -90.0) : 0;
+    return right.getPOV() != -1 ? ((double)(Math.min(180, right.getPOV()) - 90) / -90.0) : 0;
   }
   public static double getSlowRollButton() {
     //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
@@ -131,21 +124,26 @@ public class OI {
     return right.getRawButton(RobotMap.tapeAdjustPort);
   }
 
-  public static boolean getRaiseButton() {
-    return right.getRawButton(RobotMap.raisePort);
+  public static boolean getTapeAdjustReleased() {
+    return right.getRawButtonReleased(RobotMap.tapeAdjustPort);
   }
 
-  public static boolean getLowerButton() {
-    return right.getRawButton(RobotMap.lowerPort);
+  public static boolean getPivotRaiseButton() {
+    return right.getRawButton(RobotMap.pivotraisePort);
   }
 
-  public static boolean getRaiseButtonPressed() {
-    return right.getRawButtonPressed(RobotMap.raisePort);
+  public static boolean getPivotLowerButton() {
+    return right.getRawButton(RobotMap.pivotlowerPort);
   }
 
-  public static boolean getLowerButtonPressed() {
-    return right.getRawButtonPressed(RobotMap.lowerPort);
+  public static boolean getPivotRaiseButtonPressed() {
+    return right.getRawButtonPressed(RobotMap.pivotraisePort);
   }
+
+  public static boolean getPivotLowerButtonPressed() {
+    return right.getRawButtonPressed(RobotMap.pivotlowerPort);
+  }
+  
   public static boolean getManualRaiseButton() {
     boolean manualraise = right.getRawButton(RobotMap.manualraisePort);
     return manualraise;
@@ -180,10 +178,10 @@ public class OI {
   } 
 
    public static boolean getRangeButtonPressed() {
-    return left.getRawButtonReleased(RobotMap.rangeLowerButton);
+    return right.getRawButtonReleased(RobotMap.rangeLowerButton);
   }
   public static boolean getRangeButton2Pressed() {
-    return left.getRawButtonReleased(RobotMap.rangeRaiseButton);
+    return right.getRawButtonReleased(RobotMap.rangeRaiseButton);
   }
 
 

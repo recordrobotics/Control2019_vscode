@@ -21,7 +21,7 @@ public class AcquisitionCommand extends Command {
 	// Switches
 	boolean switch0; 
 	boolean switch1;
-	boolean pieceAdjustPressed, pieceAdjustReleased, pieceAdjust;
+	boolean pieceAdjustPressed, pieceAdjustReleased, pieceAdjust, tapeAdjustReleased;
 	// Encoders
 	double acquisitionpos;
 	double liftpos;
@@ -39,8 +39,11 @@ public class AcquisitionCommand extends Command {
 
 	private double reset_vel = 0.3;
 	private final double horizPos = 1.0;
-	private final double ballPos = 0.5;
+	private final double ballPos = 0.8;
 	private final double threshHeight = 0.5;
+
+	private long release_time;
+	private final long release_spin_time = 600;
 	
 	@Override
 	protected void initialize() {
@@ -53,16 +56,17 @@ public class AcquisitionCommand extends Command {
 		SmartDashboard.putNumber("acquisitioncommand.lowerRange", rangeOffset);
 		Robot.acquisition.getPIDController().setInputRange(rangeOffset, 1.2);*/
 		Robot.acquisition.roll(0.0);
+		release_time = 0;
 	}
 	@Override
 	protected void execute() {
 		movement = 0;
 		liftpos = Robot.lifter.getlifterpos();
 		acquisitionpos = Robot.acquisition.getacquisitionpos();
-		raisebutton = -1*(OI.getRaiseButton() ? 1 : 0);
-		lowerbutton = OI.getLowerButton() ? 1 : 0;
-		raisebuttonpressed = OI.getRaiseButtonPressed();
-		lowerbuttonpressed = OI.getLowerButtonPressed();
+		raisebutton = -1*(OI.getPivotRaiseButton() ? 1 : 0);
+		lowerbutton = OI.getPivotLowerButton() ? 1 : 0;
+		raisebuttonpressed = OI.getPivotRaiseButtonPressed();
+		lowerbuttonpressed = OI.getPivotLowerButtonPressed();
 		rollbutton = OI.getRollButton();
 		slowrollbutton = OI.getSlowRollButton();
 		switch0 = Robot.acquisition.getswitch0();
@@ -70,6 +74,7 @@ public class AcquisitionCommand extends Command {
 		pieceAdjustPressed = OI.getPieceAdjustPressed();
 		pieceAdjustReleased = OI.getPieceAdjustReleased();
 		pieceAdjust = OI.getPieceAdjustButton();
+		tapeAdjustReleased = OI.getTapeAdjustReleased();
 		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
@@ -140,14 +145,25 @@ public class AcquisitionCommand extends Command {
 				Robot.acquisition.setSetpoint(horizPos);
 			}
 		}
+
+		if(tapeAdjustReleased) {
+			release_time = System.currentTimeMillis();
+		}
+
+		double roll = pieceAdjust ? 0.7 : 0.0;
+
+		if(System.currentTimeMillis() - release_time < release_spin_time) {
+			roll = -1.0;
+		}
+
 		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());
 		// Can roll in two directions based on which roll button is pressed
-		double roll = pieceAdjust ? 0.7 : 0.0;
+		
 		if(slowrollbutton != 0.0)
 			roll = 0.4 * slowrollbutton;
 		else if(rollbutton > 0.0)
 			roll = rollbutton * 0.7;
-		else
+		else if(rollbutton < 0.0)
 			roll = rollbutton;
 		
 		Robot.acquisition.roll(roll);

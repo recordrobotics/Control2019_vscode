@@ -44,12 +44,13 @@ public class Robot extends TimedRobot {
   
   private static Network[] networks;
   
-  public static boolean drive_enable = true;
+  /*public static boolean drive_enable = true;
   public static boolean lifter_enable = true;
   public static boolean test_enable = false;
-  public static boolean acquisition_enable = true;
+  public static boolean acquisition_enable = true;*/
 
   public static boolean goingForBalls = true;
+  public static boolean adjustMovement = true;
 
   public static AHRS gyro;
   // private static boolean gyroSuccess = false;

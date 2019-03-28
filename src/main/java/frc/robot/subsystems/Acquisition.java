@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.commands.AcquisitionCommand;
-import frc.robot.commands.Test;
+//import frc.robot.commands.Test;
 import frc.robot.RobotMap;
 import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -80,10 +80,10 @@ public class Acquisition extends PIDSubsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		if(Robot.acquisition_enable)
+		//if(Robot.acquisition_enable)
 			setDefaultCommand(new AcquisitionCommand());
-		else if(Robot.test_enable)
-			setDefaultCommand(new Test());
+		//else if(Robot.test_enable)
+		//	setDefaultCommand(new Test());
 	}
 
 	public void rotate(double x) {

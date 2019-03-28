@@ -12,13 +12,11 @@ public class LifterCommand extends Command {
 	// Standard lift positions
 	double[] auto_positions;
 	// Joystick inputs
-	boolean autoraise;
-	boolean autolower;
 	boolean manualraise;
 	boolean manuallower;
 	boolean manualrelease;
 	int buttons;
-	boolean pieceAdjustPressed, pieceAdjustReleased;
+	boolean pieceAdjustPressed, pieceAdjustReleased, tapeAdjustReleased;
 	//final static double manualupdaterate = 0.01;
 
 	int reset = 0;
@@ -56,6 +54,7 @@ public class LifterCommand extends Command {
 		buttons = OI.getButtons();
 		pieceAdjustPressed = OI.getPieceAdjustPressed();
 		pieceAdjustReleased = OI.getPieceAdjustReleased();
+		tapeAdjustReleased = OI.getTapeAdjustReleased();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		if(reset == 1) {
 			if(!switch0) {
@@ -101,6 +100,9 @@ public class LifterCommand extends Command {
 			}
 			else if(pieceAdjustReleased && !Robot.goingForBalls) {
 				Robot.lifter.setSetpoint(hatchCatchPos);
+			}
+			else if(tapeAdjustReleased && !Robot.goingForBalls) {
+				Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchPos - hatchCatchPos);
 			}
 
 			if (manualrelease) {
