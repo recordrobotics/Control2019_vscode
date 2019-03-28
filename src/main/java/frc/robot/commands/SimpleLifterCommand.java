@@ -2,9 +2,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class SimpleLifterCommand extends Command {
@@ -12,6 +9,7 @@ public class SimpleLifterCommand extends Command {
 		requires(Robot.lifter);
 	}
 
+	private final double initialFactor = 0.1;
 	@Override
 	protected void initialize() {
 		Robot.lifter.getPIDController().setEnabled(false);
@@ -20,9 +18,9 @@ public class SimpleLifterCommand extends Command {
 	@Override
 	protected void execute() {
 		if(OI.right.getRawButton(3))
-			Robot.lifter.setLift(1.0);
+			Robot.lifter.setLift(1.0 + initialFactor);
 		else if (OI.right.getRawButton(4))
-			Robot.lifter.setLift(-1.0);
+			Robot.lifter.setLift(-1.0 + initialFactor);
 		else
 			Robot.lifter.setLift(0);
 	}
@@ -36,15 +34,13 @@ public class SimpleLifterCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
-		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);
+		Robot.lifter.setLift(0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
-		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);
+		Robot.lifter.setLift(0);
 	}
 }

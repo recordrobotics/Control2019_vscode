@@ -31,12 +31,12 @@ public class OI {
   public OI() {
     JoystickButton but = new JoystickButton(left, RobotMap.white);
     but.whenPressed(new Reset(10000));
-    JoystickButton simpleAcquisition = new JoystickButton(right, 8);
-    simpleAcquisition.whenPressed(new SimpleAcquisitionCommand());
+    JoystickButton simpleAcquisition = new JoystickButton(right, 9);
+    simpleAcquisition.toggleWhenPressed(new SimpleAcquisitionCommand());
     JoystickButton simpleLift = new JoystickButton(right, 11);
-    simpleLift.whenPressed(new SimpleLifterCommand());
+    simpleLift.toggleWhenPressed(new SimpleLifterCommand());
     JoystickButton simpleDrive = new JoystickButton(right, 7);
-    simpleDrive.whenPressed(new SimpleManualDrive());
+    simpleDrive.toggleWhenPressed(new SimpleManualDrive());
 
     /*double x = 1.0;
 		double y = 3.0;
