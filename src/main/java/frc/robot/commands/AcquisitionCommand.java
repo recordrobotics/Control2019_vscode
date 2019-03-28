@@ -138,7 +138,6 @@ public class AcquisitionCommand extends Command {
 				double tempupdaterate = updaterate;
 				if(raisebuttonpressed || lowerbuttonpressed)
 					tempupdaterate *= 3;
-				
 			 	double pos = Robot.acquisition.getSetPoint() + tempupdaterate*movement;
 				
 				Robot.acquisition.setSetpoint(pos);
@@ -177,7 +176,7 @@ public class AcquisitionCommand extends Command {
 			release_time = System.currentTimeMillis();
 		}
 
-		double roll = pieceAdjust ? 0.7 : 0.0;
+		double roll = (pieceAdjust && Robot.goingForBalls) ? 0.7 : 0.0;
 
 		if(System.currentTimeMillis() - release_time < release_spin_time) {
 			roll = -1.0;

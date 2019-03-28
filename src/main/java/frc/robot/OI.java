@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Reset;
+import frc.robot.commands.SimpleAcquisitionCommand;
 import frc.robot.commands.CenterTape;
 import frc.robot.commands.NetworkCommand;
 import frc.robot.commands.PIDSpin;
@@ -14,8 +15,8 @@ import frc.robot.commands.PIDSpin;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private static Joystick right = new Joystick(RobotMap.rightjoyPort);
-  private static Joystick left = new Joystick(RobotMap.leftjoyPort); // Button Panel
+	public static Joystick right = new Joystick(RobotMap.rightjoyPort);
+  public static Joystick left = new Joystick(RobotMap.leftjoyPort); // Button Panel
 
 	private static double forward;
   private static double rotation;
@@ -28,6 +29,8 @@ public class OI {
   public OI() {
     JoystickButton but = new JoystickButton(left, RobotMap.white);
     but.whenPressed(new Reset(10000));
+    JoystickButton simpleLift = new JoystickButton(right, 11);
+    simpleLift.whenPressed(new SimpleAcquisitionCommand());
 
     /*double x = 1.0;
 		double y = 3.0;
@@ -50,7 +53,7 @@ public class OI {
   //   return buttons.getPOV();
   // }
 
-  public static double getOldLifter(){
+  public static double getOldLifter() {
     int joyStickStateRight = right.getPOV(); // returns state of joystick
     System.out.println("getOldLifter is called with" + joyStickStateRight);
     if(joyStickStateRight == 0){

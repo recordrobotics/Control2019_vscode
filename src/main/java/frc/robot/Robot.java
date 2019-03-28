@@ -54,6 +54,10 @@ public class Robot extends TimedRobot {
   public static boolean adjustMovementPiece = true;
   public static boolean adjustGrabber = true;
 
+  /*public boolean getAdjustGrabber() {
+    return SmartDashboard.getBoolean("adjustGrabber", false);
+  }*/
+
   public static AHRS gyro;
   // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);

@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Acquisition extends PIDSubsystem {
-	WPI_VictorSPX acquisitionMotor = new WPI_VictorSPX(RobotMap.acquisitionPort);
-	WPI_VictorSPX rollerMotor = new WPI_VictorSPX(RobotMap.rollerPort);
+	public WPI_VictorSPX acquisitionMotor = new WPI_VictorSPX(RobotMap.acquisitionPort);
+	public WPI_VictorSPX rollerMotor = new WPI_VictorSPX(RobotMap.rollerPort);
 	// Encoder used in evaluating position of acquisition
 	private static Encoder acquisition_encoder = new Encoder(RobotMap.acquisition_encoderPort1, 
 		RobotMap.acquisition_encoderPort2, false, Encoder.EncodingType.k1X);
