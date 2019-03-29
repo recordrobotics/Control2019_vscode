@@ -49,24 +49,30 @@ public class Robot extends TimedRobot {
   public static boolean test_enable = false;
   public static boolean acquisition_enable = true;*/
 
+  private static boolean defaultAdjustGrabber = true;
+  private static boolean defaultGoingForBalls = true;
+  private static boolean defaultAdjustMovementTape = false;
+  private static boolean defaultAdjustMovementPiece = true;
+  private static boolean usePivot = false;
+
   public static boolean adjustGrabber() {
-    return SmartDashboard.getBoolean("adjustGrabber", true);
+    return SmartDashboard.getBoolean("adjustGrabber", defaultAdjustGrabber);
   }
 
   public static boolean goingForBalls() {
-    return SmartDashboard.getBoolean("goingForBalls", true);
+    return SmartDashboard.getBoolean("goingForBalls", defaultGoingForBalls);
   }
 
   public static boolean adjustMovementTape() {
-    return SmartDashboard.getBoolean("adjustMovementTape", false);
+    return SmartDashboard.getBoolean("adjustMovementTape", defaultAdjustMovementTape);
   }
 
   public static boolean adjustMovementPiece() {
-    return SmartDashboard.getBoolean("adjustMovementPiece", true);
+    return SmartDashboard.getBoolean("adjustMovementPiece", defaultAdjustMovementPiece);
   }
 
   public static boolean usePivot() {
-    return SmartDashboard.getBoolean("usePivot", false);
+    return usePivot;
   }
 
   public static AHRS gyro;
@@ -130,15 +136,23 @@ public class Robot extends TimedRobot {
     networks[4] = new Network(new File("/home/admin/data/data_1.265625.txt"));
   }
 
+  private static void init_booleans() {
+    SmartDashboard.putBoolean("adjustGrabber", defaultAdjustGrabber);
+    SmartDashboard.putBoolean("goingForBalls", defaultGoingForBalls);
+    SmartDashboard.putBoolean("adjustMovementTape", defaultAdjustMovementTape);
+    SmartDashboard.putBoolean("adjustMovementPiece", defaultAdjustMovementPiece);
+  }
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    init_networks();
+    //init_networks();
+    init_booleans();
     m_oi = new OI();
-    setLight(true);
+    //setLight(true);
     
     try {
       gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
@@ -174,7 +188,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
     SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
     SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
-    setLight(true);
+    //setLight(true);
     SmartDashboard.putNumber("lifter.setpoint", lifter.getSetpoint());
     //acquisition.rotate(1.0);
   }

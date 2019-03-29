@@ -49,6 +49,10 @@ public class ManualDrive extends Command {
 	private final int delay_ball = 10;
 	private final int delay_tape = 10;
 
+	// Minimum counts, in frames
+	private final int mc_ball = 6;
+	private final int mc_tape = 6;
+
 	private double[] past_balls_x = new double[past_len];
 	private double[] past_balls_y = new double[past_len];
 	private double[] past_tapes_x = new double[past_len];
@@ -62,9 +66,13 @@ public class ManualDrive extends Command {
 		}
 	}
 
-	private double updateAvg(double[] list, double v, int delay) {
+	private double updateAvg(double[] list, double v, int delay, int min_count) {
 		if(list.length < 1) {
-			return v;
+			if(min_count > 0) {
+				return -2.0;
+			} else {
+				return v;
+			}
 		}
 
 		for(int i = 1; i < list.length; i++) {
@@ -86,7 +94,9 @@ public class ManualDrive extends Command {
 			}
 		}
 
-		if(count == 0) {
+		if(min_count > 0 && count < min_count) {
+			return -2.0;
+		} else if(count == 0) {
 			return v;
 		} else {
 			return (double)delay * (total / (double)count) + v;
@@ -258,13 +268,13 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		double bx = updateAvg(past_balls_x, SmartDashboard.getNumber("ball_x|PI_2", -2.0), delay_ball);
-		double by = updateAvg(past_balls_y, SmartDashboard.getNumber("ball_y|PI_2", -2.0), delay_ball);
-		double tx = updateAvg(past_tapes_x, SmartDashboard.getNumber("tapes_x|PI_1", -2.0), delay_tape);
-		double ty = updateAvg(past_tapes_y, SmartDashboard.getNumber("tapes_y|PI_1", -2.0), delay_tape);
+		double bx = updateAvg(past_balls_x, SmartDashboard.getNumber("ball_x|PI_2", -2.0), delay_ball, mc_ball);
+		double by = updateAvg(past_balls_y, SmartDashboard.getNumber("ball_y|PI_2", -2.0), delay_ball, mc_ball);
+		double tx = updateAvg(past_tapes_x, SmartDashboard.getNumber("tapes_x|PI_1", -2.0), delay_tape, mc_tape);
+		double ty = updateAvg(past_tapes_y, SmartDashboard.getNumber("tapes_y|PI_1", -2.0), delay_tape, mc_tape);
 
 		SmartDashboard.putNumber("ball_x_predicted", bx);
-		
+
 		if(Robot.adjustMovementPiece() && OI.getPieceAdjustButton() && Robot.goingForBalls()) {
 			if(bx < -1.0) {
 				bx = 0.0;
