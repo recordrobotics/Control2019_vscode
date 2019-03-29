@@ -87,7 +87,7 @@ public class AcquisitionCommand extends Command {
 		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
-		if(Robot.usePivot) {
+		if(Robot.usePivot()) {
 			if(OI.getRangeButtonPressed()) {
 				Robot.acquisition.incrementOffset(0.4);
 			}
@@ -143,19 +143,19 @@ public class AcquisitionCommand extends Command {
 					
 					Robot.acquisition.setSetpoint(pos);
 				}
-				else if(Robot.adjustGrabber) {
-					if (pieceAdjustReleased && Robot.goingForBalls) {
+				else if(Robot.adjustGrabber()) {
+					if (pieceAdjustReleased && Robot.goingForBalls()) {
 						Robot.acquisition.setSetpoint(ballHoldPos);
 					}
 					else if(pieceAdjustPressed) {
-						if(Robot.goingForBalls) {
+						if(Robot.goingForBalls()) {
 							Robot.acquisition.setSetpoint(ballPickupPos);
 						} else {
 							Robot.acquisition.setSetpoint(hatchPos);
 						}
 					}
 					else if(tapeAdjustPressed) {
-						if(Robot.goingForBalls) {
+						if(Robot.goingForBalls()) {
 							int p = Robot.lifter.getAutoPos();
 							if(p == -1) {
 								Robot.acquisition.setSetpoint(ballDepositPos);
@@ -173,12 +173,12 @@ public class AcquisitionCommand extends Command {
 				}
 			}
 		}
-		
-		if(Robot.adjustGrabber && tapeAdjustReleased && Robot.goingForBalls) {
+
+		if(Robot.adjustGrabber() && tapeAdjustReleased && Robot.goingForBalls()) {
 			release_time = System.currentTimeMillis();
 		}
 
-		double roll = (pieceAdjust && Robot.goingForBalls) ? -0.7 : 0.0;
+		double roll = (pieceAdjust && Robot.goingForBalls()) ? -0.7 : 0.0;
 
 		if(System.currentTimeMillis() - release_time < release_spin_time) {
 			roll = -1.0;

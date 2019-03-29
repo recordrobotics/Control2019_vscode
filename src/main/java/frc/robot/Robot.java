@@ -49,15 +49,25 @@ public class Robot extends TimedRobot {
   public static boolean test_enable = false;
   public static boolean acquisition_enable = true;*/
 
-  public static boolean goingForBalls = true;
-  public static boolean adjustMovementTape = false;
-  public static boolean adjustMovementPiece = true;
-  public static boolean adjustGrabber = true;
-  public static boolean usePivot = true;
+  public static boolean adjustGrabber() {
+    return SmartDashboard.getBoolean("adjustGrabber", true);
+  }
 
-  /*public boolean getAdjustGrabber() {
-    return SmartDashboard.getBoolean("adjustGrabber", false);
-  }*/
+  public static boolean goingForBalls() {
+    return SmartDashboard.getBoolean("goingForBalls", true);
+  }
+
+  public static boolean adjustMovementTape() {
+    return SmartDashboard.getBoolean("adjustMovementTape", false);
+  }
+
+  public static boolean adjustMovementPiece() {
+    return SmartDashboard.getBoolean("adjustMovementPiece", true);
+  }
+
+  public static boolean usePivot() {
+    return SmartDashboard.getBoolean("usePivot", false);
+  }
 
   public static AHRS gyro;
   // private static boolean gyroSuccess = false;

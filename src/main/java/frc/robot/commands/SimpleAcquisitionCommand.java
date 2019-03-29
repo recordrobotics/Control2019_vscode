@@ -25,7 +25,7 @@ public class SimpleAcquisitionCommand extends Command {
 	}
 	@Override
 	protected void execute() {
-		if(Robot.usePivot) {
+		if(Robot.usePivot()) {
 			if(OI.right.getRawButton(5))
 				Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor - upsens);
 			else if (OI.right.getRawButton(6))
@@ -51,7 +51,7 @@ public class SimpleAcquisitionCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		if(Robot.usePivot) {
+		if(Robot.usePivot()) {
 			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
 		}
 		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);
@@ -61,7 +61,7 @@ public class SimpleAcquisitionCommand extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		if(Robot.usePivot) {
+		if(Robot.usePivot()) {
 			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
 		}
 		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);

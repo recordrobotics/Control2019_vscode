@@ -50,7 +50,7 @@ public class Acquisition extends PIDSubsystem {
 		middle_ball, top_hatch, top_ball};
 
 	public void setDepositPos(int i) {
-		if (Robot.goingForBalls && i > -1 && i < auto_positions.length && auto_positions[i] >= 0.0) {
+		if (Robot.goingForBalls() && i > -1 && i < auto_positions.length && auto_positions[i] >= 0.0) {
 			setSetpoint(auto_positions[i]);
 		}
 	}

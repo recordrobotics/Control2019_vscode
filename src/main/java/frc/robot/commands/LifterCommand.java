@@ -104,19 +104,19 @@ public class LifterCommand extends Command {
 				}
 				Robot.lifter.setLift(movement);
 			}
-			else if(Robot.adjustGrabber) {
+			else if(Robot.adjustGrabber()) {
 				if(pieceAdjustPressed) {
-					if(Robot.goingForBalls) {
+					if(Robot.goingForBalls()) {
 						Robot.lifter.setSetpoint(ballPos);
 					} else {
 						Robot.lifter.setSetpoint(hatchPos);
 					}
 				}
-				else if(pieceAdjustReleased && !Robot.goingForBalls) {
+				else if(pieceAdjustReleased && !Robot.goingForBalls()) {
 					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() - hatchPos + hatchCatchPos);
 					Robot.newdrivetrain.disable(600);
 				}
-				else if(tapeAdjustReleased && !Robot.goingForBalls) {
+				else if(tapeAdjustReleased && !Robot.goingForBalls()) {
 					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchPos - hatchCatchPos);
 					Robot.newdrivetrain.disable(600);
 				}

@@ -265,14 +265,14 @@ public class ManualDrive extends Command {
 
 		SmartDashboard.putNumber("ball_x_predicted", bx);
 		
-		if(Robot.adjustMovementPiece && OI.getPieceAdjustButton() && Robot.goingForBalls) {
+		if(Robot.adjustMovementPiece() && OI.getPieceAdjustButton() && Robot.goingForBalls()) {
 			if(bx < -1.0) {
 				bx = 0.0;
 			} else {
 				rotation = b_slow_sens * rotation + Robot.clamp(-bx * b_sens, -b_max, b_max);
 			}
 		}
-		else if((Robot.adjustMovementTape && OI.getTapeAdjustButton()) || (Robot.adjustMovementPiece && OI.getPieceAdjustButton() && !Robot.goingForBalls)) {
+		else if((Robot.adjustMovementTape() && OI.getTapeAdjustButton()) || (Robot.adjustMovementPiece() && OI.getPieceAdjustButton() && !Robot.goingForBalls())) {
 			if(tx < -1.0) {
 		   		tx = 0.0;
 			} else {
