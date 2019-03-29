@@ -19,6 +19,7 @@ public class Autonomous extends CommandGroup {
       //addSequential(new SetRoller(0.5, 300));
     }
     addParallel(new ManualDrive());
-    //addSequential(new AcquisitionCommand());
+    addParallel(new AcquisitionCommand());
+    addSequential(new LifterCommand(true));
   }
 }

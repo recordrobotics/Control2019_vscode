@@ -22,7 +22,7 @@ public class SimpleLifterCommand extends Command {
 		else if (OI.right.getRawButton(4))
 			Robot.lifter.setLift(-1.0 + initialFactor);
 		else
-			Robot.lifter.setLift(0);
+			Robot.lifter.setLift(initialFactor);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -7,9 +7,9 @@ public class RobotMap {
  public static int rightjoyPort = 0;
 
  public static int manualraisePort = 3;
- public static int manuallowerPort = 4;
+ public static int manuallowerPort = 5;
 
- public static int pivotraisePort = 5;
+ public static int pivotraisePort = 4;
  public static int pivotlowerPort = 6;
 
  public static int pieceAdjustPort = 2; 

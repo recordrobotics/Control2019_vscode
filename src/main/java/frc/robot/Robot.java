@@ -50,9 +50,10 @@ public class Robot extends TimedRobot {
   public static boolean acquisition_enable = true;*/
 
   public static boolean goingForBalls = true;
-  public static boolean adjustMovementTape = true;
+  public static boolean adjustMovementTape = false;
   public static boolean adjustMovementPiece = true;
   public static boolean adjustGrabber = true;
+  public static boolean usePivot = true;
 
   /*public boolean getAdjustGrabber() {
     return SmartDashboard.getBoolean("adjustGrabber", false);
@@ -135,7 +136,7 @@ public class Robot extends TimedRobot {
       System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
     }
 
-    m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL2)); //new NetworkCommand(4.0, 8.0, 0));
+    m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL1)); //new NetworkCommand(4.0, 8.0, 0));
   // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
     //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
     //CameraServer.getInstance().startAutomaticCapture();

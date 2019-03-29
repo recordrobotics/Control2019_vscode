@@ -109,12 +109,19 @@ public class OI {
     //SmartDashboard.putNumber("OI.leftPOV", left.getPOV());
     //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
     //((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
-    return right.getPOV() != -1 ? ((double)(Math.min(180, right.getPOV()) - 90) / -90.0) : 0;
+    int pov = right.getPOV();
+    double v = 0.0;
+    if(pov == 0) {
+      v = 1.0;
+    } else if(pov == 180) {
+      v = -1.0;
+    }
+    return v;
   }
   public static double getSlowRollButton() {
     //return ((left.getPOV() != -1 && (left.getPOV() >= 315 || left.getPOV() <= 45)) ? 1 : 0) - 
     //((left.getPOV() != -1 && (left.getPOV() >= 135 || left.getPOV() <= 225)) ? 1 : 0);
-    return right.getPOV() != -1 ? ((double)(Math.min(right.getPOV(), 180) - 90) / -90.0) : 0;
+   return 0.0;
   }
 
   public static boolean getPieceAdjustButton() {

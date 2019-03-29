@@ -87,96 +87,98 @@ public class AcquisitionCommand extends Command {
 		//release = OI.getAcquisitionRelease();
 		// Reset the lift back to default position, and reset encoder values if necessary
 		
-		if(OI.getRangeButtonPressed()) {
-			Robot.acquisition.incrementOffset(0.4);
-		}
-
-		if(OI.getRangeButton2Pressed()) {
-			Robot.acquisition.incrementOffset(-0.4);
-		}
-
-		if(reset == 1) {
-			if(switch0) {
-				reset = 0;
-				Robot.acquisition.encoderReset();
-				Robot.acquisition.stop();
-				Robot.acquisition.getPIDController().setEnabled(true);
-				Robot.acquisition.setSetpoint(0.0);
+		if(Robot.usePivot) {
+			if(OI.getRangeButtonPressed()) {
+				Robot.acquisition.incrementOffset(0.4);
 			}
-			else {
-				if(System.currentTimeMillis() - start_t < 500)
-					Robot.acquisition.rotate(0.2);
-				else if(middle_t > 0) {
-					if(System.currentTimeMillis() - middle_t > 300) {
-						reset = 0;
-						Robot.acquisition.encoderReset();
-						Robot.acquisition.stop();
-						Robot.acquisition.getPIDController().setEnabled(true);
-						Robot.acquisition.setSetpoint(0.0);
-					}
+
+			if(OI.getRangeButton2Pressed()) {
+				Robot.acquisition.incrementOffset(-0.4);
+			}
+
+			if(reset == 1) {
+				if(switch0) {
+					reset = 0;
+					Robot.acquisition.encoderReset();
+					Robot.acquisition.stop();
+					Robot.acquisition.getPIDController().setEnabled(true);
+					Robot.acquisition.setSetpoint(0.0);
 				}
 				else {
-					if(System.currentTimeMillis() - start_t > 1500) { 
-						middle_t = System.currentTimeMillis();
-						Robot.acquisition.rotate(0.0);
+					if(System.currentTimeMillis() - start_t < 500)
+						Robot.acquisition.rotate(0.2);
+					else if(middle_t > 0) {
+						if(System.currentTimeMillis() - middle_t > 300) {
+							reset = 0;
+							Robot.acquisition.encoderReset();
+							Robot.acquisition.stop();
+							Robot.acquisition.getPIDController().setEnabled(true);
+							Robot.acquisition.setSetpoint(0.0);
+						}
 					}
 					else {
-						Robot.acquisition.rotate(-reset_vel);
-					}
-				}
-			}
-		}
-		else {
-			if(switch0) {
-				Robot.acquisition.encoderReset();
-				acquisitionpos = Robot.acquisition.getacquisitionpos();
-			}
-
-			if(raisebutton+lowerbutton != 0) {
-				movement += raisebutton;
-				movement += lowerbutton;
-				double tempupdaterate = updaterate;
-				if(raisebuttonpressed || lowerbuttonpressed)
-					tempupdaterate *= 3;
-			 	double pos = Robot.acquisition.getSetPoint() + tempupdaterate*movement;
-				
-				Robot.acquisition.setSetpoint(pos);
-			}
-			else if(Robot.adjustGrabber) {
-				if (pieceAdjustReleased && Robot.goingForBalls) {
-					Robot.acquisition.setSetpoint(ballHoldPos);
-				}
-				else if(pieceAdjustPressed) {
-					if(Robot.goingForBalls) {
-						Robot.acquisition.setSetpoint(ballPickupPos);
-					} else {
-						Robot.acquisition.setSetpoint(hatchPos);
-					}
-				}
-				else if(tapeAdjustPressed) {
-					if(Robot.goingForBalls) {
-						int p = Robot.lifter.getAutoPos();
-						if(p == -1) {
-							Robot.acquisition.setSetpoint(ballDepositPos);
-						} else {
-							Robot.acquisition.setDepositPos(p);
+						if(System.currentTimeMillis() - start_t > 1500) { 
+							middle_t = System.currentTimeMillis();
+							Robot.acquisition.rotate(0.0);
 						}
-					} else {
-						Robot.acquisition.setSetpoint(hatchPos);
+						else {
+							Robot.acquisition.rotate(-reset_vel);
+						}
 					}
 				}
 			}
+			else {
+				if(switch0) {
+					Robot.acquisition.encoderReset();
+					acquisitionpos = Robot.acquisition.getacquisitionpos();
+				}
 
-			if(Robot.lifter.getlifterpos() <= threshHeight && Robot.acquisition.getSetpoint() > safePos) {
-				Robot.acquisition.setSetpoint(safePos);
+				if(raisebutton+lowerbutton != 0) {
+					movement += raisebutton;
+					movement += lowerbutton;
+					double tempupdaterate = updaterate;
+					if(raisebuttonpressed || lowerbuttonpressed)
+						tempupdaterate *= 3;
+				 	double pos = Robot.acquisition.getSetPoint() + tempupdaterate*movement;
+					
+					Robot.acquisition.setSetpoint(pos);
+				}
+				else if(Robot.adjustGrabber) {
+					if (pieceAdjustReleased && Robot.goingForBalls) {
+						Robot.acquisition.setSetpoint(ballHoldPos);
+					}
+					else if(pieceAdjustPressed) {
+						if(Robot.goingForBalls) {
+							Robot.acquisition.setSetpoint(ballPickupPos);
+						} else {
+							Robot.acquisition.setSetpoint(hatchPos);
+						}
+					}
+					else if(tapeAdjustPressed) {
+						if(Robot.goingForBalls) {
+							int p = Robot.lifter.getAutoPos();
+							if(p == -1) {
+								Robot.acquisition.setSetpoint(ballDepositPos);
+							} else {
+								Robot.acquisition.setDepositPos(p);
+							}
+						} else {
+							Robot.acquisition.setSetpoint(hatchPos);
+						}
+					}
+				}
+
+				if(Robot.lifter.getlifterpos() <= threshHeight && Robot.acquisition.getSetpoint() > safePos) {
+					Robot.acquisition.setSetpoint(safePos);
+				}
 			}
 		}
-
+		
 		if(Robot.adjustGrabber && tapeAdjustReleased && Robot.goingForBalls) {
 			release_time = System.currentTimeMillis();
 		}
 
-		double roll = (pieceAdjust && Robot.goingForBalls) ? 0.7 : 0.0;
+		double roll = (pieceAdjust && Robot.goingForBalls) ? -0.7 : 0.0;
 
 		if(System.currentTimeMillis() - release_time < release_spin_time) {
 			roll = -1.0;
@@ -188,7 +190,7 @@ public class AcquisitionCommand extends Command {
 		if(slowrollbutton != 0.0)
 			roll = 0.4 * slowrollbutton;
 		else if(rollbutton > 0.0)
-			roll = rollbutton * 0.7;
+			roll = rollbutton;
 		else if(rollbutton < 0.0)
 			roll = rollbutton;
 		

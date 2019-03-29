@@ -31,7 +31,7 @@ public class Acquisition extends PIDSubsystem {
 	private final static double tolerance = 0.01;
 	final static double acquisitionRaiseSpeed = 1.0;
 	final static double acquisitionLowerSpeed = 0.6;
-	final static double rollerSpeed = 0.4;
+	final static double rollerSpeed = 1.0;
 
 	private final static double upperRange = 1.2;
 	private final static double lowerRange = 0.0;

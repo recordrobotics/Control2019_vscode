@@ -43,7 +43,55 @@ public class ManualDrive extends Command {
 	private static final String auto_server_url = "roborio-6731-frc.local";
 	private static final int auto_server_port = 1000;
 
+	private final int past_len = 5;
+
+	// These delays are measured in execute loop calls, where 1 is about 0.03 seconds
+	private final int delay_ball = 10;
+	private final int delay_tape = 10;
+
+	private double[] past_balls_x = new double[past_len];
+	private double[] past_balls_y = new double[past_len];
+	private double[] past_tapes_x = new double[past_len];
+	private double[] past_tapes_y = new double[past_len];
+
 	private Command spinCommand = null;
+
+	private void clearAvg(double[] list, double v) {
+		for(int i = 0; i < list.length; i++) {
+			list[i] = v;
+		}
+	}
+
+	private double updateAvg(double[] list, double v, int delay) {
+		if(list.length < 1) {
+			return v;
+		}
+
+		for(int i = 1; i < list.length; i++) {
+			list[i] = list[i - 1];
+		}
+		list[0] = v;
+		
+		double total = 0.0;
+		int count = 0;
+		for(int i = 1; i < list.length; i++) {
+			if(list[i - 1] >= -1.0 && list[i] >= -1.0) {
+				total += list[i - 1] - list[i];
+				if(i == list.length - 1) {
+					count = list.length - 1;
+				}
+			} else {
+				count = i - 1;
+				break;
+			}
+		}
+
+		if(count == 0) {
+			return v;
+		} else {
+			return (double)delay * (total / (double)count) + v;
+		}
+	}
 
 	private Socket create_auto_socket(Socket prev_socket) {
 		if(prev_socket != null) {
@@ -149,6 +197,10 @@ public class ManualDrive extends Command {
 	protected void initialize() {
 		Robot.newdrivetrain.stop();
 		//listen();
+		clearAvg(past_balls_x, -2.0);
+		clearAvg(past_balls_y, -2.0);
+		clearAvg(past_tapes_x, -2.0);
+		clearAvg(past_tapes_y, -2.0);
 	}
 
 	@Override
@@ -206,25 +258,25 @@ public class ManualDrive extends Command {
 		else
 			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
 
-		/*for(int i = 1; i < past_balls.length; i++) {
-			past_balls[i] = past_balls[i - 1];
-		}
-		past_balls[0] = SmartDashboard.getNumber("ball_x|PI_2", -2.0);*/
+		double bx = updateAvg(past_balls_x, SmartDashboard.getNumber("ball_x|PI_2", -2.0), delay_ball);
+		double by = updateAvg(past_balls_y, SmartDashboard.getNumber("ball_y|PI_2", -2.0), delay_ball);
+		double tx = updateAvg(past_tapes_x, SmartDashboard.getNumber("tapes_x|PI_1", -2.0), delay_tape);
+		double ty = updateAvg(past_tapes_y, SmartDashboard.getNumber("tapes_y|PI_1", -2.0), delay_tape);
 
+		SmartDashboard.putNumber("ball_x_predicted", bx);
+		
 		if(Robot.adjustMovementPiece && OI.getPieceAdjustButton() && Robot.goingForBalls) {
-			double ball = SmartDashboard.getNumber("ball_x|PI_2", -2.0);
-			if(ball < -1.0) {
-				ball = 0.0;
+			if(bx < -1.0) {
+				bx = 0.0;
 			} else {
-				rotation = b_slow_sens * rotation + Robot.clamp(ball * b_sens, -b_max, b_max);
+				rotation = b_slow_sens * rotation + Robot.clamp(-bx * b_sens, -b_max, b_max);
 			}
 		}
 		else if((Robot.adjustMovementTape && OI.getTapeAdjustButton()) || (Robot.adjustMovementPiece && OI.getPieceAdjustButton() && !Robot.goingForBalls)) {
-			double tape = SmartDashboard.getNumber("tapes_x|PI_1", -2.0);	
-			if(tape < -1.0) {
-		   		tape = 0.0;
+			if(tx < -1.0) {
+		   		tx = 0.0;
 			} else {
-				rotation = t_slow_sens * rotation + Robot.clamp(tape * tape_sens, -tape_max, tape_max);
+				rotation = t_slow_sens * rotation + Robot.clamp(-tx * tape_sens, -tape_max, tape_max);
 			}
 		}
 
@@ -241,6 +293,8 @@ public class ManualDrive extends Command {
 
 		if(!Robot.newdrivetrain.disabled())
 			Robot.newdrivetrain.curvatureDrive(forward, rotation);
+		else
+			Robot.newdrivetrain.stop();
 		//nextforward = forward;
 		//nextrotation = rotation;
 		

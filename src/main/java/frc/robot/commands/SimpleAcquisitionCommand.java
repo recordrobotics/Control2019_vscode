@@ -15,7 +15,7 @@ public class SimpleAcquisitionCommand extends Command {
 
 	private final double upsens = 0.7;
 	private final double downsens = 0.3;
-	private final double rollsens = 0.4;
+	private final double rollsens = 0.8;
 	private final double initialFactor = 0.2;
 
 	@Override
@@ -25,13 +25,15 @@ public class SimpleAcquisitionCommand extends Command {
 	}
 	@Override
 	protected void execute() {
-		if(OI.right.getRawButton(5))
-			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor - upsens);
-		else if (OI.right.getRawButton(6))
-			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor + downsens);
-		else
-			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor);
-		
+		if(Robot.usePivot) {
+			if(OI.right.getRawButton(5))
+				Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor - upsens);
+			else if (OI.right.getRawButton(6))
+				Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor + downsens);
+			else
+				Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, initialFactor);
+		}
+
 		if(OI.right.getRawButton(10))
 			Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, rollsens);
 		else if(OI.right.getRawButton(12))
@@ -49,7 +51,9 @@ public class SimpleAcquisitionCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
+		if(Robot.usePivot) {
+			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
+		}
 		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);
 	}
 
@@ -57,7 +61,9 @@ public class SimpleAcquisitionCommand extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
+		if(Robot.usePivot) {
+			Robot.acquisition.acquisitionMotor.set(ControlMode.PercentOutput, 0);
+		}
 		Robot.acquisition.rollerMotor.set(ControlMode.PercentOutput, 0);
 	}
 }

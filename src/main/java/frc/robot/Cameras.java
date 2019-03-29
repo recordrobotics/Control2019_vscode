@@ -56,8 +56,7 @@ public class Cameras {
     }
 
     public void start_automatic() {
-        UsbCamera cam = CameraServer.getInstance().startAutomaticCapture("Forward Camera", 0);
-        cam.setResolution(width, height);
+        CameraServer.getInstance().startAutomaticCapture("Forward Camera", 0).setResolution(width, height);
         //CameraServer.getInstance().startAutomaticCapture("Down Camera", 1);
     }
 
