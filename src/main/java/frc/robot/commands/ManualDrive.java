@@ -43,15 +43,15 @@ public class ManualDrive extends Command {
 	private static final String auto_server_url = "roborio-6731-frc.local";
 	private static final int auto_server_port = 1000;
 
-	private final int past_len = 5;
+	private final int past_len = 6;
 
 	// These delays are measured in execute loop calls, where 1 is about 0.03 seconds
-	private final int delay_ball = 10;
-	private final int delay_tape = 10;
+	private final int delay_ball = 20;
+	private final int delay_tape = 20;
 
 	// Minimum counts, in frames
-	private final int mc_ball = 6;
-	private final int mc_tape = 6;
+	private final int mc_ball = 4;
+	private final int mc_tape = 4;
 
 	private double[] past_balls_x = new double[past_len];
 	private double[] past_balls_y = new double[past_len];
@@ -93,7 +93,7 @@ public class ManualDrive extends Command {
 				break;
 			}
 		}
-
+		System.out.println("Count: " + count);
 		if(min_count > 0 && count < min_count) {
 			return -2.0;
 		} else if(count == 0) {
@@ -274,6 +274,9 @@ public class ManualDrive extends Command {
 		double ty = updateAvg(past_tapes_y, SmartDashboard.getNumber("tapes_y|PI_1", -2.0), delay_tape, mc_tape);
 
 		SmartDashboard.putNumber("ball_x_predicted", bx);
+		SmartDashboard.putNumber("ball_y_predicted", by);
+		SmartDashboard.putNumber("tapes_x_predicted", tx);
+		SmartDashboard.putNumber("tapes_y_predicted", ty);
 
 		if(Robot.adjustMovementPiece() && OI.getPieceAdjustButton() && Robot.goingForBalls()) {
 			if(bx < -1.0) {

@@ -18,13 +18,13 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	public static DigitalInput switch1_2 = new DigitalInput(RobotMap.lifter2Port);
 	public static DigitalInput resetswitch = new DigitalInput(RobotMap.lifter0Port);
 	// Proportional, Integral and Derivative R values for PID Loop
-	private final static double Rp = 20.0;
+	private final static double Rp = 10.0;
 	private final static double Ri = 0.0;
 	private final static double Rd = 10.0;
 	private final static double tolerance = 0.01;
 	private final static double encoder_conv = -1.0/7000.0;
-	final static double raiseSpeed = 0.5;
-	final static double lowerSpeed = 0.3;
+	final static double raiseSpeed = 0.8;
+	final static double lowerSpeed = 0.6;
 	public final static double bottom_hatch = 0.0;
 	public final static double bottom_ball = 0.10471428;
 	public final static double middle_hatch = 0.971;

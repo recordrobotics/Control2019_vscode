@@ -102,7 +102,7 @@ public class OI {
   }
 
   public static boolean getCameraSwitch() {
-    return right.getRawButtonReleased(RobotMap.cameraSwitchPort);
+    return left.getRawButtonPressed(RobotMap.blueleft);
   }
 
   public static double getRollButton() {

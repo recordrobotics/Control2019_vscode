@@ -23,9 +23,12 @@ public class LifterCommand extends Command {
 	boolean doReset = false;
 	double movement = 0;
 
-	private final double ballPos = 0.1;
-	private final double hatchPos = 0.2;
-	private final double hatchCatchPos = 0.3;
+	private final double ballPos = 0.2;
+	private final double hatchPos = 0.351;
+	private final double hatchCatchDiff = 0.15;
+	private final double hatchDropDiff = 0.1;
+
+	private final double cameraTogglePos = 0.75;
 
 
 	int auto_position_index = 0;
@@ -81,7 +84,7 @@ public class LifterCommand extends Command {
 			Robot.lifter.encoderReset();
 		}
 
-		System.out.println("buttons: " + buttons);
+		//System.out.println("buttons: " + buttons);
 		//Auto automatically raises/lowers to the next available standard position
 		if(reset == 0) {
 			if (manualrelease) {
@@ -113,12 +116,14 @@ public class LifterCommand extends Command {
 					}
 				}
 				else if(pieceAdjustReleased && !Robot.goingForBalls()) {
-					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() - hatchPos + hatchCatchPos);
+					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchCatchDiff);
 					Robot.newdrivetrain.disable(600);
+					System.out.println("Grabbing disk");
 				}
 				else if(tapeAdjustReleased && !Robot.goingForBalls()) {
-					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() + hatchPos - hatchCatchPos);
+					Robot.lifter.setSetpoint(Robot.lifter.getSetpoint() - hatchDropDiff);
 					Robot.newdrivetrain.disable(600);
+					System.out.println("Dropping disk");
 				}
 			}
 			
@@ -126,6 +131,11 @@ public class LifterCommand extends Command {
 			SmartDashboard.putNumber("liftercommand.lifterpos", Robot.lifter.getlifterpos());
 			SmartDashboard.putNumber("liftercommand.setpoint", Robot.lifter.getSetpoint());
 			SmartDashboard.putNumber("liftercommand.movement", movement);
+			
+			if((Robot.lifter.getlifterpos() > cameraTogglePos && Robot.cameras.usingForward()) || 
+			   (Robot.lifter.getlifterpos() < cameraTogglePos && !Robot.cameras.usingForward())) {
+				Robot.cameras.toggle();
+			}
 		}
 		//Robot.lifter.setSetpoint(Robot.lifter.getSetPoint() + manualupdaterate*movement);
 	}

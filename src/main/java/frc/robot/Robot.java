@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
-  private static Cameras cameras = new Cameras(640, 480);
+  public static Cameras cameras = new Cameras(640, 480);
   /*
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
@@ -191,6 +191,10 @@ public class Robot extends TimedRobot {
     //setLight(true);
     SmartDashboard.putNumber("lifter.setpoint", lifter.getSetpoint());
     //acquisition.rotate(1.0);
+
+    if(OI.getCameraSwitch()) {
+      cameras.toggle();
+    }
   }
 
   /**

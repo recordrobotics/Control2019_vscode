@@ -181,7 +181,7 @@ public class AcquisitionCommand extends Command {
 		double roll = (pieceAdjust && Robot.goingForBalls()) ? -0.7 : 0.0;
 
 		if(System.currentTimeMillis() - release_time < release_spin_time) {
-			roll = -1.0;
+			roll = 1.0;
 		}
 
 		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());

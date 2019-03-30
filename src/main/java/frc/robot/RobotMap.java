@@ -6,8 +6,8 @@ public class RobotMap {
  public static int leftjoyPort = 1; // Button panel
  public static int rightjoyPort = 0;
 
- public static int manualraisePort = 3;
- public static int manuallowerPort = 5;
+ public static int manualraisePort = 5;
+ public static int manuallowerPort = 3;
 
  public static int pivotraisePort = 4;
  public static int pivotlowerPort = 6;
