@@ -36,6 +36,8 @@ public class Cameras {
         server = new MjpegServer("Camera stream", 1181);
         server.setSource(fCam);
         usingForward = true;
+
+        SmartDashboard.putBoolean("Using Forward", usingForward);
     }
 
     public boolean usingForward() { 
@@ -43,7 +45,6 @@ public class Cameras {
     }
 
     public void toggle() {
-        System.out.println("toggling cameras");
         if(server == null) {
             return;
         }
@@ -56,5 +57,7 @@ public class Cameras {
             server.setSource(fCam);
             usingForward = true;
         }
+
+        SmartDashboard.putBoolean("Using Forward", usingForward);
     }
 }

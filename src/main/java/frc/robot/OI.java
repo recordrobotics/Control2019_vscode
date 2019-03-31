@@ -27,32 +27,22 @@ public class OI {
 
   public static double getRotation() {
     double rotation = 0.0;
-    double joystick_slider_sens = getSens(); //right.getThrottle() * -0.5 + 0.5;
-
-    if(Math.abs(right.getZ()) > 0.3) {
-      rotation += right.getZ() * joystick_slider_sens;
+    double joystick_slider_sens = getSens();
+    double j = right.getZ();
+    if(Math.abs(j) > 0.2) {
+      rotation += j * joystick_slider_sens;
     }
-    /*if(Math.abs(left.getZ()) > 0.1) {
-      rotation += left.getZ() * l_joystick_sens;
-    }*/
 		return rotation;
 	}
 	
 	public static double getForward() {
     double forward = 0.0;
-    double joystick_slider_sens = getSens(); //right.getThrottle() * -0.5 + 0.5;
-    if(Math.abs(right.getY()) > 0.3) {
-      forward += right.getY() * joystick_slider_sens;
+    double joystick_slider_sens = getSens();
+    double j = right.getY();
+    if(Math.abs(j) > 0.2) {
+      forward += j * joystick_slider_sens;
     }
     return forward;
-  }
-
-  public Joystick getRightStick() {
-    return right;
-  }
-
-  public Joystick getLeftStick() {
-    return left;
   }
 
   public static boolean getCameraSwitch() {

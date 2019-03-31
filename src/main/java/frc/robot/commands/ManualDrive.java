@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ManualDrive extends Command {
 	public ManualDrive() {
-		//requires(Robot.drivetrain);
-		requires(Robot.newdrivetrain);
+		requires(Robot.drivetrain);
 	}
 
 	long[] f_start_time = {0};
@@ -17,35 +16,41 @@ public class ManualDrive extends Command {
 	final long r_warmup = 500;
 	final double f_sens = 0.5;
 	final double r_sens = 0.25;
+	final double r_sens_fast = 0.5;
 	final double f_pow = 1.0;
 	final double r_pow = 1.0;
 
-	final double b_sens = 1.5;
-	final double b_max = 0.17;
-
 	@Override
 	protected void initialize() {
-		Robot.newdrivetrain.stop();
+		Robot.drivetrain.stop();
 	}
 
 	@Override
 	protected void execute() {
-		double forward = Robot.smoothAccel(OI.getForward(), f_start_time, f_warmup, f_sens, f_pow);
-		double rotation = 0.0;
-		if(Math.abs(forward) > 0.3)
-			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens, r_pow);
-		else
-			rotation = Robot.smoothAccel(OI.getRotation(), r_start_time, r_warmup, r_sens + 0.3, r_pow);
-
+		double fs = f_sens;
 		if(OI.boost()) {
-			forward *= 2.0;
+			fs = 1.0;
 		}
 
+		double of = OI.getForward();
+		double forward = Robot.smoothAccel(of, f_start_time, f_warmup, fs, f_pow);
+
+		double rs = r_sens;
 		if(OI.tBoost()) {
-			rotation *= 4.0;
+			rs = 1.0;
+		} else if(Math.abs(forward) <= 0.3) {
+			rs = r_sens_fast;
 		}
+		
+		double or = OI.getRotation();
+		double rotation = Robot.smoothAccel(or, r_start_time, r_warmup, rs, r_pow);
+		
+		SmartDashboard.putNumber("Joystick forward", of);
+		SmartDashboard.putNumber("Joystick rotation", or);
+		SmartDashboard.putNumber("Wheels forward", forward);
+		SmartDashboard.putNumber("Wheels rotation", rotation);
 
-		Robot.newdrivetrain.curvatureDrive(forward, rotation);
+		Robot.drivetrain.curvatureDrive(forward, rotation);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -57,13 +62,13 @@ public class ManualDrive extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.newdrivetrain.stop();
+		Robot.drivetrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.newdrivetrain.stop();
+		Robot.drivetrain.stop();
 	}
 }

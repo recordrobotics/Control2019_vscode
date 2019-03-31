@@ -7,7 +7,7 @@ public class RobotMap {
  public static int rightjoyPort = 0;
 
  public static int boostButton = 1;
- public static int tBoostButton = 4;
+ public static int tBoostButton = 2;
 
  public static int greenleft = 1;
  public static int greenright = 2;

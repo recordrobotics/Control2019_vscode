@@ -16,10 +16,8 @@ import frc.robot.subsystems.Wheels;
  * project.
  */
 public class Robot extends TimedRobot {
-  public final static double drivetrainWidth = 0.585;
-
   public static OI m_oi;
-  public static Wheels newdrivetrain = new Wheels();
+  public static Wheels drivetrain = new Wheels();
   public static Cameras cameras = new Cameras(320, 240);
   private Command m_autonomousCommand = new Autonomous();
 
@@ -62,7 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("drivesensitivity", OI.getSens());
+    SmartDashboard.putNumber("Drive Sensitivity", OI.getSens());
     if(OI.getCameraSwitch()) {
       cameras.toggle();
     }
