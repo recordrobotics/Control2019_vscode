@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
       else if(output < 0.0)
         output -= 0.1;
       
-      Smartdashboard.putBoolean("Smooth accel input", true);
+      SmartDashboard.putBoolean("Smooth accel input", true);
     }
     return output;
   }
