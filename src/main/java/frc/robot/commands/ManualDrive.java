@@ -16,7 +16,6 @@ public class ManualDrive extends Command {
 	final long r_warmup = 500;
 	final double f_sens = 0.5;
 	final double r_sens = 0.25;
-	final double r_sens_fast = 0.5;
 	final double f_pow = 1.0;
 	final double r_pow = 1.0;
 
@@ -38,8 +37,6 @@ public class ManualDrive extends Command {
 		double rs = r_sens;
 		if(OI.tBoost()) {
 			rs = 1.0;
-		} else if(Math.abs(forward) <= 0.3) {
-			rs = r_sens_fast;
 		}
 		
 		double or = OI.getRotation();

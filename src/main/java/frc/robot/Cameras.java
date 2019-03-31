@@ -25,7 +25,7 @@ public class Cameras {
 
     public void start_mjpeg() {
         fCam = new UsbCamera("Forward", 0);
-        uCam = new UsbCamera("Up", 1);
+        uCam = new UsbCamera("Back", 1);
 
         fCam.setResolution(width, height);
         uCam.setResolution(width, height);

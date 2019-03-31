@@ -23,9 +23,10 @@ public class Robot extends TimedRobot {
 
   public static double smoothAccel(double joyVal, long[] start_time, long warmUp, double sens, double pow) {
     double output;
-    if(Math.abs(joyVal) < 0.3) {
+    if(joyVal == 0.0) {
       start_time[0] = System.currentTimeMillis();
       output = 0.0;
+      SmartDashboard.putBoolean("Smooth accel input", false);
     }
     else {
       if((System.currentTimeMillis() - start_time[0]) > warmUp)
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
         output += 0.1;
       else if(output < 0.0)
         output -= 0.1;
+      
+      Smartdashboard.putBoolean("Smooth accel input", true);
     }
     return output;
   }

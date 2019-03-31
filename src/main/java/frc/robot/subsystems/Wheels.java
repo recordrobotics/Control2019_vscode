@@ -17,6 +17,7 @@ public class Wheels extends Subsystem {
 		backRight.follow(frontRight);
 		backLeft.follow(frontLeft);
 	}
+
 	public void curvatureDrive(double forw, double rot) {
 		drive(-forw + rot, -forw - rot);
 	}
@@ -26,14 +27,8 @@ public class Wheels extends Subsystem {
 		frontRight.set(ControlMode.PercentOutput, -r);
 	}
 
-	public void pidWrite(double l, double r) {
-		frontLeft.pidWrite(l);
-		frontRight.pidWrite(-r);
-	}
-	
 	public void stop() {
-		frontRight.set(ControlMode.PercentOutput, 0);
-		frontLeft.set(ControlMode.PercentOutput, 0);
+		drive(0.0, 0.0);
 	}
 
 	public void initDefaultCommand() {
