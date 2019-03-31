@@ -22,6 +22,7 @@ public class OI {
 
 	private static double forward;
   private static double rotation;
+  private static double speed = 1.0;
 
   private static final double r_joystick_sens = 1.0;
   private static double joystick_slider_sens = 0.0;
@@ -31,13 +32,13 @@ public class OI {
   public OI() {
     JoystickButton but = new JoystickButton(left, RobotMap.white);
     but.whenPressed(new Reset(10000));
-    JoystickButton simpleAcquisition = new JoystickButton(right, 9);
+   /* JoystickButton simpleAcquisition = new JoystickButton(right, 9);
     simpleAcquisition.toggleWhenPressed(new SimpleAcquisitionCommand());
     JoystickButton simpleLift = new JoystickButton(right, 11);
     simpleLift.toggleWhenPressed(new SimpleLifterCommand());
     JoystickButton simpleDrive = new JoystickButton(right, 7);
     simpleDrive.toggleWhenPressed(new SimpleManualDrive());
-
+*/
     /*double x = 1.0;
 		double y = 3.0;
 		double a = 0.0;
@@ -71,9 +72,21 @@ public class OI {
     return 0;
   }
 
+  public static double getSens() {
+    return right.getThrottle() * -0.5 + 0.5;
+  }
+
+  public static boolean boost() {
+    return right.getRawButton(RobotMap.boostButton);
+  }
+
+  public static boolean tBoost() {
+    return right.getRawButton(RobotMap.tBoostButton);
+  }
+
   public static double getRotation() {
     rotation = 0.0;
-    joystick_slider_sens = right.getThrottle() * -0.5 + 0.5;
+    joystick_slider_sens = getSens(); //right.getThrottle() * -0.5 + 0.5;
 
     if(Math.abs(right.getZ()) > 0.3) {
       rotation += right.getZ() * joystick_slider_sens;
@@ -86,7 +99,7 @@ public class OI {
 	
 	public static double getForward() {
     forward = 0.0;
-    joystick_slider_sens = right.getThrottle() * -0.5 + 0.5;
+    joystick_slider_sens = getSens(); //right.getThrottle() * -0.5 + 0.5;
     if(Math.abs(right.getY()) > 0.3) {
       forward += right.getY() * joystick_slider_sens;
     }
@@ -187,15 +200,16 @@ public class OI {
   public static int getButtons() 
   {
     int out = 0;
-    boolean[] buttons = {left.getRawButtonPressed(RobotMap.greenleft), left.getRawButtonPressed(RobotMap.greenright),
-      left.getRawButtonPressed(RobotMap.yellowleft),left.getRawButtonPressed(RobotMap.yellowright), 
-      left.getRawButtonPressed(RobotMap.redleft), left.getRawButtonPressed(RobotMap.redright),
-      left.getRawButtonPressed(RobotMap.blueleft), left.getRawButtonPressed(RobotMap.blueright),
-      left.getRawButtonPressed(RobotMap.white)};
-    loop: for(int i = 0; i < buttons.length; i++) {
+    boolean[] buttons = {left.getRawButton(RobotMap.greenleft), left.getRawButton(RobotMap.greenright),
+      left.getRawButton(RobotMap.yellowleft),left.getRawButton(RobotMap.yellowright), 
+      left.getRawButton(RobotMap.redleft), left.getRawButton(RobotMap.redright),
+      left.getRawButton(RobotMap.blueleft), left.getRawButton(RobotMap.blueright),
+      left.getRawButton(RobotMap.white)};
+    //System.out.println(buttons[0]);
+      for(int i = 0; i < buttons.length; i++) {
       if(buttons[i]) {
         out = i + 1;
-        break loop;
+        break;
       }
     }
     return out;

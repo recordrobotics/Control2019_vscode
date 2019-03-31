@@ -5,6 +5,7 @@ import frc.robot.commands.AcquisitionCommand;
 //import frc.robot.commands.Test;
 import frc.robot.RobotMap;
 import frc.robot.Robot;
+import frc.robot.OI;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -31,7 +32,6 @@ public class Acquisition extends PIDSubsystem {
 	private final static double tolerance = 0.01;
 	final static double acquisitionRaiseSpeed = 1.0;
 	final static double acquisitionLowerSpeed = 0.6;
-	final static double rollerSpeed = 1.0;
 
 	private final static double upperRange = 1.2;
 	private final static double lowerRange = 0.0;
@@ -109,7 +109,7 @@ public class Acquisition extends PIDSubsystem {
 
 	public void roll(double x) {
 		SmartDashboard.putNumber("acquisition.roll", x);
-		rollerMotor.set(ControlMode.PercentOutput, x*rollerSpeed);
+		rollerMotor.set(ControlMode.PercentOutput, x);
 	}
 
 	public void stop() {

@@ -18,6 +18,7 @@ public class AcquisitionCommand extends Command {
 	boolean raisebuttonpressed;
 	boolean lowerbuttonpressed;
 	boolean release;
+	int getbuttons;
 	// Switches
 	boolean switch0; 
 	boolean switch1;
@@ -25,6 +26,7 @@ public class AcquisitionCommand extends Command {
 	// Encoders
 	double acquisitionpos;
 	double liftpos;
+	double rollerspeed = 1.0;
 	long start_t = 0;
 	long middle_t = 0;
 
@@ -70,10 +72,10 @@ public class AcquisitionCommand extends Command {
 		raisebuttonpressed = OI.getPivotRaiseButtonPressed();
 		lowerbuttonpressed = OI.getPivotLowerButtonPressed();
 		rollbutton = OI.getRollButton();
-		slowrollbutton = OI.getSlowRollButton();
+		//slowrollbutton = OI.getSlowRollButton();
 		switch0 = Robot.acquisition.getswitch0();
 		switch1 = Robot.acquisition.getswitch1();
-
+		getbuttons = OI.getButtons();
 		boolean prevPieceAdjust = pieceAdjust;
 		boolean prevTapeAdjust = tapeAdjust;
 		pieceAdjust = OI.getPieceAdjustButton();
@@ -178,7 +180,7 @@ public class AcquisitionCommand extends Command {
 			release_time = System.currentTimeMillis();
 		}
 
-		double roll = (pieceAdjust && Robot.goingForBalls()) ? -0.7 : 0.0;
+		double roll = (pieceAdjust && Robot.goingForBalls()) ? -1.0 : 0.0;
 
 		if(System.currentTimeMillis() - release_time < release_spin_time) {
 			roll = 1.0;
@@ -187,14 +189,20 @@ public class AcquisitionCommand extends Command {
 		SmartDashboard.putNumber("acquisitionCommand.setpoint", Robot.acquisition.getSetpoint());
 		// Can roll in two directions based on which roll button is pressed
 		
-		if(slowrollbutton != 0.0)
-			roll = 0.4 * slowrollbutton;
-		else if(rollbutton > 0.0)
+		//if(slowrollbutton != 0.0)
+		//	roll = 0.4 * slowrollbutton;
+		if(rollbutton > 0.0)
 			roll = rollbutton;
 		else if(rollbutton < 0.0)
 			roll = rollbutton;
-		
-		Robot.acquisition.roll(roll);
+		if(getbuttons == 8) {
+			if(rollerspeed == 1.0) 
+		  		rollerspeed = 0.5;
+			else
+			  rollerspeed = 1.0;
+		}
+		SmartDashboard.putNumber("acquisition.rollersens", rollerspeed);
+		Robot.acquisition.roll(roll*rollerspeed);
 		// Raise button and lower button are not pushed at the same time, and one is active	
 		//Robot.acquisition.rotate(-0.5);
 		//rate = Robot.acquisition.getEncoderRate();

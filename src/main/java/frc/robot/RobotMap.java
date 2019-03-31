@@ -6,6 +6,9 @@ public class RobotMap {
  public static int leftjoyPort = 1; // Button panel
  public static int rightjoyPort = 0;
 
+ public static int boostButton = 1;
+ public static int tBoostButton = 4;
+
  public static int manualraisePort = 5;
  public static int manuallowerPort = 3;
 
@@ -13,7 +16,7 @@ public class RobotMap {
  public static int pivotlowerPort = 6;
 
  public static int pieceAdjustPort = 2; 
- public static int tapeAdjustPort = 1;
+ public static int tapeAdjustPort = 6;
  public static int rangeLowerButton = 8;
  public static int rangeRaiseButton = 9;
 

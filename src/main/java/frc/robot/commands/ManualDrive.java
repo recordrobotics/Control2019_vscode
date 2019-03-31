@@ -93,7 +93,7 @@ public class ManualDrive extends Command {
 				break;
 			}
 		}
-		System.out.println("Count: " + count);
+		//System.out.println("Count: " + count);
 		if(min_count > 0 && count < min_count) {
 			return -2.0;
 		} else if(count == 0) {
@@ -303,6 +303,14 @@ public class ManualDrive extends Command {
 			spinCommand = new PIDSpin(pov, false, 1000, 1.0);
 			spinCommand.start();
 		}*/
+
+		if(OI.boost()) {
+			forward *= 2.0;
+		}
+
+		if(OI.tBoost()) {
+			rotation *= 4.0;
+		}
 
 		if(!Robot.newdrivetrain.disabled())
 			Robot.newdrivetrain.curvatureDrive(forward, rotation);

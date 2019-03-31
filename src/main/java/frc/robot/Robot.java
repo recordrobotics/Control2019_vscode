@@ -50,9 +50,9 @@ public class Robot extends TimedRobot {
   public static boolean acquisition_enable = true;*/
 
   private static boolean defaultAdjustGrabber = true;
-  private static boolean defaultGoingForBalls = true;
+  private static boolean defaultGoingForBalls = false;
   private static boolean defaultAdjustMovementTape = false;
-  private static boolean defaultAdjustMovementPiece = true;
+  private static boolean defaultAdjustMovementPiece = false;
   private static boolean usePivot = false;
 
   public static boolean adjustGrabber() {
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
   // private static boolean gyroSuccess = false;
   public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
 
-  public static Cameras cameras = new Cameras(640, 480);
+  public static Cameras cameras = new Cameras(320, 240);
   /*
   public static boolean isCalibrating() {
     return gyroSuccess && gyro.isCalibrating();
@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
     //setLight(true);
     SmartDashboard.putNumber("lifter.setpoint", lifter.getSetpoint());
     //acquisition.rotate(1.0);
-
+    SmartDashboard.putNumber("drivesensitivity", OI.getSens());
     if(OI.getCameraSwitch()) {
       cameras.toggle();
     }

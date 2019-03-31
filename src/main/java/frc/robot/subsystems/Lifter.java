@@ -23,19 +23,19 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	private final static double Rd = 10.0;
 	private final static double tolerance = 0.01;
 	private final static double encoder_conv = -1.0/7000.0;
-	final static double raiseSpeed = 0.8;
-	final static double lowerSpeed = 0.6;
-	public final static double bottom_hatch = 0.0;
-	public final static double bottom_ball = 0.10471428;
-	public final static double middle_hatch = 0.971;
-	public final static double middle_ball = 1.171;
-	public final static double top_hatch = 1.9462857;
-	public final static double top_ball = 2.0957;
+	final static double raiseSpeed = 0.9;
+	final static double lowerSpeed = 0.5;
+	public final static double bottom_hatch = 0.473;
+	public final static double bottom_ball = 0.613;
+	public final static double middle_hatch = 1.52;
+	public final static double middle_ball = 1.655;
+	public final static double cargo_hatch = 0.48;
+	public final static double cargo_ball = 0.6;
 
 	private int autoPos = -1;
 
 	public final double[] auto_positions = {bottom_hatch, bottom_ball, middle_hatch, 
-		middle_ball, top_hatch, top_ball};
+	middle_ball, cargo_hatch, cargo_ball};
 
 	public Lifter() {
 		super("Lifter", Rp, Ri, Rd);// The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
@@ -55,7 +55,8 @@ public class Lifter extends PIDSubsystem { // This system extends PIDSubsystem
 	}
 
 	public void setAutoPos(int i) {
-		if (i > -1 && i < auto_positions.length) {
+		if (i >= 0 && i < auto_positions.length) {
+			System.out.println("Lifter pos: " + auto_positions[i]);
 			setSetpoint(auto_positions[i]);
 			autoPos = i;
 		}

@@ -23,15 +23,15 @@ public class LifterCommand extends Command {
 	boolean doReset = false;
 	double movement = 0;
 
-	private final double ballPos = 0.2;
-	private final double hatchPos = 0.351;
-	private final double hatchCatchDiff = 0.15;
-	private final double hatchDropDiff = 0.1;
+	private final double ballPos = 0.0;
+	private final double hatchPos = 0.3;
+	private final double hatchCatchDiff = 0.25;
+	private final double hatchDropDiff = 0.16;
 
 	private final double cameraTogglePos = 0.75;
 
 
-	int auto_position_index = 0;
+	//int auto_position_index = 0;
 
 	public LifterCommand(boolean r) {
 		requires(Robot.lifter);
@@ -84,17 +84,17 @@ public class LifterCommand extends Command {
 			Robot.lifter.encoderReset();
 		}
 
-		//System.out.println("buttons: " + buttons);
-		//Auto automatically raises/lowers to the next available standard position
+		System.out.println("buttons: " + buttons);
 		if(reset == 0) {
 			if (manualrelease) {
 				Robot.lifter.setLift(0.0);
 				Robot.lifter.getPIDController().setEnabled(true);
 				Robot.lifter.setSetPoint(Robot.lifter.getlifterpos());
 			}
-
-			if(buttons >= 1 && buttons <= 6) { // Either but not both raise and lower must be activated
+ 
+			if(buttons >= 1 && buttons <= 6) {
 				Robot.lifter.setAutoPos(buttons - 1);
+				System.out.println("Lifting to " + buttons);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 			}
 			// Manual does not use stages
 			if((manualraise || manuallower) && !(manualraise && manuallower)) {
