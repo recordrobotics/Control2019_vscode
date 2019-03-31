@@ -4,24 +4,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.CameraServer;
-import frc.robot.commands.NetworkCommand;
 import frc.robot.commands.Autonomous;
-import frc.robot.commands.Reset;
 import frc.robot.subsystems.Wheels;
-import frc.robot.subsystems.NewWheels;
-import frc.robot.subsystems.Acquisition;
-import frc.robot.subsystems.Lifter;
-import frc.robot.subsystems.OldLifter;
-import frc.robot.Network;
-import java.io.*;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,69 +16,12 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static double drivetrainWidth = 0.585;
+  public final static double drivetrainWidth = 0.585;
 
   public static OI m_oi;
-  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(I2C.Port.kOnboard);
-
-  // Subsystems
-  public static NewWheels newdrivetrain = new NewWheels();
-  public static Acquisition acquisition = new Acquisition();
-  public static Lifter lifter = new Lifter();
-  //public static OldLifter oldLifter = new OldLifter();
-  
-  private static Network[] networks;
-  
-  /*public static boolean drive_enable = true;
-  public static boolean lifter_enable = true;
-  public static boolean test_enable = false;
-  public static boolean acquisition_enable = true;*/
-
-  private static boolean defaultAdjustGrabber = true;
-  private static boolean defaultGoingForBalls = false;
-  private static boolean defaultAdjustMovementTape = false;
-  private static boolean defaultAdjustMovementPiece = false;
-  private static boolean usePivot = false;
-
-  public static boolean adjustGrabber() {
-    return SmartDashboard.getBoolean("adjustGrabber", defaultAdjustGrabber);
-  }
-
-  public static boolean goingForBalls() {
-    return SmartDashboard.getBoolean("goingForBalls", defaultGoingForBalls);
-  }
-
-  public static boolean adjustMovementTape() {
-    return SmartDashboard.getBoolean("adjustMovementTape", defaultAdjustMovementTape);
-  }
-
-  public static boolean adjustMovementPiece() {
-    return SmartDashboard.getBoolean("adjustMovementPiece", defaultAdjustMovementPiece);
-  }
-
-  public static boolean usePivot() {
-    return usePivot;
-  }
-
-  public static AHRS gyro;
-  // private static boolean gyroSuccess = false;
-  public static Relay led = new Relay(RobotMap.relayPort, Relay.Direction.kForward);
-
+  public static Wheels newdrivetrain = new Wheels();
   public static Cameras cameras = new Cameras(320, 240);
-  /*
-  public static boolean isCalibrating() {
-    return gyroSuccess && gyro.isCalibrating();
-  }*/
- 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  public static void setLight(boolean turnOn) {
-    if(turnOn)
-      led.set(Relay.Value.kOn);
-    else
-      led.set(Relay.Value.kOff);
-  }
+  private Command m_autonomousCommand = new Autonomous();
 
   public static double smoothAccel(double joyVal, long[] start_time, long warmUp, double sens, double pow) {
     double output;
@@ -115,55 +43,13 @@ public class Robot extends TimedRobot {
     return output;
   }
 
-	public static double clamp(double v, double min, double max) {
-		return Math.max(min, Math.min(max, v));
-  }
-
-  public static Network getNetwork(int i) {
-    if(i < networks.length) {
-      return networks[i];
-    } else {
-      return null;
-    }
-  }
-  
-  private static void init_networks() {
-    networks = new Network[5];
-    networks[0] = new Network(new File("/home/admin/data/data_4.0.txt"));
-    networks[1] = new Network(new File("/home/admin/data/data_3.0.txt"));
-    networks[2] = new Network(new File("/home/admin/data/data_2.25.txt"));
-    networks[3] = new Network(new File("/home/admin/data/data_1.6875.txt"));
-    networks[4] = new Network(new File("/home/admin/data/data_1.265625.txt"));
-  }
-
-  private static void init_booleans() {
-    SmartDashboard.putBoolean("adjustGrabber", defaultAdjustGrabber);
-    SmartDashboard.putBoolean("goingForBalls", defaultGoingForBalls);
-    SmartDashboard.putBoolean("adjustMovementTape", defaultAdjustMovementTape);
-    SmartDashboard.putBoolean("adjustMovementPiece", defaultAdjustMovementPiece);
-  }
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    //init_networks();
-    init_booleans();
     m_oi = new OI();
-    //setLight(true);
-    
-    try {
-      gyro = new AHRS(I2C.Port.kOnboard, (byte)200);
-    } catch (RuntimeException ex) {
-      System.out.println("Error instantiating navX MXP:  " + ex.getMessage());
-    }
-
-    m_chooser.setDefaultOption("Simple Auto", new Autonomous(Autonomous.Start.LEVEL1)); //new NetworkCommand(4.0, 8.0, 0));
-  // m_chooser.addOption("Network Auto", new NetworkCommand(1.0, 1.0, 0.0));
-    //SmartDashboard.putNumber("fuck you vassilios", move_net.feed(new double[] {0, -3.0, 0, 0})[1]);
-    //CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -176,21 +62,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //SmartDashboard.putBoolean("gyro.isCalibrating", isCalibrating());
-    SmartDashboard.putNumber("gyro.yaw", gyro.getAngle());
-    SmartDashboard.putNumber("drivetrain.left_encoder", newdrivetrain.getleftdistance());
-    SmartDashboard.putNumber("drivetrain.right_encoder", newdrivetrain.getrightdistance());
-    SmartDashboard.putNumber("acquisition.encoder", acquisition.getacquisitionpos());
-    SmartDashboard.putNumber("roller.encoder", acquisition.getrollerpos());
-    SmartDashboard.putBoolean("acquisition.switch0", acquisition.getswitch0());
-    SmartDashboard.putBoolean("acquisition.switch1", acquisition.getswitch1());
-    SmartDashboard.putNumber("lifter.encoder", lifter.getlifterpos());
-    SmartDashboard.putBoolean("lifter.switch0", lifter.get0switch());
-    SmartDashboard.putBoolean("lifter.switch1", lifter.get1switch());
-    SmartDashboard.putBoolean("lifter.switch2", lifter.get2switch());
-    //setLight(true);
-    SmartDashboard.putNumber("lifter.setpoint", lifter.getSetpoint());
-    //acquisition.rotate(1.0);
     SmartDashboard.putNumber("drivesensitivity", OI.getSens());
     if(OI.getCameraSwitch()) {
       cameras.toggle();
@@ -224,19 +95,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    gyro.reset();
-    m_autonomousCommand = m_chooser.getSelected();
-    /*m_autonomousCommand.addSequential(new Reset());
-    m_autonomousCommand.addSequential(m_chooser.getSelected());*/
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
@@ -259,8 +117,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    gyro.reset();
   }
 
   /**
@@ -269,8 +125,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    //acquisition.rotate(1.0);
-    //System.out.println(gyro.getYaw() + " " + isCalibrating());
   }
 
   /**
@@ -278,5 +132,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    }
+  }
 }
